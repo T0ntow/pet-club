@@ -1,5 +1,6 @@
 ion-card {
-    width: 250px;
+    width: clamp(250px, 20vw, 350px);
+    min-width: clamp(250px, 20vw, 350px);    
     height: 500px;
 
     display: flex;
