@@ -3,7 +3,7 @@
   padding: 0;
 }
 
-ion-header {
+.header-edit {
   padding: 10px;
   display: flex;
   flex-direction: row;
@@ -49,7 +49,12 @@ ion-header {
 
   h1 {
     color: #2499c4;
-    font-size: 2.5rem;
+    font-size: clamp(1.4rem, 5vw, 2.5rem);
+
+    img {
+      width: 70px;
+      height: 70px;
+    }
   }
 
   #cart-box {
@@ -62,6 +67,99 @@ ion-header {
       height: 45px;
     }
   }
+
+}
+
+.header-edit-mobile {
+  display: none;
+  
+  padding: 10px;
+  flex-direction: column;
+  align-items: center;
+  font-family: "sniglet", sans-serif;
+
+  background-color: #c5e1eb;
+  color: #000;
+  justify-content: space-between;
+
+  #header-top {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+
+    div {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .custom-button {
+      font-size: 4rem;
+      color: #000;
+    }
+
+    h1 {
+      color: #2499c4;
+      font-size: clamp(1.4rem, 5vw, 2.2rem);
+
+      img {
+        width: 50px;
+        height: 50px;
+      }
+    }
+  
+    #cart-box, #login-box{
+      display: flex;
+      align-items: flex-end;
+      margin-right: 15px;
+  
+      ion-icon {
+        width: 35px;
+        height: 35px;
+      }
+    }
+  }
+
+  .search-box {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .custom-searchbar {
+      width: 100%;
+      border-radius: 15px 0 0 15px;
+      height: 50px;
+      background-color: #fff;
+      outline: none;
+      border: none;
+      text-indent: 10px;
+    }
+
+    button {
+      background-color: #2499c4;
+      height: 50px;
+      width: 50px;
+      border-radius: 0 15px 15px 0;
+
+      ion-icon {
+        font-size: 1.5rem;
+        color: #000;
+      }
+    }
+  }
+
+}
+
+@media only screen and (max-width: 900px) {
+  .header-edit {
+    display: none;
+  }
+
+  .header-edit-mobile {
+    display: flex;
+  }  
 }
 
 .header-edit-block-pages {

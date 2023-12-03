@@ -3,5 +3,5 @@
     "@ionic/angular/common",
     "@ionic/angular/standalone"
   ],
-  "editor.inlineSuggest.showToolbar": "onHover"
+  "editor.inlineSuggest.showToolbar": "always"
 }
