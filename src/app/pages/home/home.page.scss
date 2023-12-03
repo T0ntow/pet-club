@@ -12,7 +12,7 @@ ion-content {
 
     @media screen and (max-width: 950px) {
         #container {
-            margin-top: 160px;
+            margin-top: 150px;
             #app-servico {
                 display: flex;
                 flex-direction: row;
@@ -24,6 +24,7 @@ ion-content {
                 min-width: 95%;
                 gap: 20px;
                 margin: 0 auto;
+                padding: 15px;
             }
         }
     }
