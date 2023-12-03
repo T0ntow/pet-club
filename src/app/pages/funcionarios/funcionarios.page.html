@@ -1,8 +1,16 @@
 <ion-content [fullscreen]="true">
   <main style="margin-top: 15vh;">
     <div>
-      <input type="text" class="custom-searchbar" placeholder="Buscar funcionário">
-      <button id="add-funcionario" (click)="adicionarFuncionario()"><p>Novo Funcionário</p></button>
+      <div class="search-box">
+        <input type="text" class="custom-searchbar" placeholder="Pesquisar">
+        <button>
+          <ion-icon name="search-outline"></ion-icon>
+        </button>
+      </div> 
+      
+      <button id="add-funcionario" (click)="adicionarFuncionario()">
+        <p>Cadastrar Funcionário</p>
+      </button>
     </div>
 
     <ion-list>
@@ -17,7 +25,7 @@
           </ion-button>
           <ion-button (click)="alterarFuncionario(funcionario)" style="background-color: #53DFD7;border-radius: 5px;">
             <ion-icon name="create"></ion-icon>
-            <p>Alterar</p>
+            <p>Atualizar</p>
           </ion-button>
         </ion-buttons>
       </ion-item>
