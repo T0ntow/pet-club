@@ -92,26 +92,34 @@ main {
         gap: 5px;
         margin-top: 30px;
 
-        ion-button {
-            display: flex;
-            flex-direction: column;
-            border-radius: 5px;
-
-            p {
-                font-size: 0.6rem;
-
-                @media screen and  (max-width: 600px) {
-                    display: none;
+        ion-item {
+            ion-button {
+                display: flex;
+                flex-direction: column;
+                border-radius: 5px;
+    
+                p {
+                    font-size: 0.6rem;
+    
+                    @media screen and  (max-width: 600px) {
+                        display: none;
+                    }
                 }
+            }
+    
+            #remover-funcionario {
+                background-color: #EC5858
+            }
+    
+            #alterar-funcionario {
+                background-color: #53DFD7
             }
         }
 
-        #remover-funcionario {
-            background-color: #EC5858
+        ion-item:nth-child(odd) {
+            --background: #dbdbdb;
+            color: #000000
         }
 
-        #alterar-funcionario {
-            background-color: #53DFD7
-        }
     }
 }
