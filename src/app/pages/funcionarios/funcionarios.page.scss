@@ -16,8 +16,9 @@ main {
         align-items: center;
         padding: 0 20px;
 
+
         .search-box {
-            width: 45%;
+            width: 50vw;
             display: flex;
             align-items: center;
 
@@ -29,6 +30,14 @@ main {
                 outline: none;
                 border: none;
                 text-indent: 10px;
+
+                @media screen and (max-width: 900px) {
+                    height: 35px;
+                }
+
+                @media screen and (max-width: 500px) {
+                    width: 100%;
+                }
             }
 
             button {
@@ -37,10 +46,23 @@ main {
                 width: 50px;
                 border-radius: 0 15px 15px 0;
 
+                @media screen and (max-width: 900px) {
+                    height: 35px;
+                }
+
                 ion-icon {
                     font-size: 1.5rem;
                     color: #000;
                 }
+
+            }
+
+            @media screen and (max-width: 900px) {
+                width: 80vw;
+            }
+
+            @media screen and (max-width: 500px) {
+                width: 100vw;
             }
         }
 
@@ -53,6 +75,15 @@ main {
             font-weight: bold;
             font-size: 1rem;
             flex-wrap: wrap;
+
+            @media screen and (max-width: 900px) {
+                height: 35px;
+                font-size: .9rem;
+            }
+        }
+
+        @media screen and (max-width: 500px) {
+            padding: 0 5px;
         }
     }
 
@@ -63,10 +94,23 @@ main {
         ion-button {
             display: flex;
             flex-direction: column;
+            border-radius: 5px;
 
             p {
                 font-size: 0.6rem;
+
+                @media screen and  (max-width: 600px) {
+                    display: none;
+                }
             }
+        }
+
+        #remover-funcionario {
+            background-color: #EC5858
+        }
+
+        #alterar-funcionario {
+            background-color: #53DFD7
         }
     }
 }
