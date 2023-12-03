@@ -1,0 +1,16 @@
+<ion-card *ngFor="let produto of produtos">
+  
+  <ion-card-header>
+    <img [src]="produto.imagem" alt="Imagem do Produto">
+  </ion-card-header>
+  
+  <ion-card-content>
+    <ion-card-title class="title">{{ produto.nome }}</ion-card-title>
+    <p class="price">{{ produto.preco | currency:'BRL':'symbol':'1.2-2' }}</p>
+  </ion-card-content>
+  
+  <div class="functions-box">
+    <ion-icon name="heart" (click)="amei(produto)"></ion-icon>
+    <ion-icon name="cart"  (click)="adicionarAoCarrinho(produto)"></ion-icon>
+  </div>
+</ion-card>

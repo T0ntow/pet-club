@@ -1,0 +1,28 @@
+ion-content { 
+    #container {
+        margin-top: 15vh;
+        margin-bottom: 20px;
+
+        #app-servico {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+        }
+
+    }
+
+    div {
+
+        h2 {
+            font-family: Sniglet;
+            color: #EC8637;
+            font-weight: 400;
+            font-size: 2rem;
+            padding: 20px;
+        }
+        #app-product {
+            display: flex;
+            flex-direction: row;
+        }
+    }
+}

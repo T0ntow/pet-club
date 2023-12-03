@@ -1,0 +1,59 @@
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+ion-content {
+    --background: rgb(227, 227, 227);
+}
+
+main {
+    font-family: "sniglet", sans-serif;
+
+    div {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 20px;
+        padding: 0 20px;
+        margin-bottom: 30px;
+
+        .custom-searchbar {
+            width: 50%;
+            border-radius: 15px 0 0 15px;
+            height: 50px;
+            background-color: #fff;
+            outline: none;
+            border: none;
+            text-indent: 10px;
+            
+            border-radius: 15px;
+        }
+        
+        #add-funcionario {
+            height: 50px;
+            border-radius: 20px;
+            max-width: 100px;
+            background: #2499C4;
+            color: #000;
+            font-weight: bold;
+            font-size: 1rem;
+            flex-wrap: wrap;
+        }
+    }
+
+    ion-list {
+        gap: 5px;
+
+        ion-button {
+            display: flex;
+            flex-direction: column;
+
+            p {
+                font-size: .6rem;
+            }
+        }
+    }
+
+}

@@ -1,0 +1,146 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+ion-header {
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-family: "sniglet", sans-serif;
+
+  background-color: #c5e1eb;
+  color: #000;
+  justify-content: space-between;
+
+  .custom-button {
+    font-size: 4rem;
+    color: #000;
+  }
+
+  .search-box {
+    width: 45%;
+    display: flex;
+    align-items: center;
+
+    .custom-searchbar {
+      width: 80%;
+      border-radius: 15px 0 0 15px;
+      height: 50px;
+      background-color: #fff;
+      outline: none;
+      border: none;
+      text-indent: 10px;
+    }
+
+    button {
+      background-color: #2499c4;
+      height: 50px;
+      width: 50px;
+      border-radius: 0 15px 15px 0;
+
+      ion-icon {
+        font-size: 1.5rem;
+        color: #000;
+      }
+    }
+  }
+
+  h1 {
+    color: #2499c4;
+    font-size: 2.5rem;
+  }
+
+  #cart-box {
+    display: flex;
+    align-items: flex-end;
+    margin-right: 30px;
+
+    ion-icon {
+      width: 45px;
+      height: 45px;
+    }
+  }
+}
+
+.header-edit-block-pages {
+  display: flex;
+  justify-content: flex-start;
+  background-color: #fff;
+}
+
+ion-menu {
+  font-family: "sniglet", sans-serif;
+  --background: #fff;
+
+  ion-header {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+
+    ion-title {
+      color: #2499c4;
+      font-size: 1.4rem;
+    }
+  }
+
+  ion-content {
+    background-color: #ffff;
+
+    ion-list {
+      background-color: transparent;
+      gap: 10px;
+      display: flex;
+      flex-direction: column;
+      background-color: #fff;
+      margin-top: 20px;
+
+      .item-background-color {
+        cursor: pointer;
+        font-weight: bold;
+        --ion-item-background: #1e1e1e3d;
+      }
+
+      .item-background-color:hover {
+        color: #2499c4;
+      }
+
+      #sub-items-adm {
+        margin: 5px 30px;
+        background-color: #fff;
+        gap: 7px;
+
+        ion-text {
+          color: gray;
+          cursor: pointer;
+        }
+
+        ion-text:hover {
+          color: #2499c4;
+        }
+      }
+    }
+  }
+}
+
+#footer-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  gap: 10px;
+  background-color: #fff;
+
+  #login-button {
+    color: #ec8637;
+    font-size: 1.4rem;
+  }
+
+  #submit-button {
+    color: #d12f6e;
+    font-size: 1.4rem;
+  }
+}

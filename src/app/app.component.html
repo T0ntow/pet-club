@@ -1,3 +1,91 @@
-<ion-app>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sniglet&display=swap');
+</style>
+
+<ion-app id="app">
+  <div id="main-content"> </div>
+  <link href="https://fonts.googleapis.com/css2?family=Sniglet&display=swap" rel="stylesheet">
+
+  <ion-header class="header-edit" *ngIf="!isOnBlockPages()">
+    <div id="box-title">
+      <ion-buttons slot="start" class="custom-menu-button">
+        <ion-menu-button class="custom-button" color="medium"></ion-menu-button>
+      </ion-buttons>
+    </div>
+  
+      <h1>
+        Pet Club
+      </h1>
+  
+      <div class="search-box">
+        <input type="text" class="custom-searchbar" placeholder="Pesquisar">
+        <button>
+          <ion-icon name="search-outline"></ion-icon>
+        </button>
+      </div>
+  
+      <div id="login-box">
+        <ion-text>faça <a href="">login</a> ou <br> <a href="">cadastre-se</a> </ion-text>
+      </div>
+  
+      <div id="cart-box">
+        <ion-icon name="cart-outline"></ion-icon>
+        <ion-text>Carrinho</ion-text>
+      </div>
+  </ion-header>
+
+  <ion-header class="header-edit-block-pages" *ngIf="isOnBlockPages()">
+      <ion-buttons slot="start" class="custom-menu-button">
+        <ion-menu-button class="custom-button" color="medium"></ion-menu-button>
+      </ion-buttons>
+      <h1 style="color: #000; font-size: 1.2rem;">
+        Administração <ion-icon name="arrow-forward-outline"></ion-icon> Funcionários
+      </h1>
+  </ion-header>
+
+
+  <ion-menu contentId="main-content">
+    <ion-header>
+      <div id="box-person">
+        <ion-title>Olá, Faça seu login</ion-title>
+      </div>
+    </ion-header>
+
+    <ion-content>
+      <ion-list lines="none">
+        <ion-item class="item-background-color">
+          <ion-label (click)="closeMenuAndNavigate('/home')">Início</ion-label>
+        </ion-item>
+        <ion-item class="item-background-color">
+          <ion-label>Meus Pedidos</ion-label>
+        </ion-item>
+        <ion-item class="item-background-color">
+          <ion-label (click)="toggleAdminSubItems()">Administração</ion-label>
+        </ion-item>
+        <ion-list *ngIf="showAdminSubItems" id="sub-items-adm">
+          <ion-text (click)="closeMenuAndNavigate('/funcionarios')">Funcionário</ion-text>
+          <ion-text>Fornecedor</ion-text>
+          <ion-text>Estoque</ion-text>
+          <ion-text>Pedido</ion-text>
+          <ion-text>Cliente</ion-text>
+          <ion-text>Pet</ion-text>
+          <ion-text>Produto</ion-text>
+          <ion-text>Venda</ion-text>
+          <ion-text>Serviço</ion-text>
+          <ion-text>Agendamento</ion-text>
+        </ion-list>
+        <ion-item class="item-background-color">
+          <ion-label>Minha conta</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+
+    <div id="footer-menu">
+      <ion-title id="login-button">Login</ion-title>
+      <ion-title id="submit-button">Cadastro</ion-title>
+    </div>
+
+  </ion-menu>
+
   <ion-router-outlet></ion-router-outlet>
 </ion-app>

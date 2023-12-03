@@ -1,0 +1,20 @@
+<div>
+  <div class="content">
+    <swiper-container #swiper class="swiper-container" id="mySwiper" (slidechange)="swiperSlideChange($event)"
+      [parallax]="true" [loop]="true" [autoplay]="true" (afterinit)="swiperReady()" pagination="true" pagination-dynamic-bullets="true" pagination-clickable="true" navigation="true"> 
+
+      <swiper-slide>
+        <img src="./assets/banner-image1.png" alt="Banner Image">
+      </swiper-slide>
+
+      
+      <swiper-slide>
+        <img src="./assets/pit2.png" alt="">
+      </swiper-slide>
+      
+      <swiper-slide>
+        <img src="./assets/poodle.png" alt="">
+      </swiper-slide>
+    </swiper-container>
+  </div>
+</div>

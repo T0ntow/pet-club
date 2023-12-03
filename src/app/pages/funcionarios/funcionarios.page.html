@@ -1,0 +1,26 @@
+<ion-content [fullscreen]="true">
+  <main style="margin-top: 15vh;">
+    <div>
+      <input type="text" class="custom-searchbar" placeholder="Buscar funcionário">
+      <button id="add-funcionario" (click)="adicionarFuncionario()"><p>Novo Funcionário</p></button>
+    </div>
+
+    <ion-list>
+      <ion-item *ngFor="let funcionario of funcionarios">
+        <ion-label>{{ funcionario.nome }}</ion-label>
+        <ion-label>{{ funcionario.cpf }}</ion-label>
+        <ion-label>{{ funcionario.cargo }}</ion-label>
+        <ion-buttons slot="end">
+          <ion-button (click)="removerFuncionario(funcionario)" style="background-color: #EC5858;border-radius: 5px;">
+            <ion-icon name="trash"></ion-icon>
+            <p>Remover</p>
+          </ion-button>
+          <ion-button (click)="alterarFuncionario(funcionario)" style="background-color: #53DFD7;border-radius: 5px;">
+            <ion-icon name="create"></ion-icon>
+            <p>Alterar</p>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+    </ion-list>
+  </main>
+</ion-content>

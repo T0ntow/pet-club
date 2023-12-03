@@ -6,6 +6,8 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import Swiper from 'swiper/types/swiper-class';
+import { SwiperModule } from 'swiper/types/shared';
 
 @NgModule({
   declarations: [AppComponent],

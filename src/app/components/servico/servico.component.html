@@ -1,0 +1,6 @@
+<div id="servico" *ngFor="let servico of servicos">
+  <div  [style.background-color]="servico.color">
+    <img [src]="servico.icon" alt="">
+  </div>
+  <p>{{servico.title}}</p>
+</div>
