@@ -26,7 +26,7 @@
     </div>
 
     <div id="login-box">
-      <ion-text>faça <a href="">login</a> ou <br> <a href="">cadastre-se</a> </ion-text>
+      <ion-text>faça <a href="" routerLink="/login">login</a> ou <br> <a href="" routerLink="/signup">cadastre-se</a> </ion-text>
     </div>
 
     <div id="cart-box">
@@ -65,7 +65,6 @@
         <ion-icon name="search-outline"></ion-icon>
       </button>
     </div>
-
   </ion-header>
 
 
@@ -107,8 +106,8 @@
     </ion-content>
 
     <div id="footer-menu">
-      <ion-title id="login-button">Login</ion-title>
-      <ion-title id="submit-button">Cadastro</ion-title>
+      <ion-title id="login-button" routerLink="/login">Login</ion-title>
+      <ion-title id="submit-button" routerLink="/signup">Cadastro</ion-title>
     </div>
 
   </ion-menu>
