@@ -164,11 +164,12 @@ ion-content {
                     flex-direction: column;
                     justify-content: space-around;
                     height: 100%;
+                    gap: 15px;
 
-                    input {
+                    ion-input {
                         height: 40px;
 
-                        border-radius: 13px;
+                        border-radius: 13px 13px 0 0;
                         border: 1px solid #b6b6b6;
                         background: rgba(36, 153, 196, 0.12);
                     }
