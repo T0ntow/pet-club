@@ -4,8 +4,16 @@
 }
 
 ion-content {
-    --background: rgb(227, 227, 227);
+    --background: var(--background-color);
 }
+
+.header-edit-block-pages {
+    display: flex;
+    justify-content: flex-start;
+    background-color: #fff;
+    align-items: center;
+    font-family: "sniglet", sans-serif;
+  }
 
 main {
     font-family: "sniglet", sans-serif;
