@@ -1,0 +1,221 @@
+ion-content {
+    --background: var(--background-color);
+    font-family: "sniglet", sans-serif;
+
+    main {
+        width: 100vw;
+        height: 100vh;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .container {
+            background-color: #fff;
+
+            width: 40vw;
+            height: 70vh;
+            border-radius: 30px;
+
+            border: 3px solid black;
+
+
+            @media screen and (max-width: 900px) {
+                width: 65vw;
+            }
+
+            @media screen and (max-width: 500px) {
+                width: 90vw;
+            }
+
+            .container-topo {
+                background-color: #ec8637;
+                border-radius: 30px 30px 0 0;
+                height: 40px;
+                box-shadow: 2px 2px 0.7px 0px #cfcfcf inset;
+                border-bottom: 3px solid black;
+
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+
+                position: relative;
+
+                #cachorro-topo {
+                    position: absolute;
+                    top: -86px;
+                    left: 30px;
+
+                    width: 100px;
+                    height: 100px;
+                    z-index: 10;
+                }
+
+                #popup-fala {
+                    display: none;
+                    position: absolute;
+
+                    background-color: #fff;
+                    padding: 3px;
+                    border-radius: 20px;
+                    top: -70px;
+                    left: 120px;
+                }
+
+                #cachorro-topo:hover ~ #popup-fala {
+                    display: block;
+                }
+
+                #first-child {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: space-between;
+                    position: relative;
+                    height: 100%;
+                    margin: 0;
+                    left: 50px;
+                    width: 50%;
+
+                    span {
+                        position: relative;
+                        width: 15px;
+                        height: 13px;
+                        background-color: #ffffff;
+                        border-radius: 50%;
+                    }
+
+                    span::before,
+                    span::after {
+                        content: "";
+                        position: absolute;
+                        width: 15px;
+                        height: 13px;
+                        background-color: #ffffff;
+                        border-radius: 50%;
+                    }
+
+                    span::before {
+                        transform: translateX(-30px);
+                    }
+
+                    span::after {
+                        transform: translateX(30px);
+                    }
+                }
+
+                > div:last-child {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: space-between;
+                    position: relative;
+                    height: 100%;
+                    margin: 0;
+                    float: right;
+                    right: 50px;
+
+                    span {
+                        position: relative;
+                        width: 8px;
+                        height: 10px;
+                        background-color: #303030;
+                        border-radius: 5px;
+                    }
+
+                    span::before,
+                    span::after {
+                        content: "";
+                        position: absolute;
+                        width: 8px;
+                        height: 10px;
+                        background-color: #303030;
+                        border-radius: 5px;
+                    }
+
+                    span::before {
+                        transform: translateX(-30px);
+                    }
+
+                    span::after {
+                        transform: translateX(30px);
+                    }
+                }
+            }
+
+            .container-content {
+                padding: 15px;
+                height: 100%;
+
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+
+                h2 {
+                    font-size: 2.5rem;
+                    margin-top: 0;
+                    margin-bottom: 20px;
+                    padding: 10px;
+                }
+
+                > div {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-around;
+                    height: 100%;
+                    gap: 15px;
+
+                    ion-input {
+                        height: 40px;
+
+                        border-radius: 13px 13px 0 0;
+                        border: 1px solid #b6b6b6;
+                        background: rgba(36, 153, 196, 0.12);
+                    }
+
+                    .item-input {
+                        display: flex;
+                        flex-direction: column;
+
+                        label {
+                            margin-left: 5px;
+                        }
+                    }
+                }
+
+                .container-entrar {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-evenly;
+                    margin: 20px 0;
+
+                    ion-button {
+                        --border-radius: 13px;
+                        --background: #2499c4;
+                        height: 40px;
+
+                        p {
+                            color: #fff;
+                            text-shadow:
+                                0px 4px 4px rgba(0, 0, 0, 0.25),
+                                0px 4px 4px rgba(0, 0, 0, 0.25);
+                            font-family: Sniglet;
+                            font-size: 1.2rem;
+                            font-weight: 400;
+                        }
+                    }
+                }
+
+                a {
+                    color: gray;
+                    text-align: center;
+                }
+
+                > a {
+                    text-align: right;
+                }
+            }
+        }
+    }
+}
