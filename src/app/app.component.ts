@@ -40,6 +40,12 @@ export class AppComponent {
         queryParams: 'subset',
         fragment: 'ignored',
         matrixParams: 'ignored'
+      }) || 
+      this.router.isActive('/signup', {
+        paths: 'subset',
+        queryParams: 'subset',
+        fragment: 'ignored',
+        matrixParams: 'ignored'
       })
     );
   }
