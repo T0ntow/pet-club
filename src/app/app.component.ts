@@ -28,7 +28,23 @@ export class AppComponent {
   }
 
   isOnBlockPages(): boolean {
-    return  this.router.isActive('/funcionarios', {paths: 'subset', queryParams: 'subset', fragment: 'ignored', matrixParams: 'ignored'});
+    return (
+      this.router.isActive('/funcionarios', {
+        paths: 'subset',
+        queryParams: 'subset',
+        fragment: 'ignored',
+        matrixParams: 'ignored'
+      }) || 
+      this.router.isActive('/login', {
+        paths: 'subset',
+        queryParams: 'subset',
+        fragment: 'ignored',
+        matrixParams: 'ignored'
+      })
+    );
   }
+  
+  
+
 
 }
