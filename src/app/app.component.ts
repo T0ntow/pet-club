@@ -13,7 +13,6 @@ export class AppComponent {
   constructor(
     private menuController: MenuController,
     private router: Router,
-
   ) {}
 
   showAdminSubItems = false;
@@ -49,8 +48,5 @@ export class AppComponent {
       })
     );
   }
-  
-  
-
 
 }

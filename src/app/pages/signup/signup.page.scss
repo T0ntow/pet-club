@@ -152,11 +152,29 @@ ion-content {
                 flex-direction: column;
                 justify-content: space-between;
 
-                h2 {
-                    font-size: 2.5rem;
-                    margin-top: 0;
-                    margin-bottom: 20px;
-                    padding: 10px;
+                #container-title {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: flex-start;
+                    height: 80px;
+
+                    h2 {
+                        font-size: 2.5rem;
+                        margin-bottom: 20px;
+                        text-align: left;
+                    }
+
+                    #pet-logo {
+                        width: 65px;
+                        height: 65px;
+                        filter: grayscale(1);
+                    }
+
+                    #pet-logo:hover {
+                        transition: .3s;
+                        filter: grayscale(0);
+                    }
                 }
 
                 > div {

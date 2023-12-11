@@ -1,10 +1,10 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Sniglet&display=swap');
-</style>
+  </style>
+<link href="https://fonts.googleapis.com/css2?family=Sniglet&display=swap" rel="stylesheet">
 
 <ion-app id="app">
   <div id="main-content"> </div>
-  <link href="https://fonts.googleapis.com/css2?family=Sniglet&display=swap" rel="stylesheet">
 
   <ion-header class="header-edit" *ngIf="!isOnBlockPages()">
     <div id="box-title">
@@ -26,7 +26,7 @@
     </div>
 
     <div id="login-box">
-      <ion-text>faça <a href="" routerLink="/login">login</a> ou <br> <a href="" routerLink="/signup">cadastre-se</a> </ion-text>
+      <div>faça <span style="color: #2f87ec;" (click)="closeMenuAndNavigate('/login')">login</span> ou <br> <span style="color: #2f87ec;" (click)="closeMenuAndNavigate('/signup')">cadastre-se</span> </div>
     </div>
 
     <div id="cart-box">
@@ -68,7 +68,7 @@
   </ion-header>
 
 
-  <ion-menu contentId="main-content">
+  <ion-menu contentId="main-content" *ngIf="!isOnBlockPages()">
     <ion-header>
       <div id="box-person" style="display: flex; flex-direction: row; align-items: center;">
         <img src="./assets/pet-logo.png" alt="" style="width: 45px; height: 45px;">
@@ -106,8 +106,8 @@
     </ion-content>
 
     <div id="footer-menu">
-      <ion-title id="login-button" routerLink="/login">Login</ion-title>
-      <ion-title id="submit-button" routerLink="/signup">Cadastro</ion-title>
+      <ion-title id="login-button" (click)="closeMenuAndNavigate('/login')">Login</ion-title>
+      <ion-title id="submit-button" (click)="closeMenuAndNavigate('/signup')">Cadastro</ion-title>
     </div>
 
   </ion-menu>
