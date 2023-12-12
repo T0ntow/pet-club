@@ -4,11 +4,9 @@
     <div class="container">
       <div class="container-topo">
         <img id="cachorro-topo" src="./assets/cachorro-login.png" alt="">
-
         <div id="popup-fala">
           <p>Au Au Au</p>
         </div>
-
         <div id="first-child">
           <span></span>
         </div>
@@ -19,28 +17,28 @@
       <div class="container-content">
         <div id="container-title">
           <img id="pet-logo" src="./assets/pet-logo.png" alt="" routerLink="/home">
-          <h2>Login</h2>
+          <h2>Signup</h2>
         </div>
-        <div>
-          <div class="item-input">
-            <label for="">nome de usuário</label>
-            <ion-input></ion-input>
+        <form action="" [formGroup]="signupForm">
+          <div>
+            <div class="item-input">
+              <label for="">nome de usuário</label>
+              <ion-input formControlName="username"></ion-input>
+            </div>
+            <div class="item-input">
+              <label for="">e-mail</label>
+              <ion-input type="e-mail" formControlName="email"></ion-input>
+            </div>
+            <div class="item-input">
+              <label for="">senha</label>
+              <ion-input type="password" formControlName="password"></ion-input>
+            </div>
           </div>
-
-          <div class="item-input">
-            <label for="">e-mail</label>
-            <ion-input type="e-mail"></ion-input>
+          <div class="container-entrar">
+            <ion-button (click)="newUser()"><p>Cadastrar</p></ion-button>
+            <a href="" routerLink="/login">Já possuo uma conta</a>
           </div>
-
-          <div class="item-input">
-            <label for="">senha</label>
-            <ion-input type="password"></ion-input>
-          </div>
-        </div>
-        <div class="container-entrar">
-          <ion-button><p>Cadastrar</p></ion-button>
-          <a href="" routerLink="/login">Já possuo uma conta</a>
-        </div>
+        </form>
       </div>
     </div>
   </main>
