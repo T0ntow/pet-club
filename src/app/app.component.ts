@@ -20,15 +20,40 @@ export class AppComponent implements OnInit {
   ) { }
 
   username: string | null = null;
+  isLoggedIn: boolean = false;
   showAdminSubItems = false;
 
   ngOnInit(): void {
     this.authService.authUsername$.subscribe((username) => {
       this.username = username;
+      this.checkIfLoggedIn()
       console.log('Nome de usuário atualizado:', this.username);
     });
   }
-  
+
+  checkIfLoggedIn(): void {
+    this.isLoggedIn = this.authService.isLoggedIn();
+
+    if (this.isLoggedIn) {
+      // O usuário está logado, você pode realizar ações aqui
+      const username = this.authService.getAuthUsername();
+      console.log(`Usuário logado: ${username}`);
+    } else {
+      // O usuário não está logado, redirecione-o para a página de login, por exemplo.
+      console.log('Usuário não está logado. Redirecionando para a página de login...');
+      // Adicione lógica de redirecionamento aqui
+    }
+  }
+
+  logout(): void {
+    this.isLoggedIn = this.authService.isLoggedIn();
+
+    if (this.isLoggedIn) {
+      this.authService.logout();
+    } else {
+    }
+  }
+
   toggleAdminSubItems() {
     this.showAdminSubItems = !this.showAdminSubItems;
   }

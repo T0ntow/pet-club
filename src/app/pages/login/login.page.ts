@@ -3,6 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoginService } from 'src/services/login.service';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/services/auth.service';
+import { AlertController } from '@ionic/angular';
+
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -15,7 +18,8 @@ export class LoginPage implements OnInit {
     private formBuilder: FormBuilder,
     private loginService: LoginService,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private alertController: AlertController
   ) {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
@@ -49,14 +53,30 @@ export class LoginPage implements OnInit {
         error: async (error) => {
           console.error('Erro ao logar usuário:', error);
 
-          if(error.status === 403) {
-            // await this.emailNotVerified()
-          } else {
-            // await this.presentErrorAlert();
+          if(error.status === 404) {
+            await this.presentAlert('E-mail não encontrado', 'Verifique o e-mail e tente novamente.');
+          } 
+
+          if(error.status === 401){
+            await this.presentAlert('Credenciais incorretas', 'Verifique suas credenciais e tente novamente.');
+          }
+
+          if(error) {
+            await this.presentAlert('Error', 'encontramos algum erro, por favor tente novamente mais tarde.');
           }
         }
       });
     }
+  }
+
+  async presentAlert(header: string, message: string): Promise<void> {
+    const alert = await this.alertController.create({
+      header: header,
+      message: message,
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 
 }

@@ -25,8 +25,12 @@
       </button>
     </div>
 
-    <div id="login-box">
+    <div id="login-box"  *ngIf="!isLoggedIn">
       <div>faça <span style="color: #2f87ec;" (click)="closeMenuAndNavigate('/login')">login</span> ou <br> <span style="color: #2f87ec;" (click)="closeMenuAndNavigate('/signup')">cadastre-se</span> </div>
+    </div>
+
+    <div id="login-box"  *ngIf="isLoggedIn">
+      <div>Olá {{username}} </div>
     </div>
 
     <div id="cart-box">
@@ -71,8 +75,8 @@
     <ion-header>
       <div id="box-person" style="display: flex; flex-direction: row; align-items: center;">
         <img src="./assets/pet-logo.png" alt="" style="width: 45px; height: 45px;">
-        <!-- <ion-title *ngIf="!isLoggedIn">Olá, Faça seu login</ion-title> -->
-        <ion-title>Olá, {{username}}</ion-title>
+        <ion-title *ngIf="!isLoggedIn">Olá, Faça seu login</ion-title>
+        <ion-title *ngIf="isLoggedIn">Olá, {{username}}</ion-title>
       </div>
     </ion-header>
 
@@ -105,9 +109,13 @@
       </ion-list>
     </ion-content>
 
-    <div id="footer-menu">
+    <div id="footer-menu"  *ngIf="!isLoggedIn">
       <ion-title id="login-button" (click)="closeMenuAndNavigate('/login')">Login</ion-title>
       <ion-title id="submit-button" (click)="closeMenuAndNavigate('/signup')">Cadastro</ion-title>
+    </div>
+
+    <div id="footer-menu"  *ngIf="isLoggedIn">
+      <ion-title color="danger" (click)="logout()"><a href="/login">Logout</a></ion-title>
     </div>
 
   </ion-menu>
