@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SignupService } from 'src/services/signup.service';
+import { AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-signup',
@@ -14,6 +17,9 @@ export class SignupPage implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private signupService: SignupService,
+    private alertController: AlertController,
+    private router: Router,
+    private toastController: ToastController
   ) {
     this.signupForm = this.formBuilder.group({
       username: ['', Validators.required],
@@ -25,26 +31,47 @@ export class SignupPage implements OnInit {
   ngOnInit(): void {
   }
 
-  newUser() {
+  async newUser() {
     if (this.signupForm.valid) {
       const userData = this.signupForm.value;
 
       this.signupService.signup(userData).subscribe({
-        next: (response: any) => {
+        next: async (response: any) => {
           console.log('Usuário cadastrado com sucesso:', response);
-          const confirmationToken = response.confirmationToken;
-          const email = response.email;
+          
+          await this.presentToast('Cadastro realizado com sucesso. Efetue o login e comece a utilizar sua conta.');
+          this.router.navigate(['/login']);
         },
 
         error: async (error) => {
-          console.error('Erro ao cadastrar usuario:', error);
+          console.error('Erro ao cadastrar usuário:', error);
 
-          if (error.error.error === "E-mail já em uso") {
+          if (error.status === 400) {
             console.log("E-mail já em uso");
+            await this.presentAlert('E-mail já em uso', 'Verificamos que o seu e-mail já está em uso. Por favor, cadastre-se utilizando um novo endereço de e-mail.');
           }
-
         }
-      })
+      });
     }
+  }
+
+  async presentToast(message: string) {
+    const toast = await this.toastController.create({
+      message,
+      duration: 3000,
+      position: 'bottom',
+      color: 'success'
+    });
+    toast.present();
+  }
+
+  async presentAlert(header: string, message: string): Promise<void> {
+    const alert = await this.alertController.create({
+      header: header,
+      message: message,
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 }
