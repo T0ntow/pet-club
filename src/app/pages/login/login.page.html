@@ -4,15 +4,15 @@
     <div class="container">
       <div class="container-topo">
         <img id="cachorro-topo" src="./assets/cachorro-login.png" alt="">
-        
+
         <div id="popup-fala">
           <p>Au Au Au</p>
         </div>
-        
+
         <div id="first-child">
           <span></span>
         </div>
-        
+
         <div>
           <span></span>
         </div>
@@ -22,23 +22,27 @@
           <img id="pet-logo" src="./assets/pet-logo.png" alt="" routerLink="">
           <h2>Login</h2>
         </div>
-        <div>
-          <div class="item-input">
-            <label for="">nome de usuário ou e-mail</label>
-            <ion-input></ion-input>
+        <form action="" [formGroup]="loginForm">
+          <div>
+            <div class="item-input">
+              <label for="">e-mail</label>
+              <ion-input formControlName="email"></ion-input>
+            </div>
+            <div class="item-input">
+              <label for="">senha</label>
+              <ion-input type="password" formControlName="password"></ion-input>
+            </div>
           </div>
-          <div class="item-input">
-            <label for="">senha</label>
-            <ion-input type="password"></ion-input>
+          <a href="">esqueci minha senha</a>
+          <div class="container-entrar">
+            <ion-button (click)="login()">
+              <p>Entrar</p>
+            </ion-button>
+            <a href="" routerLink="/signup">Ainda não possuo uma conta</a>
           </div>
-        </div>
-        <a href="">esqueci minha senha</a>
-        <div class="container-entrar">
-          <ion-button><p>Entrar</p></ion-button>
-          <a href="" routerLink="/signup">Ainda não possuo uma conta</a>
-        </div>
+        </form>
       </div>
     </div>
   </main>
- 
+
 </ion-content>

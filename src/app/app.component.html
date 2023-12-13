@@ -67,12 +67,12 @@
     </div>
   </ion-header>
 
-
   <ion-menu contentId="main-content" *ngIf="!isOnBlockPagesMenu()">
     <ion-header>
       <div id="box-person" style="display: flex; flex-direction: row; align-items: center;">
         <img src="./assets/pet-logo.png" alt="" style="width: 45px; height: 45px;">
-        <ion-title>Olá, Faça seu login</ion-title>
+        <!-- <ion-title *ngIf="!isLoggedIn">Olá, Faça seu login</ion-title> -->
+        <ion-title>Olá, {{username}}</ion-title>
       </div>
     </ion-header>
 
