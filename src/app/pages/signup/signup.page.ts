@@ -28,6 +28,20 @@ export class SignupPage implements OnInit {
     });
   }
 
+  inputValue!: string;
+  isInputSelecionado: boolean = false;
+  
+  inputFocus() {
+    console.log('Input selecionado');
+    this.isInputSelecionado = true;
+  }
+
+  inputBlur() {
+    console.log('Input desselecionado');
+    this.isInputSelecionado = false;
+  }
+
+
   ngOnInit(): void {
   }
 

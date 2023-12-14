@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoginService } from 'src/services/login.service';
 import { Router } from '@angular/router';
@@ -27,8 +27,22 @@ export class LoginPage implements OnInit {
     });
   }
 
+  inputValue!: string;
+  isInputSelecionado: boolean = false;
+
   ngOnInit() {
   }
+
+  inputFocus() {
+    console.log('Input selecionado');
+    this.isInputSelecionado = true;
+  }
+
+  inputBlur() {
+    console.log('Input desselecionado');
+    this.isInputSelecionado = false;
+  }
+
 
   login() {
     console.log("submit form");
@@ -53,15 +67,15 @@ export class LoginPage implements OnInit {
         error: async (error) => {
           console.error('Erro ao logar usuário:', error);
 
-          if(error.status === 404) {
+          if (error.status === 404) {
             await this.presentAlert('E-mail não encontrado', 'Verifique o e-mail e tente novamente.');
-          } 
+          }
 
-          if(error.status === 401){
+          if (error.status === 401) {
             await this.presentAlert('Credenciais incorretas', 'Verifique suas credenciais e tente novamente.');
           }
 
-          if(error) {
+          if (error) {
             await this.presentAlert('Error', 'encontramos algum erro, por favor tente novamente mais tarde.');
           }
         }

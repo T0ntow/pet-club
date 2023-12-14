@@ -1,9 +1,9 @@
 <ion-content [fullscreen]="true">
-
   <main>
     <div class="container">
       <div class="container-topo">
-        <img id="cachorro-topo" src="./assets/cachorro-login.png" alt="">
+        <img id="cachorro-topo" src="./assets/cachorro-login.png" [ngClass]="{'selecionado': isInputSelecionado}"
+          alt="">
 
         <div id="popup-fala">
           <p>Au Au Au</p>
@@ -30,15 +30,22 @@
             </div>
             <div class="item-input">
               <label for="">senha</label>
-              <ion-input type="password" formControlName="password"></ion-input>
+              <ion-input id="input-password" type="password" (ionFocus)="inputFocus()" (ionBlur)="inputBlur()"
+                [(ngModel)]="inputValue" formControlName="password"></ion-input>
             </div>
           </div>
-          <a href="">esqueci minha senha</a>
-          <div class="container-entrar">
+
+          <ion-text class="ion-text-center" color="medium">
+            <p routerLink="/">esqueci minha senha</p>
+          </ion-text>
+
+          <div class="container-entrar" >
             <ion-button (click)="login()">
               <p>Entrar</p>
             </ion-button>
-            <a href="" routerLink="/signup">Ainda não possuo uma conta</a>
+            <ion-text color="medium">
+              <p routerLink="/signup">Ainda não tenho uma conta</p>
+            </ion-text>
           </div>
         </form>
       </div>
