@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Novo Produto</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="fecharModal()" id="cancel-button">
+        <ion-icon name="close"></ion-icon>
+        <p>cancelar</p>
+      </ion-button>
+
+      <ion-button (click)="salvarAlteracoes()" id="save-button">
+        <ion-icon name="checkmark-outline"></ion-icon>
+        <p>Cadastrar</p>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form>
+    <ion-item>
+      <ion-input name="nome" type="text" label="Nome do Produto *" labelPlacement="floating"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input name="preco" type="number" label="Preço *" labelPlacement="floating"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input name="descricao" type="text" label="Descrição *" labelPlacement="floating"></ion-input>
+    </ion-item>
+
+    <ion-item >
+      <ion-input name="imagem" type="file"></ion-input>
+    </ion-item>
+
+  </form>
+</ion-content>

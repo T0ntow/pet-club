@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { ProdutosCrudPageRoutingModule } from './produtos-crud-routing.module';
 
 import { ProdutosCrudPage } from './produtos-crud.page';
+import { NovoProdutoComponent } from 'src/app/modals/novo-produto/novo-produto.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { ProdutosCrudPage } from './produtos-crud.page';
     IonicModule,
     ProdutosCrudPageRoutingModule
   ],
-  declarations: [ProdutosCrudPage]
+  declarations: [ProdutosCrudPage,
+    NovoProdutoComponent]
 })
 export class ProdutosCrudPageModule {}

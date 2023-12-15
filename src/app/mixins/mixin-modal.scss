@@ -1,0 +1,45 @@
+// Mixin para estilos do ion-toolbar dentro de ion-header
+@mixin header-toolbar {
+    font-family: "sniglet", sans-serif;
+    color: #fff;
+    --background: #303030;
+  
+    #cancel-button {
+      color: #ff2f2f;
+    }
+  
+    #save-button {
+      color: #00ff85;
+    }
+  }
+  
+  // Mixin para estilos do ion-item dentro de form dentro de ion-content
+  @mixin content-form-item {
+    margin-bottom: 5px;
+    width: 100%;
+  }
+  
+  // Estilos para ion-header
+  ion-header {
+    background-color: #303030;
+  
+    ion-toolbar {
+      @include header-toolbar;
+    }
+  }
+  
+  // Estilos para ion-content
+  ion-content {
+    padding: 0;
+    font-family: "sniglet", sans-serif;
+  
+    form {
+      padding: 0;
+      font-family: "sniglet", sans-serif;
+  
+      ion-item {
+        @include content-form-item;
+      }
+    }
+  }
+  

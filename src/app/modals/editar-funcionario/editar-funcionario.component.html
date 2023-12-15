@@ -18,33 +18,27 @@
 <ion-content class="ion-padding">
   <form>
     <ion-item>
-      <ion-label position="floating">Nome completo *</ion-label>
-      <ion-input [(ngModel)]="funcionario.nome" name="nome" type="text"></ion-input>
+      <ion-input [(ngModel)]="funcionario.nome" name="nome" type="text" label="Nome completo *" labelPlacement="floating"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-label position="floating">Email *</ion-label>
-      <ion-input [(ngModel)]="funcionario.email" name="email" type="email"></ion-input>
+      <ion-input [(ngModel)]="funcionario.email" name="email" type="email" label="Email *" labelPlacement="floating"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-label position="floating">CPF *</ion-label>
-      <ion-input [(ngModel)]="funcionario.cpf" name="cpf" type="text"></ion-input>
+      <ion-input [(ngModel)]="funcionario.cpf" name="cpf" type="text" label="CPF *" labelPlacement="floating"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-label position="floating">Cargo *</ion-label>
-      <ion-input [(ngModel)]="funcionario.cargo" name="cargo" type="text"></ion-input>
+      <ion-input [(ngModel)]="funcionario.cargo" name="cargo" type="text" label="Cargo *" labelPlacement="floating"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-label position="floating">Telefone *</ion-label>
-      <ion-input [(ngModel)]="funcionario.telefone" name="telefone" type="tel"></ion-input>
+      <ion-input [(ngModel)]="funcionario.telefone" name="telefone" type="tel" label="Telefone *"  labelPlacement="floating"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-label position="floating">CEP *</ion-label>
-      <ion-input [(ngModel)]="funcionario.cep" name="cep" type="text"></ion-input>
+      <ion-input [(ngModel)]="funcionario.cep" name="cep"  type="text" label="CEP *" labelPlacement="floating"></ion-input>
     </ion-item>
   </form>
 </ion-content>

@@ -64,12 +64,10 @@ export class FuncionariosPage implements OnInit {
     });
 
     modal.onDidDismiss().then((data) => {
-      console.log('Dados do funcionário atualizados:', data.data);
+      console.log('Dados do funcionário adicionados:', data.data);
     });
 
     return await modal.present();
   }
-
-
 
 }
