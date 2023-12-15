@@ -8,13 +8,15 @@ import { ProdutosCrudPageRoutingModule } from './produtos-crud-routing.module';
 
 import { ProdutosCrudPage } from './produtos-crud.page';
 import { NovoProdutoComponent } from 'src/app/modals/novo-produto/novo-produto.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ProdutosCrudPageRoutingModule
+    ProdutosCrudPageRoutingModule,
+    ReactiveFormsModule
   ],
   declarations: [ProdutosCrudPage,
     NovoProdutoComponent]
