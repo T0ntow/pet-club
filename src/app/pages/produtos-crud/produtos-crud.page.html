@@ -3,7 +3,7 @@
     <ion-menu-button class="custom-button" color="medium"></ion-menu-button>
   </ion-buttons>
   <h1 >
-    Administração <ion-icon name="arrow-forward-outline"></ion-icon> Funcionários
+    Administração <ion-icon name="arrow-forward-outline"></ion-icon> Produtos
   </h1>
 </ion-header>
 
@@ -17,22 +17,22 @@
         </button>
       </div> 
       
-      <button id="add-funcionario" (click)="adicionarFuncionario()">
+      <button id="add-produto">
         <p>Cadastrar Funcionário</p>
       </button>
     </div>
 
     <ion-list>
-      <ion-item *ngFor="let funcionario of funcionarios">
-        <ion-label>{{ funcionario.nome }}</ion-label>
-        <ion-label>{{ funcionario.cpf }}</ion-label>
-        <ion-label>{{ funcionario.cargo }}</ion-label>
+      <ion-item>
+        <ion-label>NOME</ion-label>
+        <ion-label>NOME</ion-label>
+        <ion-label>NOME</ion-label>
         <ion-buttons slot="end">
-          <ion-button id="remover-funcionario" (click)="removerFuncionario(funcionario)" >
+          <ion-button id="remover-produto">
             <ion-icon name="trash"></ion-icon>
             <p>Remover</p>
           </ion-button>
-          <ion-button id="alterar-funcionario"  (click)="alterarFuncionario(funcionario)">
+          <ion-button id="alterar-produto" >
             <ion-icon name="create"></ion-icon>
             <p>Atualizar</p>
           </ion-button>

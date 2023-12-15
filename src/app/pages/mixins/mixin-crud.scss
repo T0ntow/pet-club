@@ -1,0 +1,101 @@
+// Mixin to reset margin and padding for all elements
+@mixin reset-box-model {
+    margin: 0;
+    padding: 0;
+}
+
+@mixin font-snipplet {
+    font-family: "sniglet", sans-serif;
+}
+
+@mixin flex-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+@mixin title {
+    color: #000;
+    font-size: 1.2rem;
+}
+
+@mixin button-styles {
+    background-color: #2499c4;
+    height: 50px;
+    width: 50px;
+    border-radius: 0 15px 15px 0;
+
+    @media screen and (max-width: 900px) {
+        height: 35px;
+    }
+
+    ion-icon {
+        font-size: 1.5rem;
+        color: #000;
+    }
+}
+
+@mixin search-bar-styles {
+    width: 80%;
+    border-radius: 15px 0 0 15px;
+    height: 50px;
+    background-color: #fff;
+    outline: none;
+    border: none;
+    text-indent: 10px;
+
+    @media screen and (max-width: 900px) {
+        height: 35px;
+    }
+
+    @media screen and (max-width: 500px) {
+        width: 100%;
+    }
+}
+
+@mixin generic-button {
+    height: 50px;
+    border-radius: 20px;
+    max-width: 100px;
+    background: #2499c4;
+    color: #000;
+    font-weight: bold;
+    font-size: 1rem;
+    flex-wrap: wrap;
+
+    @media screen and (max-width: 900px) {
+        height: 35px;
+        font-size: .9rem;
+    }
+}
+
+@mixin list-item-styles {
+    ion-button {
+        display: flex;
+        flex-direction: column;
+        border-radius: 5px;
+
+        p {
+            font-size: 0.6rem;
+
+            @media screen and (max-width: 600px) {
+                display: none;
+            }
+        }
+    }
+
+    #remover-funcionario {
+        background-color: #EC5858;
+    }
+
+    #alterar-funcionario {
+        background-color: #53DFD7;
+    }
+}
+
+@mixin odd-list-item {
+    ion-item:nth-child(odd) {
+        --background: #dbdbdb;
+        color: #000000;
+    }
+}

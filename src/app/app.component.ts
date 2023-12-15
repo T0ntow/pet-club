@@ -82,12 +82,6 @@ export class AppComponent implements OnInit {
 
   isOnBlockPages(): boolean {
     return (
-      this.router.isActive('/funcionarios', {
-        paths: 'subset',
-        queryParams: 'subset',
-        fragment: 'ignored',
-        matrixParams: 'ignored'
-      }) ||
       this.router.isActive('/login', {
         paths: 'subset',
         queryParams: 'subset',
@@ -95,6 +89,18 @@ export class AppComponent implements OnInit {
         matrixParams: 'ignored'
       }) ||
       this.router.isActive('/signup', {
+        paths: 'subset',
+        queryParams: 'subset',
+        fragment: 'ignored',
+        matrixParams: 'ignored'
+      }) ||
+      this.router.isActive('/funcionarios', {
+        paths: 'subset',
+        queryParams: 'subset',
+        fragment: 'ignored',
+        matrixParams: 'ignored'
+      }) ||
+      this.router.isActive('/produtos-crud', {
         paths: 'subset',
         queryParams: 'subset',
         fragment: 'ignored',
