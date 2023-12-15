@@ -32,30 +32,12 @@
     left: 30px;
     width: 100px;
     height: 100px;
-    z-index: 10;
+    z-index: -10;
+    transition: .3s linear;
   }
 
   .selecionado {
-    z-index: -10 !important;
     transform: translateY(50px);
-  }
-
-  #popup-fala {
-    display: none;
-    position: absolute;
-    background-color: #fff;
-    padding: 3px;
-    border-radius: 20px;
-    top: -70px;
-    left: 120px;
-  }
-
-  #cachorro-topo:hover ~ #popup-fala {
-    display: block;
-  }
-
-  #pet-logo:hover {
-    transform: scale(1.1);
   }
 
   #first-child {
