@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-// import { EditarFuncionarioComponent } from 'src/app/modals/funcionarios-modal/editar-funcionario/editar-funcionario.component';
-import { NovoFuncionarioComponent } from 'src/app/modals/funcionarios-modal/novo-funcionario/novo-funcionario.component';
-import { EmployeeService } from 'src/services/employee.service';
+import { NovoFornecedorComponent } from 'src/app/modals/fornecedores-modal/novo-fornecedor/novo-fornecedor.component';
 import { LoadingController, ToastController, AlertController, ModalController } from '@ionic/angular';
 import { SupplierService } from 'src/services/supplier.service';
 @Component({
@@ -20,7 +18,7 @@ export class FornecedoresPage implements OnInit {
     private modalCtrl: ModalController,
     private supplierService: SupplierService, // Você precisa criar um serviço para fornecedores ou ajustar o existente
     private loadingController: LoadingController,
-    private toastController: ToastController
+    private toastController: ToastController,
   ) { }
 
   // Atualize o método ngOnInit para chamar getSuppliers
@@ -90,15 +88,15 @@ export class FornecedoresPage implements OnInit {
 
   // Atualize o método adicionarFuncionario para adicionarFornecedor
   async adicionarFornecedor() {
-    // const modal = await this.modalCtrl.create({
-    //   component: NovoFornecedorComponent,
-    // });
+    const modal = await this.modalCtrl.create({
+      component: NovoFornecedorComponent,
+    });
 
-    // modal.onDidDismiss().then((data) => {
-    //   console.log('Dados do fornecedor adicionados:', data.data);
-    // });
+    modal.onDidDismiss().then((data) => {
+      console.log('Dados do fornecedor adicionados:', data.data);
+    });
 
-    // return await modal.present();
+    return await modal.present();
   }
 
   async presentAlertRemove(fornecedor: any) {
