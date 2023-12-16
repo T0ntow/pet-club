@@ -29,7 +29,7 @@ export class NovoProdutoComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   fecharModal() {
     this.modalCtrl.dismiss();
@@ -52,7 +52,7 @@ export class NovoProdutoComponent implements OnInit {
       toast.present();
       return;
     }
-    
+
     if (this.newProductForm.valid) {
       const loading = await this.loadingController.create({
         message: 'Enviando informações...',

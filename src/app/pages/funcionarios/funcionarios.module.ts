@@ -9,13 +9,15 @@ import { FuncionariosPageRoutingModule } from './funcionarios-routing.module';
 import { FuncionariosPage } from './funcionarios.page';
 import { EditarFuncionarioComponent } from 'src/app/modals/editar-funcionario/editar-funcionario.component';
 import { NovoFuncionarioComponent } from 'src/app/modals/novo-funcionario/novo-funcionario.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    FuncionariosPageRoutingModule
+    FuncionariosPageRoutingModule,
+    ReactiveFormsModule
   ],
   declarations: [FuncionariosPage,
     EditarFuncionarioComponent,

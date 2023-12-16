@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
-import { ModalController } from '@ionic/angular';
 import { EditarFuncionarioComponent } from 'src/app/modals/editar-funcionario/editar-funcionario.component';
 import { NovoFuncionarioComponent } from 'src/app/modals/novo-funcionario/novo-funcionario.component';
+import { EmployeeService } from 'src/services/employee.service';
+import { LoadingController, ToastController, AlertController, ModalController} from '@ionic/angular';
 
 @Component({
   selector: 'app-funcionarios',
@@ -11,37 +11,82 @@ import { NovoFuncionarioComponent } from 'src/app/modals/novo-funcionario/novo-f
 })
 export class FuncionariosPage implements OnInit {
 
-  constructor(private alertController: AlertController, private modalCtrl: ModalController) {}
+  funcionarios: {nome: string, cpf: string, email: string; telefone: string; cargo: string; endereco: string; id: number}[] = []
+
+  constructor(
+    private alertController: AlertController, 
+    private modalCtrl: ModalController,
+    private employeeService: EmployeeService,
+    private loadingController: LoadingController,
+    private toastController: ToastController
+  ) {}
 
   ngOnInit() {
+    this.employeeService.getObservableEmployees().subscribe(isUpdated => {
+      this.getEmployees()
+    })
+
+    this.getEmployees()
   }
 
-  funcionarios = [
-    { nome: 'João Silva', cpf: '123.456.789-01', cargo: 'Desenvolvedor' },
-    { nome: 'Maria Santos', cpf: '987.654.321-09', cargo: 'Analista de Sistemas' },
-    { nome: 'Pedro Oliveira', cpf: '111.222.333-44', cargo: 'Gerente de Projetos' },
-    { nome: 'Ana Pereira', cpf: '555.666.777-88', cargo: 'Designer UX' },
-    { nome: 'Carlos Costa', cpf: '999.888.777-66', cargo: 'Analista de Qualidade' },
-  ];
+  async getEmployees() {
+    const loading = await this.loadingController.create({
+      message: 'Carregando funcionarios...',
+      spinner: 'crescent',
+      translucent: true,
+    });
+
+    await loading.present();
+
+    this.employeeService.getEmployees().subscribe({
+      next: (response: any) => {
+        console.log('Funcionários recuperados:', response);
+        this.funcionarios = response;
+        loading.dismiss(); 
+      },
+      error: (error: any) => {
+        console.error('Falha ao recuperar funcionários:', error);
+        loading.dismiss();
+      },
+    });
+  }
 
   removerFuncionario(funcionario: any) {
     this.presentAlertRemove(funcionario);
+  }
+
+  deleteEmployee(funcionario: any) {
+    this.employeeService.deleteEmployee(funcionario.id).subscribe({
+      next: async (response: any) => {
+        console.log('Funcionário removido com sucesso:', response);
+        await this.presentToast('Funcionário removido com sucesso', "success")
+        this.employeeService.updateObservableProducts()
+      },
+      error: (error: any) => {
+        console.error('Falha ao remover funcionário:', error);
+      },
+    });
   }
 
   async presentAlertRemove(funcionario: any) {
     const alert = await this.alertController.create({
       header: 'Atenção',
       message: 'Você tem certeza de que deseja excluir este funcionário? Ele será removido permanentemente.',
-      buttons: [ {
-        text: 'cancelar',
-        cssClass: 'alert-button-cancel',
-      },
-      {
-        text: 'continuar',
-        cssClass: 'alert-button-confirm',
-      },],
+      buttons: [
+        {
+          text: 'cancelar',
+          cssClass: 'alert-button-cancel',
+        },
+        {
+          text: 'continuar',
+          cssClass: 'alert-button-confirm',
+          handler: () => { // Adiciona um handler para o botão 'continuar'
+            this.deleteEmployee(funcionario);
+          },
+        },
+      ],
     });
-
+  
     await alert.present();
   }
 
@@ -68,6 +113,16 @@ export class FuncionariosPage implements OnInit {
     });
 
     return await modal.present();
+  }
+
+  async presentToast(text: string, color: string,) {
+    const toast = await this.toastController.create({
+      message: text,
+      duration: 1800,
+      color: color
+    });
+
+    await toast.present();
   }
 
 }

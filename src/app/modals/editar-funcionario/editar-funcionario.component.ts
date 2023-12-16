@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
+import { EmployeeService } from 'src/services/employee.service';
+
 @Component({
   selector: 'app-editar-funcionario',
   templateUrl: './editar-funcionario.component.html',
@@ -9,9 +11,14 @@ import { ToastController } from '@ionic/angular';
 export class EditarFuncionarioComponent  implements OnInit {
   @Input() funcionario: any;
 
-  constructor(private modalCtrl: ModalController, private toastController: ToastController) { }
+  constructor(
+    private modalCtrl: ModalController, 
+    private toastController: ToastController,
+    private employeeService: EmployeeService
+    ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   fecharModal() {
     this.modalCtrl.dismiss();

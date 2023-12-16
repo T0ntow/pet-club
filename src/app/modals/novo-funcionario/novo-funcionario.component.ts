@@ -1,14 +1,33 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
+import { EmployeeService } from 'src/services/employee.service';
+import { FormBuilder } from '@angular/forms';
+
 @Component({
   selector: 'app-novo-funcionario',
   templateUrl: './novo-funcionario.component.html',
   styleUrls: ['./novo-funcionario.component.scss'],
 })
 export class NovoFuncionarioComponent implements OnInit {
+  newEmployeeForm: FormGroup;
 
-  constructor(private modalCtrl: ModalController, private toastController: ToastController) { }
+  constructor(
+    private modalCtrl: ModalController,
+    private toastController: ToastController,
+    private employeeService: EmployeeService,
+    private formBuilder: FormBuilder
+  ) {
+    this.newEmployeeForm = this.formBuilder.group({
+      nome: ['', [Validators.required]],
+      email: ['', [Validators.required]],
+      cpf: ['', [Validators.required]],
+      cargo: ['', [Validators.required]],
+      telefone: ['', [Validators.required]],
+      endereco: ['', [Validators.required]],
+    })
+  }
 
   ngOnInit() { }
 
@@ -16,16 +35,30 @@ export class NovoFuncionarioComponent implements OnInit {
     this.modalCtrl.dismiss();
   }
 
-  salvarAlteracoes() {
-    this.modalCtrl.dismiss();
-    this.presentToast();
+  async salvarAlteracoes() {
+    const employeeData = this.newEmployeeForm.value;
+
+    if(this.newEmployeeForm.valid) {
+      this.employeeService.newEmployee(employeeData).subscribe({
+        next: async (response: any) => {
+          this.employeeService.updateObservableProducts();
+          this.modalCtrl.dismiss();
+          await this.presentToast("Funcionário cadastrado com sucesso", "success")
+        },
+        error: async (error: any) => {
+          await this.presentToast("Falha ao adicionar funcionário", "danger")
+        }
+      })
+    } else {
+      await this.presentToast("Preencha o formulário corretamente", "danger")
+    }
   }
 
-  async presentToast() {
+  async presentToast(text: string, color: string) {
     const toast = await this.toastController.create({
-      message: 'Funcionário cadastrado com sucesso!',
+      message: text,
       duration: 1800,
-      color: 'success'
+      color: color
     });
 
     await toast.present();
