@@ -68,15 +68,15 @@ export class LoginPage implements OnInit {
           console.error('Erro ao logar usuário:', error);
 
           if (error.status === 404) {
-            await this.presentAlert('E-mail não encontrado', 'Verifique o e-mail e tente novamente.');
+            return await this.presentAlert('E-mail não encontrado', 'Verifique o e-mail e tente novamente.');
           }
 
           if (error.status === 401) {
-            await this.presentAlert('Credenciais incorretas', 'Verifique suas credenciais e tente novamente.');
+            return await this.presentAlert('Credenciais incorretas', 'Verifique suas credenciais e tente novamente.');
           }
 
           if (error) {
-            await this.presentAlert('Error', 'encontramos algum erro, por favor tente novamente mais tarde.');
+            return await this.presentAlert('Error', 'encontramos algum erro, por favor tente novamente mais tarde.');
           }
         }
       });
