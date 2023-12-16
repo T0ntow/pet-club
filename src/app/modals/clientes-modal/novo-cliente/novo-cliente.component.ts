@@ -44,6 +44,9 @@ export class NovoClienteComponent  implements OnInit {
           await this.presentToast("Cliente cadastrado com sucesso", "success")
         },
         error: async (error: any) => {
+          if(error.message = "Já existe um cliente com este CPF") {
+            return await this.presentToast("Existe um cliente cadastrado com esses dados", "danger")
+          }
           await this.presentToast("Falha ao adicionar cliente", "danger")
         }
       })

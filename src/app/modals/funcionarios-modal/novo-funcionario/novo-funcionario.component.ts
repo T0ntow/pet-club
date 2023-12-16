@@ -46,6 +46,9 @@ export class NovoFuncionarioComponent implements OnInit {
           await this.presentToast("Funcionário cadastrado com sucesso", "success")
         },
         error: async (error: any) => {
+          if(error.message = "Já existe um funcionário com este CPF") {
+           return await this.presentToast("Existe um funcionário cadastrado com esses dados", "danger")
+          }
           await this.presentToast("Falha ao adicionar funcionário", "danger")
         }
       })

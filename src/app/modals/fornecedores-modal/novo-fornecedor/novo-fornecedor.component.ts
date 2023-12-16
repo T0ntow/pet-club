@@ -10,7 +10,7 @@ import { FormBuilder } from '@angular/forms';
   templateUrl: './novo-fornecedor.component.html',
   styleUrls: ['./novo-fornecedor.component.scss'],
 })
-export class NovoFornecedorComponent  implements OnInit {
+export class NovoFornecedorComponent implements OnInit {
   newSupplierForm: FormGroup;
 
   constructor(
@@ -28,7 +28,7 @@ export class NovoFornecedorComponent  implements OnInit {
       endereco: ['', [Validators.required]],
     })
   }
-  ngOnInit() {}
+  ngOnInit() { }
 
   fecharModal() {
     this.modalCtrl.dismiss();
@@ -37,7 +37,7 @@ export class NovoFornecedorComponent  implements OnInit {
   async salvarAlteracoes() {
     const supplierData = this.newSupplierForm.value;
 
-    if(this.newSupplierForm.valid) {
+    if (this.newSupplierForm.valid) {
       this.supplierService.newSupplier(supplierData).subscribe({
         next: async (response: any) => {
           this.supplierService.updateObservableSuppliers();
@@ -45,6 +45,9 @@ export class NovoFornecedorComponent  implements OnInit {
           await this.presentToast("Fornecedor cadastrado com sucesso", "success")
         },
         error: async (error: any) => {
+          if (error.message = 'Já existe um fornecedor com este CNPJ') {
+            return await this.presentToast("Existe um fornecedor cadastrado com esses dados", "danger")
+          }
           await this.presentToast("Falha ao adicionar fornecedor", "danger")
         }
       })
