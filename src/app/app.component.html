@@ -93,10 +93,10 @@
         </ion-item>
         <ion-list *ngIf="showAdminSubItems" id="sub-items-adm">
           <ion-text (click)="closeMenuAndNavigate('/funcionarios')">Funcionário</ion-text>
-          <ion-text>Fornecedor</ion-text>
+          <ion-text (click)="closeMenuAndNavigate('/fornecedores')">Fornecedor</ion-text>
           <ion-text>Estoque</ion-text>
           <ion-text>Pedido</ion-text>
-          <ion-text>Cliente</ion-text>
+          <ion-text (click)="closeMenuAndNavigate('/clientes')">Cliente</ion-text>
           <ion-text>Pet</ion-text>
           <ion-text (click)="closeMenuAndNavigate('/produtos-crud')">Produto</ion-text>
           <ion-text>Venda</ion-text>

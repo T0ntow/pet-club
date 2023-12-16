@@ -111,6 +111,12 @@ export class AppComponent implements OnInit {
         queryParams: 'subset',
         fragment: 'ignored',
         matrixParams: 'ignored'
+      }) ||
+      this.router.isActive('/clientes', {
+        paths: 'subset',
+        queryParams: 'subset',
+        fragment: 'ignored',
+        matrixParams: 'ignored'
       })
     );
   }
