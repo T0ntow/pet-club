@@ -25,7 +25,7 @@ export class NovoFuncionarioComponent implements OnInit {
     const toast = await this.toastController.create({
       message: 'Funcionário cadastrado com sucesso!',
       duration: 1800,
-      position: 'top',
+      color: 'success'
     });
 
     await toast.present();
