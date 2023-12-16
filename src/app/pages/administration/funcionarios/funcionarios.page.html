@@ -2,7 +2,7 @@
   <ion-buttons slot="start" class="custom-menu-button">
     <ion-menu-button class="custom-button" color="medium"></ion-menu-button>
   </ion-buttons>
-  <h1 >
+  <h1>
     Administração <ion-icon name="arrow-forward-outline"></ion-icon> Funcionários
   </h1>
 </ion-header>
@@ -15,29 +15,44 @@
         <button>
           <ion-icon name="search-outline"></ion-icon>
         </button>
-      </div> 
-      
+      </div>
+
       <button id="add" (click)="adicionarFuncionario()">
         <p>Cadastrar Funcionário</p>
       </button>
     </div>
 
-    <ion-list>
-      <ion-item *ngFor="let funcionario of funcionarios">
-        <ion-label>{{ funcionario.nome }}</ion-label>
-        <ion-label>{{ funcionario.cpf }}</ion-label>
-        <ion-label>{{ funcionario.cargo }}</ion-label>
-        <ion-buttons slot="end">
-          <ion-button class="remover" (click)="removerFuncionario(funcionario)" >
-            <ion-icon name="trash"></ion-icon>
-            <p>Remover</p>
-          </ion-button>
-          <ion-button class="alterar"  (click)="alterarFuncionario(funcionario)">
-            <ion-icon name="create"></ion-icon>
-            <p>Atualizar</p>
-          </ion-button>
-        </ion-buttons>
-      </ion-item>
-    </ion-list>
+    <ion-grid class="table-container">
+      <ion-row id="row-header">
+        <ion-col>Nome</ion-col>
+        <ion-col>CPF</ion-col>
+        <ion-col>Cargo</ion-col>
+        <ion-col>Telefone</ion-col>
+        <ion-col>Funções</ion-col>
+      </ion-row>
+
+      <ion-row *ngFor="let funcionario of funcionarios">
+        <ion-col>{{ funcionario.nome }}</ion-col>
+        <ion-col>{{ funcionario.cpf }}</ion-col>
+        <ion-col>{{ funcionario.cargo }}</ion-col>
+        <ion-col>{{ funcionario.telefone }}</ion-col>
+
+
+        <ion-col class="ion-text-right">
+          <ion-buttons>
+              <ion-button class="remover" (click)="removerFuncionario(funcionario)">
+                  <ion-icon name="trash"></ion-icon>
+                  <p>Remover</p>
+              </ion-button>
+              <ion-button class="alterar" (click)="alterarFuncionario(funcionario)">
+                  <ion-icon name="create"></ion-icon>
+                  <p>Atualizar</p>
+              </ion-button>
+          </ion-buttons>
+      </ion-col>
+      
+
+      </ion-row>
+    </ion-grid>
   </main>
 </ion-content>

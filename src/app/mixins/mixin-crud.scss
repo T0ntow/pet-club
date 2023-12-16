@@ -51,6 +51,17 @@
     @media screen and (max-width: 500px) {
         width: 100%;
     }
+
+    input {
+        @include reset-box-model;
+        height: 100%;
+        border-radius: inherit; // Inherit the border-radius from the parent
+    }
+
+    ion-icon {
+        font-size: 1.5rem;
+        color: #000;
+    }
 }
 
 @mixin generic-button {
@@ -65,7 +76,7 @@
 
     @media screen and (max-width: 900px) {
         height: 35px;
-        font-size: .9rem;
+        font-size: 0.9rem;
     }
 }
 
@@ -85,21 +96,38 @@
     }
 
     .remover {
-        background-color: #EC5858;
+        background-color: #ec5858;
     }
 
     .alterar {
-        background-color: #53DFD7;
+        background-color: #53dfd7;
     }
 }
 
 @mixin odd-list-item {
-    ion-item:nth-child(odd) {
-        --background: #dbdbdb;
+    ion-row:nth-child(odd) {
+        background-color: #cbcbcb;
         color: #000000;
     }
-}
 
+    ion-row {
+        @include flex-container;
+
+        flex-wrap: nowrap;
+        width: 100%;
+        border-radius: 5px;
+        height: 45px;
+
+        padding: 10px;
+        border-bottom: 1px solid gray;
+        background-color: #e5e5e5;
+
+        ion-col {
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+}
 
 * {
     @include reset-box-model;
@@ -112,7 +140,6 @@ ion-content {
 .header {
     @include flex-container;
     @include font-snipplet;
-
 
     h1 {
         @include title;
@@ -128,6 +155,7 @@ main {
     div {
         @include flex-container;
         padding: 0 20px;
+        margin-bottom: 10px;
 
         .search-box {
             width: 50vw;
@@ -171,11 +199,19 @@ main {
         }
     }
 
-    ion-list {
-        gap: 5px;
-        margin-top: 30px;
-
+    .table-container {
         @include list-item-styles;
         @include odd-list-item;
+        flex-wrap: nowrap;
+        width: 100%;
+        overflow: auto;
+
+        #row-header {
+            background-color: #747474;
+            margin: 20px 0;
+            font-weight: bolder;
+        }
+
+       
     }
 }
