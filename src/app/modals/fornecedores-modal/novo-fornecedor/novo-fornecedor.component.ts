@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
-import { EmployeeService } from 'src/services/employee.service';
+import { SupplierService } from 'src/services/supplier.service';
 import { FormBuilder } from '@angular/forms';
 
 @Component({
@@ -16,11 +16,11 @@ export class NovoFornecedorComponent  implements OnInit {
   constructor(
     private modalCtrl: ModalController,
     private toastController: ToastController,
-    private employeeService: EmployeeService,
+    private supplierService: SupplierService,
     private formBuilder: FormBuilder
   ) {
     this.newSupplierForm = this.formBuilder.group({
-      nome_empresa: ['', [Validators.required]],
+      nomeEmpresa: ['', [Validators.required]],
       email: ['', [Validators.required]],
       cnpj: ['', [Validators.required]],
       representante: ['', [Validators.required]],
@@ -35,12 +35,12 @@ export class NovoFornecedorComponent  implements OnInit {
   }
 
   async salvarAlteracoes() {
-    const employeeData = this.newSupplierForm.value;
+    const supplierData = this.newSupplierForm.value;
 
     if(this.newSupplierForm.valid) {
-      this.employeeService.newEmployee(employeeData).subscribe({
+      this.supplierService.newSupplier(supplierData).subscribe({
         next: async (response: any) => {
-          this.employeeService.updateObservableProducts();
+          this.supplierService.updateObservableSuppliers();
           this.modalCtrl.dismiss();
           await this.presentToast("Fornecedor cadastrado com sucesso", "success")
         },

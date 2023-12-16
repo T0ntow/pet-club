@@ -21,7 +21,7 @@ export class SupplierService {
     this.observerEmployee.next(true)
   }
 
-  newEmployee(employeeData: any) {
+  newSupplier(employeeData: any) {
     return this.http.post('http://localhost:5000/novo-fornecedor', employeeData)
   }
 
