@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { NovoProdutoComponent } from 'src/app/modals/novo-produto/novo-produto.component';
-
+import { NovoProdutoComponent } from 'src/app/modals/produtos-modal/novo-produto/novo-produto.component';
 
 @Component({
   selector: 'app-produtos-crud',
@@ -15,8 +14,7 @@ export class ProdutosCrudPage implements OnInit {
 
   ) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   async adicionarProduto() {
     const modal = await this.modalCtrl.create({

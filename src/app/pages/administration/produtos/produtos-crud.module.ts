@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { ProdutosCrudPageRoutingModule } from './produtos-crud-routing.module';
 
 import { ProdutosCrudPage } from './produtos-crud.page';
-import { NovoProdutoComponent } from 'src/app/modals/novo-produto/novo-produto.component';
+import { NovoProdutoComponent } from 'src/app/modals/produtos-modal/novo-produto/novo-produto.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({

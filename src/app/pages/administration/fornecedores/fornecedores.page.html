@@ -1,0 +1,44 @@
+<ion-header class="header">
+  <ion-buttons slot="start" class="custom-menu-button">
+    <ion-menu-button class="custom-button" color="medium"></ion-menu-button>
+  </ion-buttons>
+  <h1>
+    Administração <ion-icon name="arrow-forward-outline"></ion-icon> Fornecedores
+  </h1>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <main>
+    <div>
+      <div class="search-box">
+        <input type="text" class="custom-searchbar" placeholder="Pesquisar">
+        <button>
+          <ion-icon name="search-outline"></ion-icon>
+        </button>
+      </div>
+
+      <!-- Adicione funcionalidade específica para fornecedores aqui -->
+      <button id="add" (click)="adicionarFornecedor()">
+        <p>Cadastrar Fornecedor</p>
+      </button>
+    </div>
+
+    <ion-list>
+      <ion-item *ngFor="let fornecedor of fornecedores">
+        <ion-label>{{ fornecedor.nome }}</ion-label>
+        <ion-label>{{ fornecedor.cnpj }}</ion-label>
+        <ion-label>{{ fornecedor.produto }}</ion-label>
+        <ion-buttons slot="end">
+          <ion-button class="remover" (click)="removerFornecedor(fornecedor)">
+            <ion-icon name="trash"></ion-icon>
+            <p>Remover</p>
+          </ion-button>
+          <ion-button class="alterar" (click)="alterarFornecedor(fornecedor)">
+            <ion-icon name="create"></ion-icon>
+            <p>Atualizar</p>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+    </ion-list>
+  </main>
+</ion-content>

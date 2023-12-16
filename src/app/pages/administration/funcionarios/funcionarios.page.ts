@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { EditarFuncionarioComponent } from 'src/app/modals/editar-funcionario/editar-funcionario.component';
-import { NovoFuncionarioComponent } from 'src/app/modals/novo-funcionario/novo-funcionario.component';
+import { EditarFuncionarioComponent } from 'src/app/modals/funcionarios-modal/editar-funcionario/editar-funcionario.component';
+import { NovoFuncionarioComponent } from 'src/app/modals/funcionarios-modal/novo-funcionario/novo-funcionario.component';
 import { EmployeeService } from 'src/services/employee.service';
 import { LoadingController, ToastController, AlertController, ModalController} from '@ionic/angular';
 
@@ -68,28 +68,6 @@ export class FuncionariosPage implements OnInit {
     });
   }
 
-  async presentAlertRemove(funcionario: any) {
-    const alert = await this.alertController.create({
-      header: 'Atenção',
-      message: 'Você tem certeza de que deseja excluir este funcionário? Ele será removido permanentemente.',
-      buttons: [
-        {
-          text: 'cancelar',
-          cssClass: 'alert-button-cancel',
-        },
-        {
-          text: 'continuar',
-          cssClass: 'alert-button-confirm',
-          handler: () => { // Adiciona um handler para o botão 'continuar'
-            this.deleteEmployee(funcionario);
-          },
-        },
-      ],
-    });
-  
-    await alert.present();
-  }
-
   async alterarFuncionario(funcionario: any) {
     const modal = await this.modalCtrl.create({
       component: EditarFuncionarioComponent,
@@ -113,6 +91,28 @@ export class FuncionariosPage implements OnInit {
     });
 
     return await modal.present();
+  }
+
+  async presentAlertRemove(funcionario: any) {
+    const alert = await this.alertController.create({
+      header: 'Atenção',
+      message: 'Você tem certeza de que deseja excluir este funcionário? Ele será removido permanentemente.',
+      buttons: [
+        {
+          text: 'cancelar',
+          cssClass: 'alert-button-cancel',
+        },
+        {
+          text: 'continuar',
+          cssClass: 'alert-button-confirm',
+          handler: () => { // Adiciona um handler para o botão 'continuar'
+            this.deleteEmployee(funcionario);
+          },
+        },
+      ],
+    });
+  
+    await alert.present();
   }
 
   async presentToast(text: string, color: string,) {

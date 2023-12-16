@@ -12,12 +12,8 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'produtos',
-    loadChildren: () => import('./pages/produtos/produtos.module').then( m => m.ProdutosPageModule)
-  },
-  {
     path: 'funcionarios',
-    loadChildren: () => import('./pages/funcionarios/funcionarios.module').then( m => m.FuncionariosPageModule)
+    loadChildren: () => import('./pages/administration/funcionarios/funcionarios.module').then( m => m.FuncionariosPageModule)
   },
   {
     path: 'login',
@@ -26,10 +22,16 @@ const routes: Routes = [
   {
     path: 'signup',
     loadChildren: () => import('./pages/signup/signup.module').then( m => m.SignupPageModule)
-  },  {
-    path: 'produtos-crud',
-    loadChildren: () => import('./pages/produtos-crud/produtos-crud.module').then( m => m.ProdutosCrudPageModule)
   },
+  {
+    path: 'produtos-crud',
+    loadChildren: () => import('./pages/administration/produtos/produtos-crud.module').then( m => m.ProdutosCrudPageModule)
+  },
+  {
+    path: 'fornecedores',
+    loadChildren: () => import('./pages/administration/fornecedores/fornecedores.module').then( m => m.FornecedoresPageModule)
+  },
+
 
 ];
 
