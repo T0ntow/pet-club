@@ -27,7 +27,7 @@
         <ion-col>Nome</ion-col>
         <ion-col>CNPJ</ion-col>
         <ion-col>Cargo</ion-col>
-        <ion-col>Funções</ion-col>
+        <ion-col class="functions-col">Funções</ion-col>
       </ion-row>
 
       <ion-row *ngFor="let fornecedor of fornecedores">
@@ -35,7 +35,7 @@
         <ion-col>{{ fornecedor.cnpj }}</ion-col>
         <ion-col>{{ fornecedor.produto }}</ion-col>
 
-        <ion-col class="ion-text-right">
+        <ion-col class="ion-text-right" class="functions-col">
           <ion-buttons>
               <ion-button class="remover" (click)="removerFornecedor(fornecedor)">
                   <ion-icon name="trash"></ion-icon>

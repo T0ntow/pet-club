@@ -87,11 +87,7 @@
         border-radius: 5px;
 
         p {
-            font-size: 0.6rem;
-
-            @media screen and (max-width: 600px) {
-                display: none;
-            }
+            font-size: 0.7rem;
         }
     }
 
@@ -105,26 +101,32 @@
 }
 
 @mixin odd-list-item {
-    ion-row:nth-child(odd) {
-        background-color: #cbcbcb;
-        color: #000000;
-    }
-
     ion-row {
         @include flex-container;
 
         flex-wrap: nowrap;
         width: 100%;
         border-radius: 5px;
-        height: 45px;
+        height: 50px;
 
         padding: 10px;
-        border-bottom: 1px solid gray;
-        background-color: #e5e5e5;
 
-        ion-col {
+        ion-col{
             display: flex;
-            justify-content: space-between;
+            text-indent: 10px;
+
+            width: 250px;
+            min-width: 250px;
+            max-width: 250px;
+            margin: 5px;
+            border-radius: 10px;
+            height: 45px;
+            align-items: center;
+            background-color: #cbcbcb;
+        }
+
+        .functions-col {
+            justify-content: center !important;
         }
     }
 }
@@ -207,11 +209,12 @@ main {
         overflow: auto;
 
         #row-header {
-            background-color: #747474;
             margin: 20px 0;
             font-weight: bolder;
-        }
 
-       
+            ion-col {
+                background-color: #898989;
+            }
+        }
     }
 }

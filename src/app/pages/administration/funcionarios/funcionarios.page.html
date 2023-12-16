@@ -28,7 +28,7 @@
         <ion-col>CPF</ion-col>
         <ion-col>Cargo</ion-col>
         <ion-col>Telefone</ion-col>
-        <ion-col>Funções</ion-col>
+        <ion-col class="functions-col">Funções</ion-col>
       </ion-row>
 
       <ion-row *ngFor="let funcionario of funcionarios">
@@ -38,7 +38,7 @@
         <ion-col>{{ funcionario.telefone }}</ion-col>
 
 
-        <ion-col class="ion-text-right">
+        <ion-col class="functions-col">
           <ion-buttons>
               <ion-button class="remover" (click)="removerFuncionario(funcionario)">
                   <ion-icon name="trash"></ion-icon>
