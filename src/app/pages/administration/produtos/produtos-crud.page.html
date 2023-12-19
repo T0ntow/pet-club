@@ -35,8 +35,8 @@
 
       <ion-row *ngFor="let produto of produtos">
           
-        <ion-col>
-          <img *ngFor="let image of produto.images" style="width: 35px; height: 35px" [src]="image" alt="">
+        <ion-col style="display: flex; align-items: center; justify-content: flex-start;">
+          <img *ngFor="let image of produto.images" style="width: 35px; height: 35px; margin: 5px;" [src]="image" alt="">
         </ion-col>
 
         <ion-col>{{ produto.nome }}</ion-col>
