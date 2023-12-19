@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, Validators } from '@angular/forms';
-import { ModalController, LoadingController } from '@ionic/angular';
-import { ToastController } from '@ionic/angular';
-import { FormBuilder } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { ModalController, LoadingController, ToastController } from '@ionic/angular';
 import { Storage } from '@angular/fire/storage';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { ProductService } from 'src/services/product.service';
 
 @Component({
   selector: 'app-novo-produto',
@@ -19,12 +18,14 @@ export class NovoProdutoComponent implements OnInit {
     private formBuilder: FormBuilder,
     private toastController: ToastController,
     private storage: Storage,
-    private loadingController: LoadingController // Inject LoadingController
+    private productService: ProductService,
+    private loadingController: LoadingController
   ) {
     this.newProductForm = this.formBuilder.group({
-      name: ['', [Validators.required]],
-      price: ['', [Validators.required]],
-      description: ['', [Validators.required]],
+      nome: ['', [Validators.required]],
+      preco: ['', [Validators.required]],
+      descricao: ['', [Validators.required]],
+      categoria: ['', [Validators.required]],
       images: [null, [Validators.required]],
     });
   }
@@ -47,7 +48,7 @@ export class NovoProdutoComponent implements OnInit {
       const toast = await this.toastController.create({
         message: 'Selecione uma imagem para o produto!',
         duration: 2000,
-        color: "danger"
+        color: 'danger'
       });
       toast.present();
       return;
@@ -60,43 +61,88 @@ export class NovoProdutoComponent implements OnInit {
       await loading.present();
 
       try {
+        const imageUrls: string[] = [];
+
         for (const selectedFile of imageFile) {
-          await this.onImageSelect(selectedFile);
+          const imageUrl = await this.onImageSelect(selectedFile);
+          imageUrls.push(imageUrl);
+        }
+        const productData = this.newProductForm.value
+
+        // Adiciona as URLs das imagens ao objeto productData
+        if (!productData.images) {
+          productData.images = [];
         }
 
-        await loading.dismiss();
-        this.modalCtrl.dismiss();
-        this.presentToast()
+        console.log("imageUrls", imageUrls);
+        this.newProductForm.controls['images'].setValue(imageUrls);
+
       } catch (error) {
         console.error('Erro durante o envio:', error);
         await loading.dismiss();
         const toast = await this.toastController.create({
           message: 'Erro durante o envio das informações. Por favor, tente novamente.',
           duration: 3000,
-          color: "danger",
+          color: 'danger',
         });
         toast.present();
+        return; // Retorna para evitar que o código abaixo seja executado em caso de erro.
+      } finally {
+        await loading.dismiss();
       }
+
+      const productData = this.newProductForm.value;
+      this.productService.newProduct(productData).subscribe({
+        next: async (response: any) => {
+          this.productService.updateObservableProducts();
+          this.modalCtrl.dismiss();
+
+          const images = this.newProductForm.value.images
+          const id = response.insertedProductId
+          
+          images.forEach((image: string) => {
+            this.productService.uploadImages(id, image).subscribe({
+              next: async (response: any) => {
+                console.log(response, "imagens enviadas");
+              },
+              error: async (error: any) => {
+                console.log("error", error);
+              }
+            });
+          });
+
+          await this.presentToast('Produto cadastrado com sucesso!', 'success');
+        },
+        error: async (error: any) => {
+          console.log("error", error);
+
+          await this.presentToast('Falha ao adicionar produto', 'danger');
+        }
+      });
+
     } else {
       this.modalCtrl.dismiss();
     }
   }
 
-  async onImageSelect(selectedFile: File) {
-    console.log('selectedFile', selectedFile);
-
+  async onImageSelect(selectedFile: File): Promise<string> {
     const storage = getStorage();
     const storageRef = ref(storage, `imagens/${selectedFile.name}`);
 
+    // Faz o upload da imagem
     await uploadBytes(storageRef, selectedFile);
-    await getDownloadURL(storageRef);
+
+    // Obtém a URL da imagem após o upload
+    const downloadURL = await getDownloadURL(storageRef);
+    console.log("downloadURL", downloadURL);
+    return downloadURL;
   }
 
-  async presentToast() {
+  async presentToast(message: string, color: string) {
     const toast = await this.toastController.create({
-      message: 'Produto cadastrado com sucesso!',
+      message: message,
       duration: 1800,
-      color: 'success'
+      color: color,
     });
 
     await toast.present();

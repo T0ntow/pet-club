@@ -2,7 +2,7 @@
   <ion-buttons slot="start" class="custom-menu-button">
     <ion-menu-button class="custom-button" color="medium"></ion-menu-button>
   </ion-buttons>
-  <h1 >
+  <h1>
     Administração <ion-icon name="arrow-forward-outline"></ion-icon> Produtos
   </h1>
 </ion-header>
@@ -15,29 +15,43 @@
         <button>
           <ion-icon name="search-outline"></ion-icon>
         </button>
-      </div> 
-      
-      <button id="add-produto" (click)="adicionarProduto()">
-        <p>Cadastrar Produto</p>
+      </div>
+
+      <button id="add" (click)="adicionarProduto()">
+        <p>Cadastrar produto</p>
       </button>
     </div>
 
-    <ion-list>
-      <ion-item>
-        <ion-label>NOME</ion-label>
-        <ion-label>NOME</ion-label>
-        <ion-label>NOME</ion-label>
-        <ion-buttons slot="end">
-          <ion-button id="remover-produto">
-            <ion-icon name="trash"></ion-icon>
-            <p>Remover</p>
-          </ion-button>
-          <ion-button id="alterar-produto" >
-            <ion-icon name="create"></ion-icon>
-            <p>Atualizar</p>
-          </ion-button>
-        </ion-buttons>
-      </ion-item>
-    </ion-list>
+    <ion-grid class="table-container">
+      <ion-row id="row-header">
+        <ion-col>Nome</ion-col>
+        <ion-col>Categoria</ion-col>
+        <ion-col>Preço</ion-col>
+        <ion-col>Descrição</ion-col>
+        <ion-col class="functions-col">Funções</ion-col>
+      </ion-row>
+
+      <ion-row *ngFor="let produto of produtos">
+        <ion-col>{{ produto.nome }}</ion-col>
+        <ion-col>{{ produto.categoria }}</ion-col>
+        <ion-col>{{ produto.preco }}</ion-col>
+        <ion-col>{{ produto.descricao }}</ion-col>
+
+        <ion-col class="functions-col">
+          <ion-buttons>
+              <ion-button class="remover" (click)="removerProduto(produto)">
+                  <ion-icon name="trash"></ion-icon>
+                  <p>Remover</p>
+              </ion-button>
+              <ion-button class="alterar" (click)="alterarProduto(produto)">
+                  <ion-icon name="create"></ion-icon>
+                  <p>Atualizar</p>
+              </ion-button>
+          </ion-buttons>
+      </ion-col>
+      
+
+      </ion-row>
+    </ion-grid>
   </main>
 </ion-content>

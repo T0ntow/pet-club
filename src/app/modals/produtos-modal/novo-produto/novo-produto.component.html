@@ -18,15 +18,19 @@
 <ion-content class="ion-padding">
   <form [formGroup]="newProductForm">
     <ion-item>
-      <ion-input name="nome" type="text" label="Nome do Produto *" labelPlacement="floating" formControlName="name"></ion-input>
+      <ion-input name="nome" type="text" label="Nome do Produto *" labelPlacement="floating" formControlName="nome"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-input name="preco" type="number" label="Preço *" labelPlacement="floating" formControlName="price"></ion-input>
+      <ion-input name="preco" type="number" label="Preço *" labelPlacement="floating" formControlName="preco"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-input name="descricao" type="text" label="Descrição *" labelPlacement="floating" formControlName="description"></ion-input>
+      <ion-input name="categoria" type="text" label="Categoria *" labelPlacement="floating" formControlName="categoria"></ion-input>
+    </ion-item>
+    
+    <ion-item>
+      <ion-input name="descricao" type="text" label="Descrição *" labelPlacement="floating" formControlName="descricao"></ion-input>
     </ion-item>
 
     <ion-item >
