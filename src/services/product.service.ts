@@ -33,6 +33,10 @@ export class ProductService {
     return this.http.post('http://localhost:5000/upload-images', productData)
   }
 
+  getImagesFromProduct(id: number) {
+    return this.http.get(`http://localhost:5000/pegar-imagens/${id}`)
+  }
+
   getProducts() {
     return this.http.get('http://localhost:5000/pegar-produtos')
   }

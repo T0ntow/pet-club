@@ -3,6 +3,8 @@ import { EditarFuncionarioComponent } from 'src/app/modals/funcionarios-modal/ed
 import { ProductService } from 'src/services/product.service';
 import { LoadingController, ToastController, AlertController, ModalController } from '@ionic/angular';
 import { NovoProdutoComponent } from 'src/app/modals/produtos-modal/novo-produto/novo-produto.component';
+import { getStorage, ref, deleteObject } from "firebase/storage";
+import { initializeApp } from 'firebase/app';
 
 @Component({
   selector: 'app-produtos-crud',
@@ -56,6 +58,35 @@ export class ProdutosCrudPage implements OnInit {
   }
 
   deleteProduct(produto: any) {
+    // Inicialize o aplicativo Firebase
+    // initializeApp(firebaseConfig);
+
+    const storage = getStorage();
+
+    this.productService.getImagesFromProduct(produto.id).subscribe({
+      next: async (response: any) => {
+        console.log('Imagens recuperadas com sucesso:', response);
+
+        // Remover as imagens do Firebase Storage
+        const imageDeletionPromises = response.map((imageUrl: string) => {
+          const imageRef = ref(storage, imageUrl);
+          return deleteObject(imageRef);
+        });
+
+        try {
+          // Aguardar a conclusão de todas as operações de exclusão
+          await Promise.all(imageDeletionPromises);
+
+          console.log('Imagens removidas do Firebase Storage com sucesso');
+        } catch (error) {
+          console.error('Falha ao remover imagens do Firebase Storage:', error);
+        }
+      },
+      error: (error: any) => {
+        console.error('Falha ao recuperar imagens:', error);
+      },
+    });
+
     this.productService.deleteProduct(produto.id).subscribe({
       next: async (response: any) => {
         console.log('Produto removido com sucesso:', response);
@@ -67,6 +98,8 @@ export class ProdutosCrudPage implements OnInit {
       },
     });
   }
+
+
 
   async alterarProduto(produto: any) {
     const modal = await this.modalCtrl.create({
@@ -83,7 +116,7 @@ export class ProdutosCrudPage implements OnInit {
 
   async adicionarProduto() {
     const modal = await this.modalCtrl.create({
-      component:NovoProdutoComponent ,
+      component: NovoProdutoComponent,
     });
 
     modal.onDidDismiss().then((data) => {
