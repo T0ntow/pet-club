@@ -4,7 +4,6 @@ import { ProductService } from 'src/services/product.service';
 import { LoadingController, ToastController, AlertController, ModalController } from '@ionic/angular';
 import { NovoProdutoComponent } from 'src/app/modals/produtos-modal/novo-produto/novo-produto.component';
 import { getStorage, ref, deleteObject } from "firebase/storage";
-import { initializeApp } from 'firebase/app';
 
 @Component({
   selector: 'app-produtos-crud',
@@ -12,8 +11,14 @@ import { initializeApp } from 'firebase/app';
   styleUrls: ['./produtos-crud.page.scss'],
 })
 export class ProdutosCrudPage implements OnInit {
-
-  produtos: { nome: string, descricao: string, categoria: string, preco: number }[] = []
+  produtos: { 
+    id: number;
+    nome: string, 
+    descricao: string, 
+    categoria: string, 
+    preco: number, 
+    images: string[] // ou pode ser um array de objetos dependendo da estrutura das imagens
+  }[] = [];
 
   constructor(
     private alertController: AlertController,
@@ -44,6 +49,10 @@ export class ProdutosCrudPage implements OnInit {
       next: (response: any) => {
         console.log('Produtos recuperados:', response);
         this.produtos = response;
+
+        response.forEach((produto: any) => {
+            this.getImages(produto)
+        });
         loading.dismiss();
       },
       error: (error: any) => {
@@ -53,14 +62,24 @@ export class ProdutosCrudPage implements OnInit {
     });
   }
 
+  getImages(produto: any) {
+    this.productService.getImagesFromProduct(produto.id).subscribe({
+      next: async (response: any) => {
+        console.log('Imagens recuperadas com sucesso:', response);
+        produto.images = response; 
+        console.log("produto", produto);
+        
+      },
+      error: (error: any) => {
+        console.error('Falha ao recuperar imagens:', error);
+      },
+    });
+  }
   removerProduto(produto: any) {
     this.presentAlertRemove(produto);
   }
 
   deleteProduct(produto: any) {
-    // Inicialize o aplicativo Firebase
-    // initializeApp(firebaseConfig);
-
     const storage = getStorage();
 
     this.productService.getImagesFromProduct(produto.id).subscribe({
