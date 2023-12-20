@@ -75,6 +75,7 @@ export class ProdutosCrudPage implements OnInit {
       },
     });
   }
+  
   removerProduto(produto: any) {
     this.presentAlertRemove(produto);
   }
@@ -117,8 +118,6 @@ export class ProdutosCrudPage implements OnInit {
       },
     });
   }
-
-
 
   async alterarProduto(produto: any) {
     const modal = await this.modalCtrl.create({

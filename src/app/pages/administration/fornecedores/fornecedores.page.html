@@ -24,16 +24,18 @@
 
     <ion-grid class="table-container">
       <ion-row id="row-header">
-        <ion-col>Nome</ion-col>
+        <ion-col>Empresa</ion-col>
         <ion-col>CNPJ</ion-col>
-        <ion-col>Cargo</ion-col>
+        <ion-col>Representante</ion-col>
+        <ion-col>E-mail</ion-col>
         <ion-col class="functions-col">Funções</ion-col>
       </ion-row>
 
       <ion-row *ngFor="let fornecedor of fornecedores">
-        <ion-col>{{ fornecedor.nome }}</ion-col>
-        <ion-col>{{ fornecedor.cnpj }}</ion-col>
-        <ion-col>{{ fornecedor.produto }}</ion-col>
+        <ion-col>{{ fornecedor.nome_empresa }}</ion-col>
+        <ion-col>{{ fornecedor.cnpj }} </ion-col>
+        <ion-col>{{ fornecedor.representante }}</ion-col>
+        <ion-col>{{ fornecedor.email }}</ion-col>
 
         <ion-col class="ion-text-right" class="functions-col">
           <ion-buttons>

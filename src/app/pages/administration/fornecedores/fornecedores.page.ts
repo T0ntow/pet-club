@@ -11,7 +11,7 @@ import { SupplierService } from 'src/services/supplier.service';
 export class FornecedoresPage implements OnInit {
 
   // Atualize o modelo do fornecedor
-  fornecedores: { nome: string, cnpj: string, email: string, telefone: string, produto: string, endereco: string, id: number }[] = [];
+  fornecedores: { cnpj: string, email: string, endereco: string, nome_empresa: string, representante: string, telefone: string, id: number }[] = [];
 
   // Atualize o serviço de fornecedores
   constructor(

@@ -58,6 +58,7 @@ export class NovoProdutoComponent implements OnInit {
       const loading = await this.loadingController.create({
         message: 'Enviando informações...',
       });
+
       await loading.present();
 
       try {
@@ -67,6 +68,7 @@ export class NovoProdutoComponent implements OnInit {
           const imageUrl = await this.onImageSelect(selectedFile);
           imageUrls.push(imageUrl);
         }
+
         const productData = this.newProductForm.value
 
         // Adiciona as URLs das imagens ao objeto productData
@@ -80,11 +82,13 @@ export class NovoProdutoComponent implements OnInit {
       } catch (error) {
         console.error('Erro durante o envio:', error);
         await loading.dismiss();
+
         const toast = await this.toastController.create({
           message: 'Erro durante o envio das informações. Por favor, tente novamente.',
           duration: 3000,
           color: 'danger',
         });
+
         toast.present();
         return; // Retorna para evitar que o código abaixo seja executado em caso de erro.
       } finally {

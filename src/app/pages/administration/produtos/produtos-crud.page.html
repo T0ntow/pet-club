@@ -24,8 +24,7 @@
 
     <ion-grid class="table-container">
       <ion-row id="row-header">
-        <ion-col style="background-color: transparent;"></ion-col>
-
+        <ion-col>Images</ion-col>
         <ion-col>Nome</ion-col>
         <ion-col>Categoria</ion-col>
         <ion-col>Preço</ion-col>
@@ -42,10 +41,7 @@
         <ion-col>{{ produto.nome }}</ion-col>
         <ion-col>{{ produto.categoria }}</ion-col>
         <ion-col>{{ produto.preco }}</ion-col>
-        <ion-col>
-          <p style="overflow: hidden;
-          white-space: nowrap;">{{ produto.descricao }}</p>
-        </ion-col> 
+        <ion-col>{{ produto.descricao }}</ion-col> 
 
         <ion-col class="functions-col">
           <ion-buttons>
