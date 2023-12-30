@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Novo Estoque</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="fecharModal()" id="cancel-button">
+        <ion-icon name="close"></ion-icon>
+        <p>cancelar</p>
+      </ion-button>
+
+      <ion-button (click)="salvarAlteracoes()" id="save-button">
+        <ion-icon name="checkmark-outline"></ion-icon>
+        <p>Cadastrar</p>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="newStockForm">
+
+    <ion-item>
+      <ion-select label="Produto *" label-placement="floating" formControlName="id_produto">
+        <ion-select-option *ngFor="let produto of produtos" [value]="produto.id"> {{produto.nome}} </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-input name="quantidade" type="number" label="Quantidade *" labelPlacement="floating" formControlName="quantidade"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input name="validade" type="date" label="Validade" labelPlacement="floating" formControlName="validade"></ion-input>
+    </ion-item>
+  </form>
+</ion-content>

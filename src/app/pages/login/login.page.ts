@@ -1,8 +1,8 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { LoginService } from 'src/services/login.service';
+import { LoginService } from 'src/app/services/login.service';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/services/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { AlertController } from '@ionic/angular';
 
 

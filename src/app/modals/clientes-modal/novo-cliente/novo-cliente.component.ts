@@ -3,7 +3,7 @@ import { FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
 import { FormBuilder } from '@angular/forms';
-import { ClientService } from 'src/services/client.service';
+import { ClientService } from 'src/app/services/client.service';
 
 @Component({
   selector: 'app-novo-cliente',

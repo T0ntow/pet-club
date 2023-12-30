@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EditarFuncionarioComponent } from 'src/app/modals/funcionarios-modal/editar-funcionario/editar-funcionario.component';
 import { NovoFuncionarioComponent } from 'src/app/modals/funcionarios-modal/novo-funcionario/novo-funcionario.component';
-import { EmployeeService } from 'src/services/employee.service';
+import { EmployeeService } from 'src/app/services/employee.service';
 import { LoadingController, ToastController, AlertController, ModalController} from '@ionic/angular';
 
 @Component({

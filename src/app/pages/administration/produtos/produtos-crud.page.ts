@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { EditarFuncionarioComponent } from 'src/app/modals/funcionarios-modal/editar-funcionario/editar-funcionario.component';
-import { ProductService } from 'src/services/product.service';
+import { ProductService } from 'src/app/services/product.service';
 import { LoadingController, ToastController, AlertController, ModalController } from '@ionic/angular';
 import { NovoProdutoComponent } from 'src/app/modals/produtos-modal/novo-produto/novo-produto.component';
 import { getStorage, ref, deleteObject } from "firebase/storage";
@@ -135,10 +135,6 @@ export class ProdutosCrudPage implements OnInit {
   async adicionarProduto() {
     const modal = await this.modalCtrl.create({
       component: NovoProdutoComponent,
-    });
-
-    modal.onDidDismiss().then((data) => {
-      console.log('Dados do produto adicionados:', data.data);
     });
 
     return await modal.present();

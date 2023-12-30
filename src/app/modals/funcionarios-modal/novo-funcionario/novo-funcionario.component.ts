@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
-import { EmployeeService } from 'src/services/employee.service';
+import { EmployeeService } from 'src/app/services/employee.service';
 import { FormBuilder } from '@angular/forms';
 
 @Component({

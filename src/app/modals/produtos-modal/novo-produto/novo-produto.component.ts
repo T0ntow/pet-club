@@ -3,7 +3,7 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ModalController, LoadingController, ToastController } from '@ionic/angular';
 import { Storage } from '@angular/fire/storage';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { ProductService } from 'src/services/product.service';
+import { ProductService } from 'src/app/services/product.service';
 
 @Component({
   selector: 'app-novo-produto',

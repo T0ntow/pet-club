@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
-import { SupplierService } from 'src/services/supplier.service';
+import { SupplierService } from 'src/app/services/supplier.service';
 import { FormBuilder } from '@angular/forms';
 
 @Component({

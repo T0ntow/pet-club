@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NovoFornecedorComponent } from 'src/app/modals/fornecedores-modal/novo-fornecedor/novo-fornecedor.component';
 import { LoadingController, ToastController, AlertController, ModalController } from '@ionic/angular';
-import { SupplierService } from 'src/services/supplier.service';
+import { SupplierService } from 'src/app/services/supplier.service';
 
 @Component({
   selector: 'app-fornecedores',

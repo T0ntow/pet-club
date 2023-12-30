@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { SignupService } from 'src/services/signup.service';
+import { SignupService } from 'src/app/services/signup.service';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';

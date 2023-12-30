@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LoadingController, ToastController, AlertController, ModalController } from '@ionic/angular';
-import { ClientService } from 'src/services/client.service';
+import { ClientService } from 'src/app/services/client.service';
 import { NovoClienteComponent } from 'src/app/modals/clientes-modal/novo-cliente/novo-cliente.component';
 
 @Component({

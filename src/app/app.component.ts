@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { register } from 'swiper/element/bundle';
 register();
 
-import { AuthService } from 'src/services/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -113,6 +113,12 @@ export class AppComponent implements OnInit {
         matrixParams: 'ignored'
       }) ||
       this.router.isActive('/clientes', {
+        paths: 'subset',
+        queryParams: 'subset',
+        fragment: 'ignored',
+        matrixParams: 'ignored'
+      }) ||
+      this.router.isActive('/estoque', {
         paths: 'subset',
         queryParams: 'subset',
         fragment: 'ignored',
