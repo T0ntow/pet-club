@@ -5,6 +5,8 @@ import { ModalController } from '@ionic/angular';
 import { NovoEstoqueComponent } from 'src/app/modals/estoque-modal/novo-estoque/novo-estoque.component';
 import { StockService } from 'src/app/services/stock.service';
 
+import { format } from 'date-fns'
+
 @Component({
   selector: 'app-estoque',
   templateUrl: './estoque.page.html',
@@ -41,6 +43,10 @@ export class EstoquePage implements OnInit {
     
     this.getProducts();
     this.getStockWithProducts();
+  }
+
+  formatarData(data: Date): string {
+    return format(data, 'dd/MM/yyyy');
   }
 
   async getProducts() {

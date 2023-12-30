@@ -36,7 +36,7 @@
         <ion-col>{{estoque.nome_produto}}</ion-col>
         <ion-col>{{estoque.preco_produto}}</ion-col>
         <ion-col>{{estoque.quantidade}}</ion-col>
-        <ion-col>{{estoque.validade}}</ion-col>
+        <ion-col>{{formatarData(estoque.validade)}}</ion-col>
 
         <ion-col class="ion-text-right" class="functions-col">
           <ion-buttons>
