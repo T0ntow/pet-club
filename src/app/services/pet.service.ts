@@ -30,6 +30,6 @@ export class PetService {
   }
 
   deletePet(id: number) {
-    return this.http.delete(`http://localhost:5000/pets/${id}`)
+    return this.http.delete(`http://localhost:5000/pet/${id}`)
   }
 }
