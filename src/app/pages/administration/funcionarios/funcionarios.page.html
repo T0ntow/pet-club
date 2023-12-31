@@ -11,8 +11,8 @@
   <main>
     <div>
       <div class="search-box">
-        <input type="text" class="custom-searchbar" placeholder="Pesquisar">
-        <button>
+        <input type="text" [(ngModel)]="searchTerm" placeholder="Pesquisar" class="custom-searchbar" (change)="searchEmployees()">
+        <button (click)="searchEmployees()">
           <ion-icon name="search-outline"></ion-icon>
         </button>
       </div>
@@ -31,28 +31,30 @@
         <ion-col class="functions-col">Funções</ion-col>
       </ion-row>
 
-      <ion-row *ngFor="let funcionario of funcionarios">
+      <ion-row *ngIf="!temFuncionario" >
+        <ion-col style="background-color: var(--ion-color-danger);">Nenhum Funcionário Encontrado</ion-col>
+      </ion-row>
+
+      <ion-row *ngFor="let funcionario of funcionariosFiltrados">
         <ion-col>{{ funcionario.nome }}</ion-col>
         <ion-col>{{ funcionario.cpf }}</ion-col>
         <ion-col>{{ funcionario.cargo }}</ion-col>
         <ion-col>{{ funcionario.telefone }}</ion-col>
 
-
         <ion-col class="functions-col">
           <ion-buttons>
-              <ion-button class="remover" (click)="removerFuncionario(funcionario)">
-                  <ion-icon name="trash"></ion-icon>
-                  <p>Remover</p>
-              </ion-button>
-              <ion-button class="alterar" (click)="alterarFuncionario(funcionario)">
-                  <ion-icon name="create"></ion-icon>
-                  <p>Atualizar</p>
-              </ion-button>
+            <ion-button class="remover" (click)="removerFuncionario(funcionario)">
+              <ion-icon name="trash"></ion-icon>
+              <p>Remover</p>
+            </ion-button>
+            <ion-button class="alterar" (click)="alterarFuncionario(funcionario)">
+              <ion-icon name="create"></ion-icon>
+              <p>Atualizar</p>
+            </ion-button>
           </ion-buttons>
-      </ion-col>
-      
-
+        </ion-col>
       </ion-row>
     </ion-grid>
+    
   </main>
 </ion-content>

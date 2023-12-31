@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { EditarFuncionarioComponent } from 'src/app/modals/funcionarios-modal/editar-funcionario/editar-funcionario.component';
 import { NovoFuncionarioComponent } from 'src/app/modals/funcionarios-modal/novo-funcionario/novo-funcionario.component';
 import { EmployeeService } from 'src/app/services/employee.service';
-import { LoadingController, ToastController, AlertController, ModalController} from '@ionic/angular';
+import { LoadingController, ToastController, AlertController, ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-funcionarios',
@@ -11,15 +11,32 @@ import { LoadingController, ToastController, AlertController, ModalController} f
 })
 export class FuncionariosPage implements OnInit {
 
-  funcionarios: {nome: string, cpf: string, email: string; telefone: string; cargo: string; endereco: string; id: number}[] = []
+  funcionarios: { nome: string, cpf: string, email: string; telefone: string; cargo: string; endereco: string; id: number }[] = []
+  searchTerm: string = '';
+  funcionariosFiltrados: { nome: string, cpf: string, email: string; telefone: string; cargo: string; endereco: string; id: number }[] = []
+  temFuncionario: boolean = true;
+
+  searchEmployees() {
+    this.funcionariosFiltrados = this.funcionarios.filter(funcionario =>
+      funcionario.nome.toLowerCase().includes(this.searchTerm) || funcionario.cargo.toLowerCase().includes(this.searchTerm)
+    );
+
+    console.log("this.funcionariosFiltrados", this.funcionariosFiltrados);
+
+    if (this.funcionariosFiltrados.length === 0) {
+      this.temFuncionario = false
+    } else {
+      this.temFuncionario = true
+    }
+  }
 
   constructor(
-    private alertController: AlertController, 
+    private alertController: AlertController,
     private modalCtrl: ModalController,
     private employeeService: EmployeeService,
     private loadingController: LoadingController,
     private toastController: ToastController
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.employeeService.getObservableEmployees().subscribe(isUpdated => {
@@ -41,7 +58,8 @@ export class FuncionariosPage implements OnInit {
     this.employeeService.getEmployees().subscribe({
       next: (response: any) => {
         this.funcionarios = response;
-        loading.dismiss(); 
+        this.funcionariosFiltrados = this.funcionarios
+        loading.dismiss();
       },
       error: (error: any) => {
         this.presentToast('Falha ao recuperar funcionários', "danger")
@@ -110,7 +128,7 @@ export class FuncionariosPage implements OnInit {
         },
       ],
     });
-  
+
     await alert.present();
   }
 
