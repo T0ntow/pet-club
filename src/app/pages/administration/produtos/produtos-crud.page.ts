@@ -20,6 +20,8 @@ export class ProdutosCrudPage implements OnInit {
     images: string[] // ou pode ser um array de objetos dependendo da estrutura das imagens
   }[] = [];
 
+  isLoading = true
+
   constructor(
     private alertController: AlertController,
     private modalCtrl: ModalController,
@@ -47,7 +49,6 @@ export class ProdutosCrudPage implements OnInit {
 
     this.productService.getProducts().subscribe({
       next: (response: any) => {
-        console.log('Produtos recuperados:', response);
         this.produtos = response;
 
         response.forEach((produto: any) => {
@@ -56,23 +57,22 @@ export class ProdutosCrudPage implements OnInit {
         loading.dismiss();
       },
       error: (error: any) => {
-        console.error('Falha ao recuperar produtos:', error);
+        this.presentToast("Falha ao recuperar produtos", "danger")
         loading.dismiss();
       },
     });
   }
 
-  getImages(produto: any) {
+   getImages(produto: any) {
     this.productService.getImagesFromProduct(produto.id).subscribe({
-      next: async (response: any) => {
+      next: (response: any) => {
         console.log('Imagens recuperadas com sucesso:', response);
         produto.images = response; 
-        console.log("produto", produto);
-        
+        this.isLoading = false
       },
       error: (error: any) => {
         console.error('Falha ao recuperar imagens:', error);
-      },
+      }
     });
   }
   
@@ -108,9 +108,8 @@ export class ProdutosCrudPage implements OnInit {
     });
 
     this.productService.deleteProduct(produto.id).subscribe({
-      next: async (response: any) => {
-        console.log('Produto removido com sucesso:', response);
-        await this.presentToast('Produto removido com sucesso', "success");
+      next: (response: any) => {
+        this.presentToast('Produto removido com sucesso', "success");
         this.productService.updateObservableProducts();
       },
       error: (error: any) => {
@@ -152,7 +151,7 @@ export class ProdutosCrudPage implements OnInit {
         {
           text: 'continuar',
           cssClass: 'alert-button-confirm',
-          handler: () => { // Adiciona um handler para o botão 'continuar'
+          handler: () => {
             this.deleteProduct(produto);
           },
         },

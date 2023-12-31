@@ -43,12 +43,11 @@ export class FornecedoresPage implements OnInit {
 
     this.supplierService.getSuppliers().subscribe({
       next: (response: any) => {
-        console.log('Fornecedores recuperados:', response);
         this.fornecedores = response;
         loading.dismiss();
       },
       error: (error: any) => {
-        console.error('Falha ao recuperar fornecedores:', error);
+        this.presentToast('Falha ao recuperar fornecedores', 'danger');
         loading.dismiss();
       },
     });
@@ -63,7 +62,6 @@ export class FornecedoresPage implements OnInit {
   deleteSupplier(fornecedor: any) {
     this.supplierService.deleteSupplier(fornecedor.id).subscribe({
       next: async (response: any) => {
-        console.log('Fornecedor removido com sucesso:', response);
         await this.presentToast('Fornecedor removido com sucesso', 'success');
         this.supplierService.updateObservableSuppliers();
       },

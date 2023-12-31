@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, ToastController } from '@ionic/angular';
 import { ProductService } from 'src/app/services/product.service';
 import { ModalController } from '@ionic/angular';
 import { NovoEstoqueComponent } from 'src/app/modals/estoque-modal/novo-estoque/novo-estoque.component';
@@ -33,7 +33,8 @@ export class EstoquePage implements OnInit {
     private loadingController: LoadingController,
     private productService: ProductService,
     private modalCtrl: ModalController,
-    private stockService: StockService
+    private stockService: StockService,
+    private toastController: ToastController
   ) { }
 
   ngOnInit() {
@@ -83,13 +84,11 @@ export class EstoquePage implements OnInit {
 
     this.stockService.getStockWithProducts().subscribe({
       next: (response: any) => {
-        console.log('Estoque recuperado:', response);
         this.estoqueComProduto = response;
-
         loading.dismiss();
       },
       error: (error: any) => {
-        console.error('Falha ao recuperar produtos:', error);
+        this.presentToast('Falha ao recuperar estoque', 'danger');
         loading.dismiss();
       },
     });
@@ -103,9 +102,18 @@ export class EstoquePage implements OnInit {
       componentProps: {
         produtos: this.produtos,
       },
-  
     });
 
     return await modal.present();
+  }
+
+  async presentToast(text: string, color: string,) {
+    const toast = await this.toastController.create({
+      message: text,
+      duration: 1800,
+      color: color
+    });
+
+    await toast.present();
   }
 }

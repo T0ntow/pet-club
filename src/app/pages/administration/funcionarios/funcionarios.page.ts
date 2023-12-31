@@ -40,12 +40,11 @@ export class FuncionariosPage implements OnInit {
 
     this.employeeService.getEmployees().subscribe({
       next: (response: any) => {
-        console.log('Funcionários recuperados:', response);
         this.funcionarios = response;
         loading.dismiss(); 
       },
       error: (error: any) => {
-        console.error('Falha ao recuperar funcionários:', error);
+        this.presentToast('Falha ao recuperar funcionários', "danger")
         loading.dismiss();
       },
     });

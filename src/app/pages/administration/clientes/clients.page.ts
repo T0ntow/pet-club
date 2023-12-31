@@ -39,12 +39,11 @@ export class ClientsPage implements OnInit {
 
     this.clientService.getClients().subscribe({
       next: (response: any) => {
-        console.log('Clientes recuperados:', response);
         this.clientes = response;
         loading.dismiss();
       },
       error: (error: any) => {
-        console.error('Falha ao recuperar clientes:', error);
+        this.presentToast("Falha ao recuperar clientes", "danger")
         loading.dismiss();
       },
     });

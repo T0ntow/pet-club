@@ -33,15 +33,21 @@
       </ion-row>
 
       <ion-row *ngFor="let produto of produtos">
-          
+
         <ion-col style="display: flex; align-items: center; justify-content: flex-start;">
-          <img *ngFor="let image of produto.images" style="width: 35px; height: 35px; margin: 5px;" [src]="image" alt="">
+          <div *ngIf="!isLoading; else loading" style="margin: 0; padding: 0;">
+            <img *ngFor="let image of produto.images" style="width: 35px; height: 35px; margin: 5px;" [src]="image"
+              alt="Imagem do Produto" role="presentation">
+          </div>
+          <ng-template #loading>
+            Carregando...
+          </ng-template>
         </ion-col>
 
         <ion-col>{{ produto.nome }}</ion-col>
         <ion-col>{{ produto.categoria }}</ion-col>
         <ion-col>{{ produto.preco }}</ion-col>
-        <ion-col>{{ produto.descricao }}</ion-col> 
+        <ion-col>{{ produto.descricao }}</ion-col>
 
         <ion-col class="functions-col">
           <ion-buttons>
