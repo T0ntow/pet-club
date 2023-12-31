@@ -49,12 +49,10 @@ export class ClientsPage implements OnInit {
     });
   }
 
-  // Atualize o método removerFuncionario para removerCliente
   removerCliente(cliente: any) {
     this.presentAlertRemove(cliente);
   }
 
-  // Atualize o método deleteEmployee para deleteClient
   deleteClient(cliente: any) {
     this.clientService.deleteClient(cliente.id).subscribe({
       next: async (response: any) => {
@@ -68,7 +66,6 @@ export class ClientsPage implements OnInit {
     });
   }
 
-  // Atualize o método alterarFuncionario para alterarCliente
   async alterarCliente(fornecedor: any) {
     // const modal = await this.modalCtrl.create({
     //   component: EditarFornecedorComponent,

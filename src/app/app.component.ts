@@ -81,50 +81,23 @@ export class AppComponent implements OnInit {
   }
 
   isOnBlockPages(): boolean {
-    return (
-      this.router.isActive('/login', {
-        paths: 'subset',
-        queryParams: 'subset',
-        fragment: 'ignored',
-        matrixParams: 'ignored'
-      }) ||
-      this.router.isActive('/signup', {
-        paths: 'subset',
-        queryParams: 'subset',
-        fragment: 'ignored',
-        matrixParams: 'ignored'
-      }) ||
-      this.router.isActive('/funcionarios', {
-        paths: 'subset',
-        queryParams: 'subset',
-        fragment: 'ignored',
-        matrixParams: 'ignored'
-      }) ||
-      this.router.isActive('/produtos-crud', {
-        paths: 'subset',
-        queryParams: 'subset',
-        fragment: 'ignored',
-        matrixParams: 'ignored'
-      }) ||
-      this.router.isActive('/fornecedores', {
-        paths: 'subset',
-        queryParams: 'subset',
-        fragment: 'ignored',
-        matrixParams: 'ignored'
-      }) ||
-      this.router.isActive('/clientes', {
-        paths: 'subset',
-        queryParams: 'subset',
-        fragment: 'ignored',
-        matrixParams: 'ignored'
-      }) ||
-      this.router.isActive('/estoque', {
-        paths: 'subset',
-        queryParams: 'subset',
-        fragment: 'ignored',
-        matrixParams: 'ignored'
-      })
-    );
+    const blockRoutes = [
+      '/login',
+      '/signup',
+      '/funcionarios',
+      '/produtos-crud',
+      '/fornecedores',
+      '/clientes',
+      '/estoque',
+      '/pet'
+    ];
+  
+    return blockRoutes.some(route => this.router.isActive(route, {
+      paths: 'subset',
+      queryParams: 'subset',
+      fragment: 'ignored',
+      matrixParams: 'ignored'
+    }));
   }
 
 }

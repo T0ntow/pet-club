@@ -3,7 +3,7 @@
     <ion-menu-button class="custom-button" color="medium"></ion-menu-button>
   </ion-buttons>
   <h1>
-    Administração <ion-icon name="arrow-forward-outline"></ion-icon> Estoque
+    Administração <ion-icon name="arrow-forward-outline"></ion-icon> Pet
   </h1>
 </ion-header>
 
@@ -17,34 +17,33 @@
         </button>
       </div>
 
-      <button id="add" (click)="adicionarEstoque()">
-        <p>Cadastrar Estoque</p>
+      <button id="add" (click)="adicionarPet()">
+        <p>Cadastrar Pet</p>
       </button>
     </div>
 
     <ion-grid class="table-container">
       <ion-row id="row-header">
         <ion-col>Nome</ion-col>
-        <ion-col>Preço</ion-col>
-        <ion-col>Quantidade</ion-col>
-        <ion-col>Validade</ion-col>
-        
+        <ion-col>Espécie</ion-col>
+        <ion-col>Raça</ion-col>
+        <ion-col>Gênero</ion-col>
         <ion-col class="functions-col">Funções</ion-col>
       </ion-row>
 
-      <ion-row *ngFor="let estoque of estoqueComProduto">
-        <ion-col>{{estoque.nome_produto}}</ion-col>
-        <ion-col>{{estoque.preco_produto}}</ion-col>
-        <ion-col>{{estoque.quantidade}}</ion-col>
-        <ion-col>{{formatarData(estoque.validade)}}</ion-col>
+      <ion-row *ngFor="let pet of pets">
+        <ion-col>{{ pet.nome }}</ion-col>
+        <ion-col>{{ pet.especie }}</ion-col>
+        <ion-col>{{ pet.raca }}</ion-col>
+        <ion-col>{{ pet.genero }}</ion-col>
 
-        <ion-col class="ion-text-right" class="functions-col">
+        <ion-col class="functions-col">
           <ion-buttons>
-              <ion-button class="remover" (click)="removerEstoque(estoque)">
+              <ion-button class="remover" (click)="removerPet(pet)">
                   <ion-icon name="trash"></ion-icon>
                   <p>Remover</p>
               </ion-button>
-              <ion-button class="alterar">
+              <ion-button class="alterar" (click)="alterarPet(pet)">
                   <ion-icon name="create"></ion-icon>
                   <p>Atualizar</p>
               </ion-button>

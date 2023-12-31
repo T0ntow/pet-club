@@ -38,6 +38,10 @@ const routes: Routes = [
     path: 'estoque',
     loadChildren: () => import('./pages/administration/estoque/estoque.module').then( m => m.EstoquePageModule)
   },
+  {
+    path: 'pet',
+    loadChildren: () => import('./pages/administration/pet/pet.module').then( m => m.PetPageModule)
+  },
 
 
 ];

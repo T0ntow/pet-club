@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Novo Pet</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="fecharModal()" id="cancel-button">
+        <ion-icon name="close"></ion-icon>
+        <p>cancelar</p>
+      </ion-button>
+
+      <ion-button (click)="salvarAlteracoes()" id="save-button">
+        <ion-icon name="checkmark-outline"></ion-icon>
+        <p>Cadastrar</p>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="newPetForm">
+    <ion-item>
+      <ion-input name="nome" type="text" label="Nome do pet *" labelPlacement="floating" formControlName="nome"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input name="especie" type="text" label="Espécie *" labelPlacement="floating" formControlName="especie"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input name="raca" type="text" label="Raça *" labelPlacement="floating" formControlName="raca"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input name="nascimento" type="date" label="Data de nascimento *" labelPlacement="floating" formControlName="nascimento"></ion-input>
+    </ion-item>
+   
+    <ion-item>
+      <ion-select labelPlacement="floating" label="Default label" placeholder="Gênero" formControlName="genero">
+        <ion-select-option value="apple">Masculino</ion-select-option>
+        <ion-select-option value="banana">Feminino</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-input name="cor" type="text" label="Cor *" labelPlacement="floating" formControlName="cor"></ion-input>
+    </ion-item>
+    
+  </form>
+</ion-content>

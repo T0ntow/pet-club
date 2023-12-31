@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LoadingController, ToastController } from '@ionic/angular';
+import { AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { ProductService } from 'src/app/services/product.service';
 import { ModalController } from '@ionic/angular';
 import { NovoEstoqueComponent } from 'src/app/modals/estoque-modal/novo-estoque/novo-estoque.component';
@@ -34,7 +34,8 @@ export class EstoquePage implements OnInit {
     private productService: ProductService,
     private modalCtrl: ModalController,
     private stockService: StockService,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private alertController: AlertController
   ) { }
 
   ngOnInit() {
@@ -105,6 +106,44 @@ export class EstoquePage implements OnInit {
     });
 
     return await modal.present();
+  }
+
+  removerEstoque(estoque: any) {
+    this.presentAlertRemove(estoque);
+  }
+
+  async presentAlertRemove(estoque: any) {
+    const alert = await this.alertController.create({
+      header: 'Atenção',
+      message: 'Você tem certeza de que deseja excluir este estoque? Ele será removido permanentemente.',
+      buttons: [
+        {
+          text: 'cancelar',
+          cssClass: 'alert-button-cancel',
+        },
+        {
+          text: 'continuar',
+          cssClass: 'alert-button-confirm',
+          handler: () => { // Adiciona um handler para o botão 'continuar'
+            this.deleteStock(estoque);
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
+
+  deleteStock(estoque: any) {
+    this.stockService.deleteStock(estoque.id_estoque).subscribe({
+      next: (response: any) => {
+        this.presentToast('Estoque removido com sucesso', 'success');
+        this.stockService.updateObservableStock();
+      },
+      error: (error: any) => {
+        this.presentToast('Falha ao remover estoque', 'danger');
+      },
+    });
   }
 
   async presentToast(text: string, color: string,) {

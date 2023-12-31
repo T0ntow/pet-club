@@ -32,7 +32,7 @@ export class StockService {
     return this.http.get('http://localhost:5000/pegar-estoque-produtos')
   }
   
-  // deleteSupplier(id: number) {
-  //   return this.http.delete(`http://localhost:5000/fornecedores/${id}`)
-  // }
+  deleteStock(id: number) {
+    return this.http.delete(`http://localhost:5000/estoque/${id}`)
+  }
 }
