@@ -1,21 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController, ToastController } from '@ionic/angular';
+import { ClientService } from 'src/app/services/client.service';
 import { PetService } from 'src/app/services/pet.service';
+import { NovoClienteComponent } from '../../clientes-modal/novo-cliente/novo-cliente.component';
 
 @Component({
   selector: 'app-novo-pet',
   templateUrl: './novo-pet.component.html',
   styleUrls: ['./novo-pet.component.scss'],
 })
+
 export class NovoPetComponent  implements OnInit {
   newPetForm: FormGroup;
+  tutores: {nome: string, email: string, telefone: string, cpf: string, endereco: string}[] = [];
 
   constructor(
     private modalCtrl: ModalController,
     private toastController: ToastController,
     private petService: PetService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private clienteService: ClientService,
   ) {
     this.newPetForm = this.formBuilder.group({
       nome: ['', [Validators.required]],
@@ -24,13 +29,27 @@ export class NovoPetComponent  implements OnInit {
       cor: ['', [Validators.required]],
       nascimento: ['', [Validators.required]],
       genero: ['', [Validators.required]],
+      tutor: ['', [Validators.required]],
     })
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getClients()
+  }
 
   fecharModal() {
     this.modalCtrl.dismiss();
+  }
+
+  getClients() {
+    this.clienteService.getClients().subscribe({
+      next: async (response: any) => {
+        this.tutores = response
+      },
+      error: async (error: any) => {
+        console.log("Falha ao recuperar clientes", error);
+      }
+    })
   }
 
   async salvarAlteracoes() {
@@ -62,4 +81,17 @@ export class NovoPetComponent  implements OnInit {
     await toast.present();
   }
 
+  async newClient() {
+    const modal = await this.modalCtrl.create({
+      component: NovoClienteComponent
+    });
+    
+    modal.onDidDismiss().then((data) => {
+      console.log('Clientes atualizados:', data.data);
+      this.getClients()
+    });
+
+    await modal.present();
+
+  }
 }

@@ -12,6 +12,10 @@ export class FornecedoresPage implements OnInit {
 
   // Atualize o modelo do fornecedor
   fornecedores: { cnpj: string, email: string, endereco: string, nome_empresa: string, representante: string, telefone: string, id: number }[] = [];
+  searchTerm: string = '';
+
+  fornecedoresFiltrados: { cnpj: string, email: string, endereco: string, nome_empresa: string, representante: string, telefone: string, id: number }[] = [];
+  temFornecedor: boolean = true;
 
   // Atualize o serviço de fornecedores
   constructor(
@@ -21,6 +25,18 @@ export class FornecedoresPage implements OnInit {
     private loadingController: LoadingController,
     private toastController: ToastController,
   ) { }
+
+  searchSupplier() {
+    this.fornecedoresFiltrados = this.fornecedores.filter(fornecedor =>
+      fornecedor.representante.toLowerCase().includes(this.searchTerm) || fornecedor.nome_empresa.toLowerCase().includes(this.searchTerm)
+    );
+
+    if (this.fornecedoresFiltrados.length === 0) {
+      this.temFornecedor = false
+    } else {
+      this.temFornecedor = true
+    }
+  }
 
   // Atualize o método ngOnInit para chamar getSuppliers
   ngOnInit() {
@@ -44,6 +60,8 @@ export class FornecedoresPage implements OnInit {
     this.supplierService.getSuppliers().subscribe({
       next: (response: any) => {
         this.fornecedores = response;
+        this.fornecedoresFiltrados = this.fornecedores
+
         loading.dismiss();
       },
       error: (error: any) => {
@@ -53,7 +71,7 @@ export class FornecedoresPage implements OnInit {
     });
   }
 
-  // Atualize o método removerFuncionario para removerFornecedor
+  // Atualize o método removerfornecedor para removerFornecedor
   removerFornecedor(fornecedor: any) {
     this.presentAlertRemove(fornecedor);
   }

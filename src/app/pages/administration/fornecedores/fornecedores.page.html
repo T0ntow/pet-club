@@ -11,8 +11,8 @@
   <main>
     <div>
       <div class="search-box">
-        <input type="text" class="custom-searchbar" placeholder="Pesquisar">
-        <button>
+        <input type="text" [(ngModel)]="searchTerm" placeholder="Pesquisar" class="custom-searchbar" (change)="searchSupplier()">
+        <button (click)="searchSupplier()">
           <ion-icon name="search-outline"></ion-icon>
         </button>
       </div>
@@ -31,7 +31,11 @@
         <ion-col class="functions-col">Funções</ion-col>
       </ion-row>
 
-      <ion-row *ngFor="let fornecedor of fornecedores">
+      <ion-row *ngIf="!temFornecedor" >
+        <ion-col style="background-color: var(--ion-color-danger);">Nenhum Fornecedor Encontrado</ion-col>
+      </ion-row>
+
+      <ion-row *ngFor="let fornecedor of fornecedoresFiltrados">
         <ion-col>{{ fornecedor.nome_empresa }}</ion-col>
         <ion-col>{{ fornecedor.cnpj }} </ion-col>
         <ion-col>{{ fornecedor.representante }}</ion-col>

@@ -34,15 +34,23 @@
     </ion-item>
    
     <ion-item>
-      <ion-select labelPlacement="floating" label="Default label" placeholder="Gênero" formControlName="genero">
+      <ion-input name="cor" type="text" label="Cor *" labelPlacement="floating" formControlName="cor"></ion-input>
+    </ion-item>
+    
+    <ion-item>
+      <ion-select labelPlacement="floating" label="Gênero *" formControlName="genero">
         <ion-select-option value="masculino">Masculino</ion-select-option>
         <ion-select-option value="feminino">Feminino</ion-select-option>
       </ion-select>
     </ion-item>
 
+     
     <ion-item>
-      <ion-input name="cor" type="text" label="Cor *" labelPlacement="floating" formControlName="cor"></ion-input>
+      <ion-select labelPlacement="floating" label="Tutor *" formControlName="tutor">
+        <ion-select-option [value]="tutor.nome" *ngFor="let tutor of tutores"> {{tutor.nome}} </ion-select-option>
+      </ion-select>
+      <ion-button color="light" (click)="newClient()"><ion-icon name="add-circle" color="dark"></ion-icon></ion-button>
     </ion-item>
-    
+
   </form>
 </ion-content>
