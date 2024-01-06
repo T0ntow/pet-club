@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { LoadingController, ToastController } from '@ionic/angular';
+import { ProductService } from 'src/app/services/product.service';
 
 @Component({
   selector: 'app-product',
@@ -7,19 +9,67 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProductComponent implements OnInit {
 
-  constructor() { }
+  produtos: { 
+    id: number;
+    nome: string, 
+    descricao: string, 
+    categoria: string, 
+    preco: number, 
+    images: string[] // ou pode ser um array de objetos dependendo da estrutura das imagens
+  }[] = [];
 
-  ngOnInit() { }
+  isLoading = true
 
-  produtos = [
-    { id: 1, nome: 'Ração Nutrilus Premium para Gatos Castrados', imagem: './assets/image-product1.png', preco: 19.99 },
-    { id: 2, nome: 'Areia Sanitária Meau Grãos Finos para Gatos', imagem: '/assets/image-product2.jpg', preco: 12.98 },
-    { id: 3, nome: 'Bola Para Cachorro Porta Petisco Brinquedo Interativo Cor Cores Sortidas', imagem: '/assets/image-product3.png', preco: 19.99 },
-    { id: 4, nome: 'Coleira para Cachorro com Nome e Telefone - Courino Matelassê Macio Rosa Pink - Metais Niquelados', imagem: '/assets/image-product4.jpg', preco: 79.99 },
-  ];
+  constructor(
+    private productService: ProductService,
+    private loadingController: LoadingController,
+  ) { }
 
-  getProdutos() {
-    return this.produtos;
+  
+
+  ngOnInit() {
+    this.productService.getObservableProducts().subscribe(isUpdated => {
+      this.getProducts();
+    });
+
+    this.getProducts();
+  }
+
+  async getProducts() {
+    const loading = await this.loadingController.create({
+      message: 'Carregando produtos...',
+      spinner: 'crescent',
+      translucent: true,
+    });
+
+    await loading.present();
+
+    this.productService.getProducts().subscribe({
+      next: (response: any) => {
+        this.produtos = response;
+
+        response.forEach((produto: any) => {
+            this.getImages(produto)
+        });
+        loading.dismiss();
+      },
+      error: (error: any) => {
+        loading.dismiss();
+      },
+    });
+  }
+
+  getImages(produto: any) {
+    this.productService.getImagesFromProduct(produto.id).subscribe({
+      next: (response: any) => {
+        console.log('Imagens recuperadas com sucesso:', response);
+        produto.images = response; 
+        this.isLoading = false
+      },
+      error: (error: any) => {
+        console.error('Falha ao recuperar imagens:', error);
+      }
+    });
   }
 
   amei(produto: any) {

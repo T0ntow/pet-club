@@ -83,6 +83,7 @@ export class ProdutosCrudPage implements OnInit {
   deleteProduct(produto: any) {
     const storage = getStorage();
 
+    //remover referencia das imagens
     this.productService.getImagesFromProduct(produto.id).subscribe({
       next: async (response: any) => {
         console.log('Imagens recuperadas com sucesso:', response);
