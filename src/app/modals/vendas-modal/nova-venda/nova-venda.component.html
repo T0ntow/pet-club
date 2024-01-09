@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Nova Venda</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="fecharModal()" id="cancel-button">
+        <ion-icon name="close"></ion-icon>
+        <p>cancelar</p>
+      </ion-button>
+
+      <ion-button (click)="salvarAlteracoes()" id="save-button">
+        <ion-icon name="checkmark-outline"></ion-icon>
+        <p>Cadastrar</p>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="newSaleForm">
+    <ion-item>
+        <ion-select label="Cliente *" labelPlacement="floating"
+        formControlName="cliente">
+          <ion-select-option [value]="cliente.id" *ngFor="let cliente of clientes"> {{cliente.nome}} </ion-select-option>
+        </ion-select>
+    </ion-item>
+
+    <ion-item>
+        <ion-select label="Produto *" labelPlacement="floating"
+        formControlName="produto">
+          <ion-select-option [value]="produto.id" *ngFor="let produto of produtos"> {{produto.nome}} </ion-select-option>
+        </ion-select>
+    </ion-item>
+
+    <ion-item>
+        <ion-select label="Funcionário *" labelPlacement="floating"
+        formControlName="funcionario">
+          <ion-select-option [value]="funcionario.id" *ngFor="let funcionario of funcionarios"> {{funcionario.nome}} </ion-select-option>
+        </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-input name="quantidade" type="number" label="Quantidade *" labelPlacement="floating"
+        formControlName="quantidade"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input name="data_venda" type="date" label="Data *" labelPlacement="floating"
+        formControlName="data_venda"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input name="valor_total" type="number" label="Valor Total *" labelPlacement="floating"
+        formControlName="valor_total"></ion-input>
+    </ion-item>
+
+  </form>
+</ion-content>

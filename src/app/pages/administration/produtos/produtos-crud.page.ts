@@ -11,13 +11,13 @@ import { getStorage, ref, deleteObject } from "firebase/storage";
   styleUrls: ['./produtos-crud.page.scss'],
 })
 export class ProdutosCrudPage implements OnInit {
-  produtos: { 
+  produtos: {
     id: number;
-    nome: string, 
-    descricao: string, 
-    categoria: string, 
-    preco: number, 
-    images: string[] // ou pode ser um array de objetos dependendo da estrutura das imagens
+    nome: string,
+    descricao: string,
+    categoria: string,
+    preco: number,
+    images: string[] 
   }[] = [];
 
   isLoading = true
@@ -52,7 +52,7 @@ export class ProdutosCrudPage implements OnInit {
         this.produtos = response;
 
         response.forEach((produto: any) => {
-            this.getImages(produto)
+          this.getImages(produto)
         });
         loading.dismiss();
       },
@@ -63,11 +63,11 @@ export class ProdutosCrudPage implements OnInit {
     });
   }
 
-   getImages(produto: any) {
+  getImages(produto: any) {
     this.productService.getImagesFromProduct(produto.id).subscribe({
       next: (response: any) => {
         console.log('Imagens recuperadas com sucesso:', response);
-        produto.images = response; 
+        produto.images = response;
         this.isLoading = false
       },
       error: (error: any) => {
@@ -75,7 +75,7 @@ export class ProdutosCrudPage implements OnInit {
       }
     });
   }
-  
+
   removerProduto(produto: any) {
     this.presentAlertRemove(produto);
   }

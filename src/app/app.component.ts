@@ -89,7 +89,8 @@ export class AppComponent implements OnInit {
       '/fornecedores',
       '/clientes',
       '/estoque',
-      '/pet'
+      '/pet',
+      '/venda'
     ];
   
     return blockRoutes.some(route => this.router.isActive(route, {

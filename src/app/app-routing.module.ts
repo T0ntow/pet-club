@@ -34,13 +34,21 @@ const routes: Routes = [
   {
     path: 'clientes',
     loadChildren: () => import('./pages/administration/clientes/clients.module').then( m => m.ClientsPageModule)
-  },  {
+  },
+  {
     path: 'estoque',
     loadChildren: () => import('./pages/administration/estoque/estoque.module').then( m => m.EstoquePageModule)
   },
   {
     path: 'pet',
     loadChildren: () => import('./pages/administration/pet/pet.module').then( m => m.PetPageModule)
+  },
+  {
+    path: 'product-details',
+    loadChildren: () => import('./pages/product-details/product-details.module').then( m => m.ProductDetailsPageModule)
+  },  {
+    path: 'venda',
+    loadChildren: () => import('./pages/administration/venda/venda.module').then( m => m.VendaPageModule)
   },
 
 

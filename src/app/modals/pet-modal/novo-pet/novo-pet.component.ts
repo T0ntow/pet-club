@@ -11,9 +11,14 @@ import { NovoClienteComponent } from '../../clientes-modal/novo-cliente/novo-cli
   styleUrls: ['./novo-pet.component.scss'],
 })
 
-export class NovoPetComponent  implements OnInit {
+export class NovoPetComponent implements OnInit {
   newPetForm: FormGroup;
-  tutores: {nome: string, email: string, telefone: string, cpf: string, endereco: string}[] = [];
+
+  tutores: { nome: string, email: string, telefone: string, cpf: string, endereco: string }[] = [];
+  searchTerm: string = '';
+
+  filteredTutores: { nome: string, email: string, telefone: string, cpf: string, endereco: string }[] = [];
+  selectedTutor: any; // Tutor selecionado no ion-select
 
   constructor(
     private modalCtrl: ModalController,
@@ -41,10 +46,17 @@ export class NovoPetComponent  implements OnInit {
     this.modalCtrl.dismiss();
   }
 
+  filterTutors() {
+    this.filteredTutores = this.tutores.filter(tutor =>
+      tutor.nome.toLowerCase().includes(this.newPetForm.get('tutor')!.value.toLowerCase())
+    );
+  }
+
   getClients() {
     this.clienteService.getClients().subscribe({
       next: async (response: any) => {
         this.tutores = response
+        this.filteredTutores = this.tutores
       },
       error: async (error: any) => {
         console.log("Falha ao recuperar clientes", error);
@@ -55,7 +67,7 @@ export class NovoPetComponent  implements OnInit {
   async salvarAlteracoes() {
     const petData = this.newPetForm.value;
 
-    if(this.newPetForm.valid) {
+    if (this.newPetForm.valid) {
       this.petService.newPet(petData).subscribe({
         next: async (response: any) => {
           this.petService.updateObservablePets();
@@ -85,7 +97,7 @@ export class NovoPetComponent  implements OnInit {
     const modal = await this.modalCtrl.create({
       component: NovoClienteComponent
     });
-    
+
     modal.onDidDismiss().then((data) => {
       console.log('Clientes atualizados:', data.data);
       this.getClients()

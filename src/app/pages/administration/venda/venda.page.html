@@ -1,0 +1,57 @@
+<ion-header class="header">
+  <ion-buttons slot="start" class="custom-menu-button">
+    <ion-menu-button class="custom-button" color="medium"></ion-menu-button>
+  </ion-buttons>
+  <h1>
+    Administração <ion-icon name="arrow-forward-outline"></ion-icon> Vendas
+  </h1>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <main>
+    <div>
+      <div class="search-box">
+        <input type="text" class="custom-searchbar" placeholder="Pesquisar">
+        <button>
+          <ion-icon name="search-outline"></ion-icon>
+        </button>
+      </div>
+
+      <button id="add" (click)="adicionarVenda()">
+        <p>Cadastrar venda</p>
+      </button>
+    </div>
+
+    <ion-grid class="table-container">
+      <ion-row id="row-header">
+        <ion-col>Cliente</ion-col>
+        <ion-col>Produto</ion-col>
+        <ion-col>Quantidade</ion-col>
+        <ion-col>Total</ion-col>
+        <ion-col>Data</ion-col>
+        <ion-col class="functions-col">Funções</ion-col>
+      </ion-row>
+
+      <ion-row *ngFor="let venda of vendas">
+
+        <ion-col>{{ venda.quantidade }}</ion-col>
+        <ion-col>{{ venda.data_venda }}</ion-col>
+        <ion-col>{{ venda.valor_total }}</ion-col>
+
+        <ion-col class="functions-col">
+          <ion-buttons>
+            <ion-button class="remover" (click)="removerVenda(venda)">
+              <ion-icon name="trash"></ion-icon>
+              <p>Remover</p>
+            </ion-button>
+            <ion-button class="alterar" (click)="alterarVenda(venda)">
+              <ion-icon name="create"></ion-icon>
+              <p>Atualizar</p>
+            </ion-button>
+          </ion-buttons>
+        </ion-col>
+
+      </ion-row>
+    </ion-grid>
+  </main>
+</ion-content>

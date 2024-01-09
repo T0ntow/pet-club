@@ -18,11 +18,13 @@
 <ion-content class="ion-padding">
   <form [formGroup]="newPetForm">
     <ion-item>
-      <ion-input name="nome" type="text" label="Nome do pet *" labelPlacement="floating" formControlName="nome"></ion-input>
+      <ion-input name="nome" type="text" label="Nome do pet *" labelPlacement="floating"
+        formControlName="nome"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-input name="especie" type="text" label="Espécie *" labelPlacement="floating" formControlName="especie"></ion-input>
+      <ion-input name="especie" type="text" label="Espécie *" labelPlacement="floating"
+        formControlName="especie"></ion-input>
     </ion-item>
 
     <ion-item>
@@ -30,13 +32,14 @@
     </ion-item>
 
     <ion-item>
-      <ion-input name="nascimento" type="date" label="Data de nascimento *" labelPlacement="floating" formControlName="nascimento"></ion-input>
+      <ion-input name="nascimento" type="date" label="Data de nascimento *" labelPlacement="floating"
+        formControlName="nascimento"></ion-input>
     </ion-item>
-   
+
     <ion-item>
       <ion-input name="cor" type="text" label="Cor *" labelPlacement="floating" formControlName="cor"></ion-input>
     </ion-item>
-    
+
     <ion-item>
       <ion-select labelPlacement="floating" label="Gênero *" formControlName="genero">
         <ion-select-option value="masculino">Masculino</ion-select-option>
@@ -44,11 +47,12 @@
       </ion-select>
     </ion-item>
 
-     
+
     <ion-item>
       <ion-select labelPlacement="floating" label="Tutor *" formControlName="tutor">
-        <ion-select-option [value]="tutor.nome" *ngFor="let tutor of tutores"> {{tutor.nome}} </ion-select-option>
+        <ion-select-option [value]="tutor.nome" *ngFor="let tutor of filteredTutores"> {{tutor.nome}} </ion-select-option>
       </ion-select>
+      <ion-input placeholder="filtrar tutor" formControlName="tutor" (ionChange)="filterTutors()"></ion-input>
       <ion-button color="light" (click)="newClient()"><ion-icon name="add-circle" color="dark"></ion-icon></ion-button>
     </ion-item>
 
