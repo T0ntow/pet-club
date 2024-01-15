@@ -66,28 +66,36 @@
 
 @mixin generic-button {
     height: 50px;
-    border-radius: 20px;
+    border-radius: 15px;
     max-width: 100px;
     background: #2499c4;
     color: #000;
     font-weight: bold;
-    font-size: 1rem;
+    font-size: .9rem;
     flex-wrap: wrap;
 
     @media screen and (max-width: 900px) {
         height: 35px;
         font-size: 0.9rem;
     }
+
+    :hover {
+        transition: .2s;
+        color: #727272;
+    }
 }
 
 @mixin list-item-styles {
     ion-button {
-        display: flex;
-        flex-direction: column;
         border-radius: 5px;
-
+        width: 95px;
         p {
-            font-size: 0.7rem;
+            font-size: 10px;
+        }
+
+        ion-icon {
+            min-width: 18px;
+            width: 18px;
         }
     }
 
@@ -115,14 +123,15 @@
             display: flex;
             text-indent: 10px;
 
-            width: 250px;
-            min-width: 250px;
-            max-width: 250px;
+            width: 200px;
+            min-width: 200px;
+            max-width: 200px;
             margin: 5px;
             border-radius: 10px;
             height: 45px;
             align-items: center;
             background-color: #cbcbcb;
+            font-size: 14px;
 
             overflow: hidden;
             white-space: nowrap;
@@ -159,7 +168,9 @@ main {
     margin-top: 5vh;
 
     div {
-        @include flex-container;
+        display: flex;
+        flex-direction: row;
+        // @include flex-container;
         padding: 0 20px;
         margin-bottom: 10px;
 

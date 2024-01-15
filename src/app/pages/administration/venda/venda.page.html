@@ -27,15 +27,19 @@
         <ion-col>Cliente</ion-col>
         <ion-col>Produto</ion-col>
         <ion-col>Quantidade</ion-col>
-        <ion-col>Total</ion-col>
+        <ion-col>Funcionario</ion-col>
         <ion-col>Data</ion-col>
+        <ion-col>Valor Total</ion-col>
+
         <ion-col class="functions-col">Funções</ion-col>
       </ion-row>
 
       <ion-row *ngFor="let venda of vendas">
-
+        <ion-col>{{ venda.nome_cliente }}</ion-col>
+        <ion-col>{{ venda.nome_produto }}</ion-col>
         <ion-col>{{ venda.quantidade }}</ion-col>
-        <ion-col>{{ venda.data_venda }}</ion-col>
+        <ion-col>{{ venda.nome_funcionario }}</ion-col>
+        <ion-col>{{ formatarData(venda.data_venda) }}</ion-col>
         <ion-col>{{ venda.valor_total }}</ion-col>
 
         <ion-col class="functions-col">

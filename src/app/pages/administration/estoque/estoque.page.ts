@@ -6,7 +6,7 @@ import { NovoEstoqueComponent } from 'src/app/modals/estoque-modal/novo-estoque/
 import { StockService } from 'src/app/services/stock.service';
 
 import { format } from 'date-fns'
-
+import { FormatarDataService } from 'src/app/services/formatar-data.service';
 @Component({
   selector: 'app-estoque',
   templateUrl: './estoque.page.html',
@@ -35,7 +35,8 @@ export class EstoquePage implements OnInit {
     private modalCtrl: ModalController,
     private stockService: StockService,
     private toastController: ToastController,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private formatarDataService: FormatarDataService
   ) { }
 
   ngOnInit() {
@@ -48,7 +49,7 @@ export class EstoquePage implements OnInit {
   }
 
   formatarData(data: Date): string {
-    return format(data, 'dd/MM/yyyy');
+    return this.formatarDataService.formatarData(data)
   }
 
   async getProducts() {

@@ -26,6 +26,10 @@ export class SaleService {
     return this.http.get('http://localhost:5000/pegar-vendas');
   }
 
+  GetFullSaleDetails() {
+    return this.http.get('http://localhost:5000/pegar-vendas-completa');
+  }
+
   deleteSale(id: number) {
     return this.http.delete(`http://localhost:5000/venda/${id}`);
   }

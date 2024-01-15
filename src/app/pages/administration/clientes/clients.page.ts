@@ -19,6 +19,8 @@ export class ClientsPage implements OnInit {
     private loadingController: LoadingController,
     private toastController: ToastController,
   ) { }
+
+  
   ngOnInit() {
     this.clientService.getObservableClients().subscribe(isUpdated => {
       this.getClients();

@@ -6,6 +6,8 @@ import { EmployeeService } from 'src/app/services/employee.service';
 import { ProductService } from 'src/app/services/product.service';
 import { SaleService } from 'src/app/services/sale.service';
 
+import { FormatarDataService } from 'src/app/services/formatar-data.service';
+
 @Component({
   selector: 'app-venda',
   templateUrl: './venda.page.html',
@@ -13,52 +15,32 @@ import { SaleService } from 'src/app/services/sale.service';
 })
 export class VendaPage implements OnInit {
 
-  vendas: { 
+  vendas: {
     id_cliente: number,
     id_produto: number,
     id_funcionario: number,
 
-    quantidade: number, 
-    data_venda: Date, 
-    valor_total: number, 
+    nome_cliente: string,
+    nome_produto: string,
+    nome_funcionario: string,
+
+    quantidade: number,
+    data_venda: Date,
+    valor_total: number,
   }[] = [];
 
-  vendasFiltradas: { 
+  vendasFiltradas: {
     id_cliente: number,
     id_produto: number,
     id_funcionario: number,
-    quantidade: number, 
-    data_venda: Date, 
-    valor_total: number, 
-  }[] = [];
 
-  clientes: { 
-    nome: string, 
-    cnpj: string, 
-    email: string, 
-    telefone: string, 
-    produto: string, 
-    endereco: string, 
-    id: number 
-  }[] = [];
+    nome_cliente: string,
+    nome_produto: string,
+    nome_funcionario: string,
 
-  funcionarios: { 
-    nome: string, 
-    cpf: string, 
-    email: string,
-    telefone: string,
-    cargo: string,
-    endereco: string, 
-    id: number 
-  }[] = []
-
-  produtos: {
-    id: number;
-    nome: string,
-    descricao: string,
-    categoria: string,
-    preco: number,
-    images: string[] 
+    quantidade: number,
+    data_venda: Date,
+    valor_total: number,
   }[] = [];
 
   constructor(
@@ -67,23 +49,24 @@ export class VendaPage implements OnInit {
     private loadingController: LoadingController,
     private toastController: ToastController,
     private saleService: SaleService,
-    private productsService: ProductService,
-    private clientService: ClientService,
-    private employeeService: EmployeeService
+    private formatarDataService: FormatarDataService
   ) { }
+
+
 
   ngOnInit() {
     this.saleService.getObservableSales().subscribe(isUpdated => {
-      this.getSales();
+      this.getSalesGetFullSaleDetails();
     });
 
-    this.getSales();
-    this.getClients();
-    this.getEmployees();
-    this.getProducts();
+    this.getSalesGetFullSaleDetails();
   }
 
-  async getSales() {
+  formatarData(data: Date): string {
+    return this.formatarDataService.formatarData(data)
+  }
+
+  async getSalesGetFullSaleDetails() {
     const loading = await this.loadingController.create({
       message: 'Carregando vendas...',
       spinner: 'crescent',
@@ -92,11 +75,11 @@ export class VendaPage implements OnInit {
 
     await loading.present();
 
-    this.saleService.getSales().subscribe({
+    this.saleService.GetFullSaleDetails().subscribe({
       next: (response: any) => {
         this.vendas = response;
         console.log('this.vendas', this.vendas);
-        
+
         loading.dismiss();
       },
       error: (error: any) => {
@@ -165,37 +148,4 @@ export class VendaPage implements OnInit {
 
     await toast.present();
   }
-
-  async getClients() {
-    this.clientService.getClients().subscribe({
-      next: (response: any) => {
-        this.clientes = response
-      },
-      error: (error: any) => {
-      }
-    })
-  }
-
-  async getEmployees() {
-    this.employeeService.getEmployees().subscribe({
-      next: (response: any) => {
-        this.funcionarios = response
-      },
-      error: (error: any) => {
-
-      }
-    })
-  }
-
-  async getProducts() {
-    this.productsService.getProducts().subscribe({
-      next: (response: any) => {
-        this.produtos = response
-      },
-      error: (error: any) => {
-
-      }
-    })
-  }
-
 }
