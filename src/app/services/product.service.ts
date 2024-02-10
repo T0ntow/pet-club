@@ -41,6 +41,11 @@ export class ProductService {
     return this.http.get('http://localhost:5000/pegar-produtos')
   }
 
+  getProductById(id: string) {
+    return this.http.get(`http://localhost:5000/pegar-produto/${id}`)
+  }
+
+
   deleteProduct(id: number) {
     return this.http.delete(`http://localhost:5000/produtos/${id}`)
   }

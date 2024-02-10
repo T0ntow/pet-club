@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { LoadingController, ToastController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { LoadingController, NavController, ToastController } from '@ionic/angular';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
@@ -23,9 +24,9 @@ export class ProductComponent implements OnInit {
   constructor(
     private productService: ProductService,
     private loadingController: LoadingController,
+    public navCtrl: NavController,
+    private router: Router
   ) { }
-
-  
 
   ngOnInit() {
     this.productService.getObservableProducts().subscribe(isUpdated => {
@@ -33,6 +34,11 @@ export class ProductComponent implements OnInit {
     });
 
     this.getProducts();
+  }
+  
+  verDetalhes(produto: any) {
+    const id = produto.id
+    this.router.navigate(['/produto', id]);
   }
 
   async getProducts() {
@@ -47,7 +53,6 @@ export class ProductComponent implements OnInit {
     this.productService.getProducts().subscribe({
       next: (response: any) => {
         this.produtos = response;
-
         response.forEach((produto: any) => {
             this.getImages(produto)
         });
@@ -64,7 +69,6 @@ export class ProductComponent implements OnInit {
       next: (response: any) => {
         console.log('Imagens recuperadas com sucesso:', response);
         produto.images = response; 
-        this.isLoading = false
       },
       error: (error: any) => {
         console.error('Falha ao recuperar imagens:', error);
