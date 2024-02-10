@@ -15,6 +15,7 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { provideFirebaseApp } from '@angular/fire/app';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { initializeApp } from 'firebase/app';
+
 initializeApp(environment.firebase)
 
 @NgModule({
