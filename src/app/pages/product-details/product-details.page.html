@@ -1,6 +1,5 @@
 <ion-content padding>
   <main *ngIf="produto; else naoEncontrado">
-
     <div class="carousel">
       <ion-list>
         <ion-item lines="none" *ngFor="let image of produto.images">
@@ -59,10 +58,10 @@
     </div>
   </main>
 
-  <ng-template #naoEncontrado>
-    <ion-card *ngIf="!produto" color="danger">
+  <ng-template  #naoEncontrado>
+    <ion-card style="margin-top: 150px;" *ngIf="!produto" color="danger">
       <ion-card-header>
-        <ion-card-subtitle>Nenhum Produto encontrado</ion-card-subtitle>
+        <ion-card-title>Nenhum Produto encontrado</ion-card-title>
       </ion-card-header>
     </ion-card>
   </ng-template>
