@@ -40,7 +40,6 @@ ion-content {
         #app-product {
             display: flex;
             flex-direction: row;
-            justify-content: space-around;
 
             @media screen and (max-width: 950px) {
                 display: flex;

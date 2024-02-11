@@ -32,32 +32,30 @@ ion-card {
             font-weight: bolder;
             margin: 50px 0;
         }
-    }
-
-    .functions-box {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        width: 100%;
-        padding: 10px;
-
-        position: absolute;
-        bottom: 15px;
-        ion-icon {
-            width: 35px;
-            height: 35px;
-            color: #000;
-            cursor: pointer;
-        }
-
-        ion-icon[name="heart"]:hover {
-            transition: 0.2s;
-            color: rgb(255, 85, 85);
-        }
-
-        ion-icon[name="cart"]:hover {
-            transition: 0.2s;
-            color: rgb(85, 147, 255);
+        .functions-box {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            width: 100%;
+            padding: 10px;
+            
+            ion-icon {
+                width: 35px;
+                height: 35px;
+                color: #000;
+                cursor: pointer;
+            }
+    
+            ion-icon[name="heart"]:hover {
+                transition: 0.2s;
+                color: rgb(255, 85, 85);
+            }
+    
+            ion-icon[name="cart"]:hover {
+                transition: 0.2s;
+                color: rgb(85, 147, 255);
+            }
         }
     }
+
 }
