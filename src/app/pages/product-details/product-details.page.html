@@ -1,29 +1,63 @@
 <ion-content padding>
-  <ion-card  *ngIf="produto; else naoEncontrado">
-    <div style="background-color: var(--ion-color-secondary); padding: 10px; display: flex; align-items: center; gap: 10px;">
-      <ion-img *ngFor="let image of produto.images" [src]="image" alt="Imagem do Produto" style="width: 50px; height: 50px;"></ion-img>
-    </div>
-    <ion-img [src]="produto.images[0]" style="width: 250px; height: 250px;"></ion-img>
+  <main *ngIf="produto; else naoEncontrado">
 
-    <ion-card-header>
-      <ion-card-subtitle>{{ produto.categoria }}</ion-card-subtitle>
-      <ion-card-title>{{ produto.nome }}</ion-card-title>
-    </ion-card-header>
-
-    <ion-card-content>
+    <div class="carousel">
       <ion-list>
-        <ion-item>
-          <ion-label position="stacked">Preço</ion-label>
-          <ion-text>{{ produto.preco | currency:'BRL' }}</ion-text>
-        </ion-item>
-
-        <ion-item>
-          <ion-label position="stacked">Descrição</ion-label>
-          <ion-text>{{ produto.descricao }}</ion-text>
+        <ion-item lines="none" *ngFor="let image of produto.images">
+          <img [src]="image" alt="">
         </ion-item>
       </ion-list>
-    </ion-card-content>
-  </ion-card>
+
+      <div class="image-focus">
+        <img [src]="produto.images[0]" alt="">
+      </div>
+    </div>
+
+    <div class="product-details">
+      <h1>
+        {{produto.nome}}
+      </h1>
+
+      <div>
+        <p>Categoria: <span> {{produto.categoria}}</span></p>
+
+        <div class="stars">
+          <ion-icon name="star"></ion-icon>
+          <ion-icon name="star"></ion-icon>
+          <ion-icon name="star"></ion-icon>
+          <ion-icon name="star"></ion-icon>
+          <ion-icon name="star-outline"></ion-icon>
+
+          <p>(53)</p>
+        </div>
+      </div>
+
+      <h4>Produto Disponivel</h4>
+
+      <div id="buy">
+        <div id="price">
+          <h2> {{produto.preco | currency:'BRL'}}</h2>
+          <div>
+            <span>Em até x vezes sem juros </span>
+            <a href="" style="margin: 0 5px;">ver parcelas</a>
+          </div>
+        </div>
+
+        <button>
+          <ion-icon name="cart"></ion-icon>
+          <div>
+            <p>Comprar</p>
+            <span>adicionar ao carrinho</span>
+          </div>
+        </button>
+      </div>
+
+      <h3>Descrição</h3>
+
+      <p> {{produto.descricao}} </p>
+
+    </div>
+  </main>
 
   <ng-template #naoEncontrado>
     <ion-card *ngIf="!produto" color="danger">
