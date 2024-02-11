@@ -1,14 +1,30 @@
-<ion-content padding>
-  <main *ngIf="produto">
+<ion-content>
+  @if (produto) {
+  <main>
     <div class="carousel">
-      <ion-list>
-        <ion-item lines="none" *ngFor="let image of produto.images">
-          <img [src]="image" alt="">
-        </ion-item>
+      <ion-list class="gallery-thumbs">
+
+        @for (image of produto.images; track image) {
+          <ion-item lines="none" (click)="changeSwiperIndex(image)">
+            <img [src]="image" alt="">
+          </ion-item>
+        }
+
       </ion-list>
 
-      <div class="image-focus">
-        <img [src]="produto.images[0]" alt="">
+      <div class="image-focus gallery-top" >
+        <swiper-container #swiper class="swiper-container" id="mySwiper" (slidechange)="swiperSlideChange($event)"
+        [parallax]="true" [loop]="true" (afterInit)="swiperReady()" [navigation]="isMobile"> 
+
+          @for (image of produto.images; track image) {
+            <swiper-slide>
+              <ion-item>
+                <img [src]="image" alt="">
+              </ion-item>
+            </swiper-slide>
+          }
+          <div class="swiper-button-next swiper-button-white"></div>
+        </swiper-container>
       </div>
     </div>
 
@@ -54,7 +70,7 @@
       <h3>Descrição</h3>
 
       <p> {{produto.descricao}} </p>
-
     </div>
   </main>
+  }
 </ion-content>

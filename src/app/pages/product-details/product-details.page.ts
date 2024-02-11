@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, map } from 'rxjs';
 import { ProductService } from 'src/app/services/product.service';
+import Swiper from 'swiper';
 
 @Component({
   selector: 'app-product-details',
@@ -10,10 +10,13 @@ import { ProductService } from 'src/app/services/product.service';
 })
 export class ProductDetailsPage implements OnInit {
   produto: any; // Variável para armazenar os detalhes do produto
+  swiper?: Swiper;
+  @ViewChild('swiper') swiperElement: ElementRef | undefined;
+  isMobile: boolean = false;
 
   constructor(private route: ActivatedRoute, private productService: ProductService) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void {  
     this.getDetalhesProduto();
   }
 
@@ -22,7 +25,7 @@ export class ProductDetailsPage implements OnInit {
 
     this.productService.getProductById(id!).subscribe({
       next: (produto) => {
-        if(produto) {
+        if (produto) {
           this.produto = produto;
           this.getImages(produto)
         }
@@ -38,10 +41,10 @@ export class ProductDetailsPage implements OnInit {
     this.productService.getImagesFromProduct(produto.id).subscribe({
       next: (response: any) => {
         console.log('Imagens recuperadas com sucesso:', response);
-        this.produto.images = response; 
+        this.produto.images = response;
 
         console.log("this.produto", this.produto);
-        
+
       },
       error: (error: any) => {
         console.error('Falha ao recuperar imagens:', error);
@@ -49,4 +52,18 @@ export class ProductDetailsPage implements OnInit {
     });
   }
 
+  swiperReady() {
+    this.swiper = this.swiperElement?.nativeElement.swiper;
+  }
+
+  swiperSlideChange(e: any) {
+    console.log("changed", e);
+  }
+
+  changeSwiperIndex(image: any) {
+    const index = this.produto.images.indexOf(image);
+    console.log(index);
+  
+    this.swiperElement?.nativeElement.swiper.slideTo(index);
+  }
 }

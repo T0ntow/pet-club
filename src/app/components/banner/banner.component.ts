@@ -37,14 +37,14 @@ export class BannerComponent  implements OnInit {
     this.swiper?.slidePrev();
   }
 
+  swiperSlideChange(e: any) {
+    console.log("changed", e);
+  }
   selectedProject: string = "projeto1";
   toggleProject(project: string) {
     this.selectedProject = project;
   }
 
-  swiperSlideChange(e: any) {
-    console.log("changed", e);
-  }
 
   imagesWallet = [
     '/assets/images/wallet-tablet-celular.png',

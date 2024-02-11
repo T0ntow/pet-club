@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -15,6 +15,9 @@ import { ProductDetailsPage } from './product-details.page';
     IonicModule,
     ProductDetailsPageRoutingModule
   ],
-  declarations: [ProductDetailsPage]
+  declarations: [ProductDetailsPage],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
+  ]
 })
 export class ProductDetailsPageModule {}
