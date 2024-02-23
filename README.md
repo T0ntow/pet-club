@@ -22,7 +22,7 @@ npm install -g @angular/cli
 ## Instalação
 1. Clone este repositório:
 ```
-git clone https://github.com/seu-usuario/nome-do-projeto.git
+git clone https://github.com/T0ntow/pet-club.git
 ```
 
 3. Navegue até o diretório do projeto:
