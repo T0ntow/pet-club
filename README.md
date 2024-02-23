@@ -34,9 +34,18 @@ npm install
 ```
 
 ## Executando o Projeto
+Execute o projeto em um ambiente de desenvolvimento local:
+```
+ionic serve
+```
+
+### Build
+Para criar uma versão de produção do aplicativo, execute:
 ```
 ionic build --prod
 ```
+
+
 
 
 
