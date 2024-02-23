@@ -35,7 +35,7 @@ npm install
 
 ## Executando o Projeto
 ```
-### ionic build --prod
+ionic build --prod
 ```
 
 
