@@ -1,3 +1,47 @@
-<p>
-  editar-fornecedor works!
-</p>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Atualizar Fornecedor</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="fecharModal()" id="cancel-button">
+        <ion-icon name="close"></ion-icon>
+        <p>cancelar</p>
+      </ion-button>
+
+      <ion-button (click)="salvarAlteracoes()" id="save-button">
+        <ion-icon name="checkmark-outline"></ion-icon>
+        <p>Atualizar</p>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="updateSupplierForm">
+    <ion-item>
+      <ion-input name="nome" type="text" label="Nome da empresa *" labelPlacement="floating" formControlName="nomeEmpresa"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input name="email" type="email" label="Email de contato *" labelPlacement="floating" formControlName="email"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input name="cnpj" type="text" label="CNPJ *" labelPlacement="floating" formControlName="cnpj"
+      [maskito]="maskitoCNPJ"
+      ></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input name="representante" type="text" label="Representante *" labelPlacement="floating" formControlName="representante"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input name="telefone" type="tel" label="Telefone *" labelPlacement="floating" formControlName="telefone"
+      [maskito]="maskitoNumber"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input name="endereco" type="tel" label="Endereço *" labelPlacement="floating" formControlName="endereco"></ion-input>
+    </ion-item>
+   
+  </form>
+</ion-content>

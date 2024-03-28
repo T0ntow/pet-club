@@ -38,11 +38,11 @@
       </ion-row>
 
       <ion-row *ngFor="let fornecedor of fornecedoresFiltrados">
-        <ion-col>{{ fornecedor.nome_empresa }}</ion-col>
+        <ion-col>{{ fornecedor.nome }}</ion-col>
         <ion-col>{{ formatarCnpj(fornecedor.cnpj) }}</ion-col>
         <ion-col>{{ fornecedor.representante }}</ion-col>
         <ion-col>{{ fornecedor.email }}</ion-col>
-        <ion-col>{{ formatarTelefone(fornecedor.telefone) }}</ion-col>
+        <ion-col>{{ formatarTelefone(fornecedor.fone) }}</ion-col>
 
 
         <ion-col class="ion-text-right" class="functions-col">
@@ -51,7 +51,7 @@
                   <ion-icon name="trash"></ion-icon>
                   <p>Remover</p>
               </ion-button>
-              <ion-button class="alterar" (click)="alterarFornecedor(fornecedor)">
+              <ion-button class="alterar" (click)="atualizarFornecedor(fornecedor)">
                   <ion-icon name="create"></ion-icon>
                   <p>Atualizar</p>
               </ion-button>

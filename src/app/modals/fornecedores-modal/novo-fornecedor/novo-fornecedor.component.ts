@@ -5,11 +5,7 @@ import { ToastController } from '@ionic/angular';
 import { SupplierService } from 'src/app/services/supplier.service';
 import { FormBuilder } from '@angular/forms';
 
-// import { MaskitoDirective } from '@maskito/angular';
-import { MaskitoElementPredicate } from '@maskito/core';
-import { maskitoCNPJ } from '../../../mask'
-import { maskitoNumber } from '../../../mask'
-
+import { maskitoCNPJ, maskitoNumber } from '../../../mask'
 
 @Component({
   selector: 'app-novo-fornecedor',
@@ -19,14 +15,9 @@ import { maskitoNumber } from '../../../mask'
 })
 
 export class NovoFornecedorComponent implements OnInit {
-  readonly maskitoRejectCNPJ = maskitoCNPJ;
-  readonly maskitoRejectNumber = maskitoNumber;
+  readonly maskitoCNPJ = maskitoCNPJ;
+  readonly maskitoNumber = maskitoNumber;
 
-  readonly maskPredicate: MaskitoElementPredicate = async (el) => (el as HTMLIonInputElement).getInputElement();
-
-  maskitoRejectEvent() {
-    console.log("maskitoReject");
-  }
 
   newSupplierForm: FormGroup;
 
@@ -46,14 +37,13 @@ export class NovoFornecedorComponent implements OnInit {
     })
   }
 
-
   ngOnInit() { }
 
   fecharModal() {
     this.modalCtrl.dismiss();
   }
   
-  cleanCnpj(cnpj: string): string {
+  removeNonDigits(cnpj: string): string {
     return cnpj.replace(/[^\d]/g, '');
   }
 
@@ -61,11 +51,8 @@ export class NovoFornecedorComponent implements OnInit {
     const supplierData = this.newSupplierForm.value;
 
     if (this.newSupplierForm.valid) {
-      const newCnpj = this.cleanCnpj(this.newSupplierForm.get('cnpj')!.value);
-      const newPhone = this.cleanCnpj(this.newSupplierForm.get('telefone')!.value);
-  
-      supplierData.cnpj = newCnpj;
-      supplierData.telefone = newPhone;
+      supplierData.cnpj = this.removeNonDigits(this.newSupplierForm.get('cnpj')!.value);
+      supplierData.telefone = this.removeNonDigits(this.newSupplierForm.get('telefone')!.value);
 
       this.supplierService.newSupplier(supplierData).subscribe({
         next: async (response: any) => {

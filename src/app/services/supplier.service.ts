@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { HttpService } from './httpSevice.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +11,11 @@ export class SupplierService {
   private observerEmployee = new Subject()
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private httpService: HttpService
   ) { }
+
+  port = this.httpService.httpPort;
 
   getObservableSuppliers() {
     return this.observerEmployee.asObservable()
@@ -21,15 +25,19 @@ export class SupplierService {
     this.observerEmployee.next(true)
   }
 
-  newSupplier(employeeData: any) {
-    return this.http.post('http://localhost:5000/novo-fornecedor', employeeData)
+  newSupplier(supplierData: any) {
+    return this.http.post(`${this.port}/novo-fornecedor`, supplierData)
   }
 
   getSuppliers() {
-    return this.http.get('http://localhost:5000/pegar-fornecedores')
+    return this.http.get(`${this.port}/pegar-fornecedores`)
   }
 
-  deleteSupplier(id: number) {
-    return this.http.delete(`http://localhost:5000/fornecedores/${id}`)
+  deleteSupplier(cnpj: number) {
+    return this.http.delete(`${this.port}/deletar-fornecedor/${cnpj}`)
+  }
+
+  updateSupplier(supplierData: any) {
+    return this.http.put(`${this.port}/atualizar-fornecedor/${supplierData.cnpj}`, supplierData)
   }
 }

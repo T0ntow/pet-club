@@ -10,6 +10,7 @@ import { NovoFornecedorComponent } from 'src/app/modals/fornecedores-modal/novo-
 import { ReactiveFormsModule } from '@angular/forms';
 
 import {MaskitoModule} from '@maskito/angular'
+import { EditarFornecedorComponent } from 'src/app/modals/fornecedores-modal/editar-fornecedor/editar-fornecedor.component';
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import {MaskitoModule} from '@maskito/angular'
   ],
   declarations: [
     FornecedoresPage,
-    NovoFornecedorComponent]
+    NovoFornecedorComponent,
+    EditarFornecedorComponent]
 })
 export class FornecedoresPageModule {}

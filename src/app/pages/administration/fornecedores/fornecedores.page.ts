@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NovoFornecedorComponent } from 'src/app/modals/fornecedores-modal/novo-fornecedor/novo-fornecedor.component';
 import { LoadingController, ToastController, AlertController, ModalController } from '@ionic/angular';
 import { SupplierService } from 'src/app/services/supplier.service';
+import { EditarFornecedorComponent } from 'src/app/modals/fornecedores-modal/editar-fornecedor/editar-fornecedor.component';
 
 
 @Component({
@@ -12,10 +13,10 @@ import { SupplierService } from 'src/app/services/supplier.service';
 export class FornecedoresPage implements OnInit {
 
   // Atualize o modelo do fornecedor
-  fornecedores: { cnpj: string, email: string, endereco: string, nome_empresa: string, representante: string, telefone: string, id: number }[] = [];
+  fornecedores: { cnpj: string, email: string, endereco: string, nome: string, representante: string, fone: string, id: number }[] = [];
   searchTerm: string = '';
 
-  fornecedoresFiltrados: { cnpj: string, email: string, endereco: string, nome_empresa: string, representante: string, telefone: string, id: number }[] = [];
+  fornecedoresFiltrados: { cnpj: string, email: string, endereco: string, nome: string, representante: string, fone: string, id: number }[] = [];
   temFornecedor: boolean = true;
 
   constructor(
@@ -31,14 +32,12 @@ export class FornecedoresPage implements OnInit {
   }
   
   formatarTelefone(telefone: string): string {
-    const regex = /^(\d{2})(\d{1})(\d{4})(\d{4})$/;
-    const telefoneFormatado = telefone.replace(regex, "($1) $2 $3-$4");
-    return telefoneFormatado;
+    return telefone.replace(/^(\d{2})(\d{1})(\d{4})(\d{4})$/, "($1) $2 $3-$4");
   }
   
   searchSupplier() {
     this.fornecedoresFiltrados = this.fornecedores.filter(fornecedor =>
-      fornecedor.representante.toLowerCase().includes(this.searchTerm) || fornecedor.nome_empresa.toLowerCase().includes(this.searchTerm)
+      fornecedor.representante.toLowerCase().includes(this.searchTerm) || fornecedor.nome.toLowerCase().includes(this.searchTerm)
     );
 
     if (this.fornecedoresFiltrados.length === 0) {
@@ -84,7 +83,9 @@ export class FornecedoresPage implements OnInit {
   }
 
   deleteSupplier(fornecedor: any) {
-    this.supplierService.deleteSupplier(fornecedor.id).subscribe({
+    console.log("fornecedor", fornecedor);
+    
+    this.supplierService.deleteSupplier(fornecedor.cnpj).subscribe({
       next: async (response: any) => {
         await this.presentToast('Fornecedor removido com sucesso', 'success');
         this.supplierService.updateObservableSuppliers();
@@ -95,18 +96,17 @@ export class FornecedoresPage implements OnInit {
     });
   }
 
-  // Atualize o método alterarFuncionario para alterarFornecedor
-  async alterarFornecedor(fornecedor: any) {
-    // const modal = await this.modalCtrl.create({
-    //   component: EditarFornecedorComponent,
-    //   componentProps: { fornecedor: fornecedor },
-    // });
+  async atualizarFornecedor(fornecedor: any) {
+    const modal = await this.modalCtrl.create({
+      component: EditarFornecedorComponent,
+      componentProps: { fornecedor: fornecedor },
+    });
 
-    // modal.onDidDismiss().then((data) => {
-    //   console.log('Dados do fornecedor atualizados:', data.data);
-    // });
+    modal.onDidDismiss().then((data) => {
+      console.log('Dados do fornecedor atualizados:', data.data);
+    });
 
-    // return await modal.present();
+    return await modal.present();
   }
 
   async adicionarFornecedor() {
