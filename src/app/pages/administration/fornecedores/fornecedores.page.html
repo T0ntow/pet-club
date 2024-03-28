@@ -18,7 +18,7 @@
       </div>
 
       <button id="add" (click)="adicionarFornecedor()">
-        <p>Cadastrar Funcionário</p>
+        <p>Cadastrar Fornecedor</p>
       </button>
     </div>
 
@@ -28,6 +28,8 @@
         <ion-col>CNPJ</ion-col>
         <ion-col>Representante</ion-col>
         <ion-col>E-mail</ion-col>
+        <ion-col>Telefone</ion-col>
+
         <ion-col class="functions-col">Funções</ion-col>
       </ion-row>
 
@@ -37,9 +39,11 @@
 
       <ion-row *ngFor="let fornecedor of fornecedoresFiltrados">
         <ion-col>{{ fornecedor.nome_empresa }}</ion-col>
-        <ion-col>{{ fornecedor.cnpj }} </ion-col>
+        <ion-col>{{ formatarCnpj(fornecedor.cnpj) }}</ion-col>
         <ion-col>{{ fornecedor.representante }}</ion-col>
         <ion-col>{{ fornecedor.email }}</ion-col>
+        <ion-col>{{ formatarTelefone(fornecedor.telefone) }}</ion-col>
+
 
         <ion-col class="ion-text-right" class="functions-col">
           <ion-buttons>
@@ -53,7 +57,6 @@
               </ion-button>
           </ion-buttons>
       </ion-col>
-      
 
       </ion-row>
     </ion-grid>

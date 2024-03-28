@@ -3,6 +3,7 @@ import { NovoFornecedorComponent } from 'src/app/modals/fornecedores-modal/novo-
 import { LoadingController, ToastController, AlertController, ModalController } from '@ionic/angular';
 import { SupplierService } from 'src/app/services/supplier.service';
 
+
 @Component({
   selector: 'app-fornecedores',
   templateUrl: './fornecedores.page.html',
@@ -17,15 +18,24 @@ export class FornecedoresPage implements OnInit {
   fornecedoresFiltrados: { cnpj: string, email: string, endereco: string, nome_empresa: string, representante: string, telefone: string, id: number }[] = [];
   temFornecedor: boolean = true;
 
-  // Atualize o serviço de fornecedores
   constructor(
     private alertController: AlertController,
     private modalCtrl: ModalController,
-    private supplierService: SupplierService, // Você precisa criar um serviço para fornecedores ou ajustar o existente
+    private supplierService: SupplierService,
     private loadingController: LoadingController,
     private toastController: ToastController,
   ) { }
 
+  formatarCnpj(cnpj: string): string {
+    return cnpj.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
+  }
+  
+  formatarTelefone(telefone: string): string {
+    const regex = /^(\d{2})(\d{1})(\d{4})(\d{4})$/;
+    const telefoneFormatado = telefone.replace(regex, "($1) $2 $3-$4");
+    return telefoneFormatado;
+  }
+  
   searchSupplier() {
     this.fornecedoresFiltrados = this.fornecedores.filter(fornecedor =>
       fornecedor.representante.toLowerCase().includes(this.searchTerm) || fornecedor.nome_empresa.toLowerCase().includes(this.searchTerm)
@@ -38,7 +48,6 @@ export class FornecedoresPage implements OnInit {
     }
   }
 
-  // Atualize o método ngOnInit para chamar getSuppliers
   ngOnInit() {
     this.supplierService.getObservableSuppliers().subscribe(isUpdated => {
       this.getSuppliers();
@@ -47,7 +56,6 @@ export class FornecedoresPage implements OnInit {
     this.getSuppliers();
   }
 
-  // Atualize o método getEmployees para getSuppliers
   async getSuppliers() {
     const loading = await this.loadingController.create({
       message: 'Carregando fornecedores...',
@@ -71,12 +79,10 @@ export class FornecedoresPage implements OnInit {
     });
   }
 
-  // Atualize o método removerfornecedor para removerFornecedor
   removerFornecedor(fornecedor: any) {
     this.presentAlertRemove(fornecedor);
   }
 
-  // Atualize o método deleteEmployee para deleteSupplier
   deleteSupplier(fornecedor: any) {
     this.supplierService.deleteSupplier(fornecedor.id).subscribe({
       next: async (response: any) => {
@@ -103,7 +109,6 @@ export class FornecedoresPage implements OnInit {
     // return await modal.present();
   }
 
-  // Atualize o método adicionarFuncionario para adicionarFornecedor
   async adicionarFornecedor() {
     const modal = await this.modalCtrl.create({
       component: NovoFornecedorComponent,

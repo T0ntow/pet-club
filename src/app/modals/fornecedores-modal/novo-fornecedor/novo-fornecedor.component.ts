@@ -1,16 +1,33 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
 import { SupplierService } from 'src/app/services/supplier.service';
 import { FormBuilder } from '@angular/forms';
 
+// import { MaskitoDirective } from '@maskito/angular';
+import { MaskitoElementPredicate } from '@maskito/core';
+import { maskitoCNPJ } from '../../../mask'
+import { maskitoNumber } from '../../../mask'
+
+
 @Component({
   selector: 'app-novo-fornecedor',
   templateUrl: './novo-fornecedor.component.html',
   styleUrls: ['./novo-fornecedor.component.scss'],
+
 })
+
 export class NovoFornecedorComponent implements OnInit {
+  readonly maskitoRejectCNPJ = maskitoCNPJ;
+  readonly maskitoRejectNumber = maskitoNumber;
+
+  readonly maskPredicate: MaskitoElementPredicate = async (el) => (el as HTMLIonInputElement).getInputElement();
+
+  maskitoRejectEvent() {
+    console.log("maskitoReject");
+  }
+
   newSupplierForm: FormGroup;
 
   constructor(
@@ -21,23 +38,35 @@ export class NovoFornecedorComponent implements OnInit {
   ) {
     this.newSupplierForm = this.formBuilder.group({
       nomeEmpresa: ['', [Validators.required]],
-      email: ['', [Validators.required]],
-      cnpj: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      cnpj: ['', [Validators.required, Validators.minLength(18)]],
       representante: ['', [Validators.required]],
-      telefone: ['', [Validators.required]],
+      telefone: ['', [Validators.required, Validators.minLength(16)]],
       endereco: ['', [Validators.required]],
     })
   }
+
+
   ngOnInit() { }
 
   fecharModal() {
     this.modalCtrl.dismiss();
+  }
+  
+  cleanCnpj(cnpj: string): string {
+    return cnpj.replace(/[^\d]/g, '');
   }
 
   async salvarAlteracoes() {
     const supplierData = this.newSupplierForm.value;
 
     if (this.newSupplierForm.valid) {
+      const newCnpj = this.cleanCnpj(this.newSupplierForm.get('cnpj')!.value);
+      const newPhone = this.cleanCnpj(this.newSupplierForm.get('telefone')!.value);
+  
+      supplierData.cnpj = newCnpj;
+      supplierData.telefone = newPhone;
+
       this.supplierService.newSupplier(supplierData).subscribe({
         next: async (response: any) => {
           this.supplierService.updateObservableSuppliers();
