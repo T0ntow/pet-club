@@ -1,15 +1,17 @@
 <ion-card *ngFor="let produto of produtos" (click)="verDetalhes(produto)">
-  <ion-card-header>
-    <img [src]="produto.images[0]" alt="Imagem do Produto">
-  </ion-card-header>
-
-  <ion-card-content>
-    <ion-card-title class="title">{{ produto.nome }}</ion-card-title>
-    <p class="price">{{ produto.preco | currency:'BRL':'symbol':'1.2-2' }}</p>
-
-    <div class="functions-box">
-      <ion-icon name="heart" (click)="amei(produto)"></ion-icon>
-      <ion-icon name="cart" (click)="adicionarAoCarrinho(produto)"></ion-icon>
-    </div>
-  </ion-card-content>
-</ion-card>
+    @if (produto.images) {
+    <ion-card-header>
+      <img  [src]="produto.images[0]" alt="Imagem do Produto">
+    </ion-card-header>
+  
+    <ion-card-content>
+      <ion-card-title class="title">{{ produto.nome }}</ion-card-title>
+      <p class="price">{{ produto.preco | currency:'BRL':'symbol':'1.2-2' }}</p>
+  
+      <div class="functions-box">
+        <ion-icon name="heart" (click)="amei(produto)"></ion-icon>
+        <ion-icon name="cart" (click)="adicionarAoCarrinho(produto)"></ion-icon>
+      </div>
+    </ion-card-content>
+  }
+  </ion-card>

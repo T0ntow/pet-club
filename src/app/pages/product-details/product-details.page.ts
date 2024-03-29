@@ -8,6 +8,7 @@ import Swiper from 'swiper';
   templateUrl: './product-details.page.html',
   styleUrls: ['./product-details.page.scss'],
 })
+
 export class ProductDetailsPage implements OnInit {
   produto: any; // Variável para armazenar os detalhes do produto
   swiper?: Swiper;
@@ -16,29 +17,31 @@ export class ProductDetailsPage implements OnInit {
 
   constructor(private route: ActivatedRoute, private productService: ProductService) { }
 
-  ngOnInit(): void {  
+  ngOnInit(): void {
     this.getDetalhesProduto();
   }
 
   getDetalhesProduto(): void {
     const id = this.route.snapshot.paramMap.get('id'); // Obtém o ID do produto da rota
 
-    this.productService.getProductById(id!).subscribe({
-      next: (produto) => {
-        if (produto) {
-          this.produto = produto;
-          this.getImages(produto)
+    if (id) {
+      this.productService.getProductById(id).subscribe({
+        next: (produto) => {
+          if (produto) {
+            this.produto = produto;
+            this.getImages(produto)
+          }
+        },
+        error: (error) => {
+          console.error('Erro ao obter detalhes do produto:', error);
         }
-      },
-      error: (error) => {
-        console.error('Erro ao obter detalhes do produto:', error);
       }
+      );
     }
-    );
   }
 
   getImages(produto: any) {
-    this.productService.getImagesFromProduct(produto.id).subscribe({
+    this.productService.getImagesFromProduct(produto.cod).subscribe({
       next: (response: any) => {
         console.log('Imagens recuperadas com sucesso:', response);
         this.produto.images = response;
@@ -63,7 +66,7 @@ export class ProductDetailsPage implements OnInit {
   changeSwiperIndex(image: any) {
     const index = this.produto.images.indexOf(image);
     console.log(index);
-  
+
     this.swiperElement?.nativeElement.swiper.slideTo(index);
   }
 }

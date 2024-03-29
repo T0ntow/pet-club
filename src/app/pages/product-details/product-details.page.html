@@ -14,7 +14,7 @@
 
       <div class="image-focus gallery-top" >
         <swiper-container #swiper class="swiper-container" id="mySwiper" (slidechange)="swiperSlideChange($event)"
-        [parallax]="true" [loop]="true" (afterInit)="swiperReady()" [navigation]="isMobile"> 
+        (afterInit)="swiperReady()"> 
 
           @for (image of produto.images; track image) {
             <swiper-slide>
