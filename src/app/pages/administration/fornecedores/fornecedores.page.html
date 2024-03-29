@@ -11,7 +11,8 @@
   <main>
     <div>
       <div class="search-box">
-        <input type="text" [(ngModel)]="searchTerm" placeholder="Pesquisar" class="custom-searchbar" (change)="searchSupplier()">
+        <input type="text" [(ngModel)]="searchTerm" placeholder="Pesquisar" class="custom-searchbar"
+          (change)="searchSupplier()">
         <button (click)="searchSupplier()">
           <ion-icon name="search-outline"></ion-icon>
         </button>
@@ -33,32 +34,36 @@
         <ion-col class="functions-col">Funções</ion-col>
       </ion-row>
 
-      <ion-row *ngIf="!temFornecedor" >
-        <ion-col style="background-color: var(--ion-color-danger);">Nenhum Fornecedor Encontrado</ion-col>
+      @if (!temFornecedor) {
+      <ion-row>
+        <ion-col style="background-color: var(--ion-color-danger);">Nada Encontrado</ion-col>
       </ion-row>
+      }
 
-      <ion-row *ngFor="let fornecedor of fornecedoresFiltrados">
+      @for(fornecedor of fornecedoresFiltrados; track fornecedor.cnpj) {
+      <ion-row>
         <ion-col>{{ fornecedor.nome }}</ion-col>
         <ion-col>{{ formatarCnpj(fornecedor.cnpj) }}</ion-col>
         <ion-col>{{ fornecedor.representante }}</ion-col>
         <ion-col>{{ fornecedor.email }}</ion-col>
         <ion-col>{{ formatarTelefone(fornecedor.fone) }}</ion-col>
 
-
         <ion-col class="ion-text-right" class="functions-col">
           <ion-buttons>
-              <ion-button class="remover" (click)="deleteSupplier(fornecedor)">
-                  <ion-icon name="trash"></ion-icon>
-                  <p>Remover</p>
-              </ion-button>
-              <ion-button class="alterar" (click)="atualizarFornecedor(fornecedor)">
-                  <ion-icon name="create"></ion-icon>
-                  <p>Atualizar</p>
-              </ion-button>
+            <ion-button class="remover" (click)="deleteSupplier(fornecedor)">
+              <ion-icon name="trash"></ion-icon>
+              <p>Remover</p>
+            </ion-button>
+            <ion-button class="alterar" (click)="atualizarFornecedor(fornecedor)">
+              <ion-icon name="create"></ion-icon>
+              <p>Atualizar</p>
+            </ion-button>
           </ion-buttons>
-      </ion-col>
+        </ion-col>
 
       </ion-row>
+      }
+
     </ion-grid>
   </main>
 </ion-content>
