@@ -15,7 +15,7 @@ export class SupplierService {
     private httpService: HttpService
   ) { }
 
-  port = this.httpService.httpPort;
+  port = this.httpService.getPort();
 
   getObservableSuppliers() {
     return this.observerEmployee.asObservable()

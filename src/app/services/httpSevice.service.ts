@@ -7,7 +7,7 @@ export class HttpService {
 
   constructor() { }
 
-  httpPort : string = 'http://localhost:5000'
+  private httpPort : string = 'http://localhost:5000'
 
   getPort(): string {
     return this.httpPort;
