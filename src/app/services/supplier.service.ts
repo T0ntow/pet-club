@@ -33,7 +33,7 @@ export class SupplierService {
     return this.http.get(`${this.port}/pegar-fornecedores`)
   }
 
-  deleteSupplier(cnpj: number) {
+  deleteSupplier(cnpj: string) {
     return this.http.delete(`${this.port}/deletar-fornecedor/${cnpj}`)
   }
 

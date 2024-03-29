@@ -4,18 +4,26 @@ import { LoadingController, ToastController, AlertController, ModalController } 
 import { SupplierService } from 'src/app/services/supplier.service';
 import { EditarFornecedorComponent } from 'src/app/modals/fornecedores-modal/editar-fornecedor/editar-fornecedor.component';
 
+interface Fornecedor {
+  cnpj: string;
+  email: string;
+  endereco: string;
+  nome: string;
+  representante: string;
+  fone: string;
+  id: number;
+}
 
 @Component({
   selector: 'app-fornecedores',
   templateUrl: './fornecedores.page.html',
   styleUrls: ['./fornecedores.page.scss'],
 })
+
 export class FornecedoresPage implements OnInit {
-
-  fornecedores: { cnpj: string, email: string, endereco: string, nome: string, representante: string, fone: string, id: number }[] = [];
+  fornecedores: Fornecedor[] = [];
+  fornecedoresFiltrados: Fornecedor[] = [];
   searchTerm: string = '';
-
-  fornecedoresFiltrados: { cnpj: string, email: string, endereco: string, nome: string, representante: string, fone: string, id: number }[] = [];
   temFornecedor: boolean = true;
 
   constructor(
@@ -74,11 +82,29 @@ export class FornecedoresPage implements OnInit {
     });
   }
 
-  removerFornecedor(fornecedor: any) {
-    this.presentAlertRemove(fornecedor);
+  async deleteSupplier(fornecedor: Fornecedor) {
+    const alert = await this.alertController.create({
+      header: 'Atenção',
+      message: 'Você tem certeza de que deseja excluir este fornecedor? Ele será removido permanentemente.',
+      buttons: [
+        {
+          text: 'cancelar',
+          cssClass: 'alert-button-cancel',
+        },
+        {
+          text: 'continuar',
+          cssClass: 'alert-button-confirm',
+          handler: () => { 
+            this.confirmSupplierDelete(fornecedor);
+          },
+        },
+      ],
+    });
+
+    await alert.present();
   }
 
-  deleteSupplier(fornecedor: any) {
+  confirmSupplierDelete(fornecedor: Fornecedor) {
     console.log("fornecedor", fornecedor);
     
     this.supplierService.deleteSupplier(fornecedor.cnpj).subscribe({
@@ -92,14 +118,10 @@ export class FornecedoresPage implements OnInit {
     });
   }
 
-  async atualizarFornecedor(fornecedor: any) {
+  async atualizarFornecedor(fornecedor: Fornecedor) {
     const modal = await this.modalCtrl.create({
       component: EditarFornecedorComponent,
       componentProps: { fornecedor: fornecedor },
-    });
-
-    modal.onDidDismiss().then((data) => {
-      console.log('Dados do fornecedor atualizados:', data.data);
     });
 
     return await modal.present();
@@ -110,33 +132,7 @@ export class FornecedoresPage implements OnInit {
       component: NovoFornecedorComponent,
     });
 
-    modal.onDidDismiss().then((data) => {
-      console.log('Dados do fornecedor adicionados:', data.data);
-    });
-
     return await modal.present();
-  }
-
-  async presentAlertRemove(fornecedor: any) {
-    const alert = await this.alertController.create({
-      header: 'Atenção',
-      message: 'Você tem certeza de que deseja excluir este fornecedor? Ele será removido permanentemente.',
-      buttons: [
-        {
-          text: 'cancelar',
-          cssClass: 'alert-button-cancel',
-        },
-        {
-          text: 'continuar',
-          cssClass: 'alert-button-confirm',
-          handler: () => { 
-            this.deleteSupplier(fornecedor);
-          },
-        },
-      ],
-    });
-
-    await alert.present();
   }
 
   async presentToast(text: string, color: string,) {
