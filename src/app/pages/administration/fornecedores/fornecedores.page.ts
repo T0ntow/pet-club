@@ -12,7 +12,6 @@ import { EditarFornecedorComponent } from 'src/app/modals/fornecedores-modal/edi
 })
 export class FornecedoresPage implements OnInit {
 
-  // Atualize o modelo do fornecedor
   fornecedores: { cnpj: string, email: string, endereco: string, nome: string, representante: string, fone: string, id: number }[] = [];
   searchTerm: string = '';
 
@@ -37,14 +36,11 @@ export class FornecedoresPage implements OnInit {
   
   searchSupplier() {
     this.fornecedoresFiltrados = this.fornecedores.filter(fornecedor =>
-      fornecedor.representante.toLowerCase().includes(this.searchTerm) || fornecedor.nome.toLowerCase().includes(this.searchTerm)
+      fornecedor.representante.toLowerCase().includes(this.searchTerm) || 
+      fornecedor.nome.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
 
-    if (this.fornecedoresFiltrados.length === 0) {
-      this.temFornecedor = false
-    } else {
-      this.temFornecedor = true
-    }
+    this.temFornecedor = this.fornecedoresFiltrados.length > 0;
   }
 
   ngOnInit() {
@@ -133,7 +129,7 @@ export class FornecedoresPage implements OnInit {
         {
           text: 'continuar',
           cssClass: 'alert-button-confirm',
-          handler: () => { // Adiciona um handler para o botão 'continuar'
+          handler: () => { 
             this.deleteSupplier(fornecedor);
           },
         },
