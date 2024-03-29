@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController, ToastController } from '@ionic/angular';
-import { MaskitoElementPredicate, MaskitoOptions } from '@maskito/core';
-import { maskitoCNPJ, maskitoNumber } from '../../../mask'
 import { SupplierService } from 'src/app/services/supplier.service';
+import { maskitoCNPJ, maskitoNumber } from '../../../mask'
+import { MaskitoElementPredicate } from '@maskito/core';
 
 @Component({
   selector: 'app-editar-fornecedor',
@@ -16,16 +16,17 @@ export class EditarFornecedorComponent implements OnInit {
 
   readonly maskitoCNPJ = maskitoCNPJ;
   readonly maskitoNumber = maskitoNumber;
-
   readonly maskPredicate: MaskitoElementPredicate = async (el) => (el as HTMLIonInputElement).getInputElement();
+  maskitoRejectEvent() {
+    console.log("maskitoReject");
+  }
 
   constructor(
     private modalCtrl: ModalController,
     private toastController: ToastController,
     private formBuilder: FormBuilder,
     private supplierService: SupplierService
-  ) {
-  }
+  ) {}
 
   ngOnInit() { 
     this.updateSupplierForm = this.formBuilder.group({
@@ -60,8 +61,9 @@ export class EditarFornecedorComponent implements OnInit {
     if (this.updateSupplierForm.valid) {
       supplierData.cnpj = this.removeNonDigits(this.updateSupplierForm.get('cnpj')!.value);
       supplierData.telefone = this.removeNonDigits(this.updateSupplierForm.get('telefone')!.value);
+      const oldCnpj = this.fornecedor.cnpj;
   
-      this.supplierService.updateSupplier(supplierData).subscribe({
+      this.supplierService.updateSupplier(supplierData, oldCnpj).subscribe({
         next: (response) => {
           this.supplierService.updateObservableSuppliers();
           this.modalCtrl.dismiss(null, 'confirm');

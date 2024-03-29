@@ -37,7 +37,8 @@ export class SupplierService {
     return this.http.delete(`${this.port}/deletar-fornecedor/${cnpj}`)
   }
 
-  updateSupplier(supplierData: any) {
-    return this.http.put(`${this.port}/atualizar-fornecedor/${supplierData.cnpj}`, supplierData)
+  updateSupplier(supplierData: any, cnpj: any) {
+    console.log(supplierData);
+    return this.http.put(`${this.port}/atualizar-fornecedor/${cnpj}`, supplierData)
   }
 }

@@ -11,7 +11,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import {MaskitoModule} from '@maskito/angular'
 import { EditarFornecedorComponent } from 'src/app/modals/fornecedores-modal/editar-fornecedor/editar-fornecedor.component';
-
 @NgModule({
   imports: [
     CommonModule,

@@ -10,6 +10,7 @@ import { FormBuilder } from '@angular/forms';
   templateUrl: './novo-funcionario.component.html',
   styleUrls: ['./novo-funcionario.component.scss'],
 })
+
 export class NovoFuncionarioComponent implements OnInit {
   newEmployeeForm: FormGroup;
 

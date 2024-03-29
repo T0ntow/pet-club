@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import {FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
 import { SupplierService } from 'src/app/services/supplier.service';
 import { FormBuilder } from '@angular/forms';
-
 import { maskitoCNPJ, maskitoNumber } from '../../../mask'
+import { MaskitoElementPredicate } from '@maskito/core';
 
 @Component({
   selector: 'app-novo-fornecedor',
@@ -17,9 +17,12 @@ import { maskitoCNPJ, maskitoNumber } from '../../../mask'
 export class NovoFornecedorComponent implements OnInit {
   readonly maskitoCNPJ = maskitoCNPJ;
   readonly maskitoNumber = maskitoNumber;
-
-
+  readonly maskPredicate: MaskitoElementPredicate = async (el) => (el as HTMLIonInputElement).getInputElement();
   newSupplierForm: FormGroup;
+
+  maskitoRejectEvent() {
+    console.log("maskitoReject");
+  }
 
   constructor(
     private modalCtrl: ModalController,

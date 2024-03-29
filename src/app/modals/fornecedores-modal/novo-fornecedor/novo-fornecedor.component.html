@@ -33,6 +33,8 @@
       labelPlacement="floating"
       formControlName="cnpj"
       [maskito]="maskitoCNPJ"
+      [maskitoElement]="maskPredicate"
+      (maskitoReject)="maskitoRejectEvent()"
       ></ion-input>
     </ion-item>
 
@@ -42,9 +44,12 @@
     </ion-item>
 
     <ion-item>
-      <ion-input name="telefone" type="tel" label="Telefone *" labelPlacement="floating" formControlName="telefone"  
+      <ion-input name="telefone" type="tel" label="Telefone *" labelPlacement="floating" formControlName="telefone"
       [maskito]="maskitoNumber"
+      [maskitoElement]="maskPredicate"
+      (maskitoReject)="maskitoRejectEvent()"
       ></ion-input>
+      
     </ion-item>
 
     <ion-item>
