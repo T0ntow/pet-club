@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Atualizar Produto</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="fecharModal()" id="cancel-button">
+        <ion-icon name="close"></ion-icon>
+        <p>cancelar</p>
+      </ion-button>
+
+      <ion-button (click)="salvarAlteracoes()" id="save-button">
+        <ion-icon name="checkmark-outline"></ion-icon>
+        <p>Atualizar</p>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="updateProductForm">
+    <ion-item>
+      <ion-input name="nome" type="text" label="Nome do Produto *" labelPlacement="floating" formControlName="nome"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input name="preco" type="number" label="Preço *" labelPlacement="floating" formControlName="preco"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input name="categoria" type="text" label="Categoria *" labelPlacement="floating" formControlName="categoria"></ion-input>
+    </ion-item>
+    
+    <ion-item>
+      <ion-input name="descricao" type="text" label="Descrição *" labelPlacement="floating" formControlName="descricao"></ion-input>
+    </ion-item>
+
+    <ion-item >
+      <ion-input name="imagem" type="file" accept="image/*" multiple aria-multiline="true" (change)="onFileInputChange($event)"></ion-input>
+    </ion-item>
+  </form>
+</ion-content>

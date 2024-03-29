@@ -47,6 +47,10 @@ export class ProductService {
     return this.http.get(`${this.port}/pegar-produto/${id}`)
   }
 
+  updateProduct(productData: any) {
+    return this.http.put(`${this.port}/atualizar-produto/${productData.cod}`, productData)
+  }
+
   deleteProduct(id: number) {
     return this.http.delete(`${this.port}/deletar-produto/${id}`)
   }

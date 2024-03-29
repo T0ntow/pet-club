@@ -9,6 +9,7 @@ import { ProdutosCrudPageRoutingModule } from './produtos-crud-routing.module';
 import { ProdutosCrudPage } from './produtos-crud.page';
 import { NovoProdutoComponent } from 'src/app/modals/produtos-modal/novo-produto/novo-produto.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { EditarProdutoComponent } from 'src/app/modals/produtos-modal/editar-produto/editar-produto.component';
 
 @NgModule({
   imports: [
@@ -18,7 +19,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     ProdutosCrudPageRoutingModule,
     ReactiveFormsModule
   ],
-  declarations: [ProdutosCrudPage,
-    NovoProdutoComponent]
+  declarations: [
+    ProdutosCrudPage,
+    NovoProdutoComponent,
+    EditarProdutoComponent]
 })
 export class ProdutosCrudPageModule {}

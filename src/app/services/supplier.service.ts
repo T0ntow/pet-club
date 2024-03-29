@@ -38,7 +38,6 @@ export class SupplierService {
   }
 
   updateSupplier(supplierData: any, cnpj: any) {
-    console.log(supplierData);
     return this.http.put(`${this.port}/atualizar-fornecedor/${cnpj}`, supplierData)
   }
 }

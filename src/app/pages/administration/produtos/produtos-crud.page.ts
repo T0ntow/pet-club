@@ -1,24 +1,27 @@
 import { Component, OnInit } from '@angular/core';
-import { EditarFuncionarioComponent } from 'src/app/modals/funcionarios-modal/editar-funcionario/editar-funcionario.component';
+import { EditarProdutoComponent } from 'src/app/modals/produtos-modal/editar-produto/editar-produto.component';
 import { ProductService } from 'src/app/services/product.service';
 import { LoadingController, ToastController, AlertController, ModalController } from '@ionic/angular';
 import { NovoProdutoComponent } from 'src/app/modals/produtos-modal/novo-produto/novo-produto.component';
 import { getStorage, ref, deleteObject } from "firebase/storage";
+
+interface Produto {
+  cod: number;
+  nome: string,
+  descricao: string,
+  categoria: string,
+  preco: number,
+  images: string[] // ou pode ser um array de objetos dependendo da estrutura das imagens
+}
 
 @Component({
   selector: 'app-produtos-crud',
   templateUrl: './produtos-crud.page.html',
   styleUrls: ['./produtos-crud.page.scss'],
 })
+
 export class ProdutosCrudPage implements OnInit {
-  produtos: {
-    id: number;
-    nome: string,
-    descricao: string,
-    categoria: string,
-    preco: number,
-    images: string[] 
-  }[] = [];
+  produtos: Produto[] = [];
 
   isLoading = true
 
@@ -121,12 +124,8 @@ export class ProdutosCrudPage implements OnInit {
 
   async alterarProduto(produto: any) {
     const modal = await this.modalCtrl.create({
-      component: EditarFuncionarioComponent,
-      componentProps: { funcionario: produto },
-    });
-
-    modal.onDidDismiss().then((data) => {
-      console.log('Dados do produto atualizados:', data.data);
+      component: EditarProdutoComponent,
+      componentProps: { produto: produto },
     });
 
     return await modal.present();
