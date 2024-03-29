@@ -9,13 +9,13 @@ import { HttpService } from './httpSevice.service';
 export class SupplierService {
 
   private observerEmployee = new Subject()
+  port = this.httpService.getPort();
 
   constructor(
     private http: HttpClient,
     private httpService: HttpService
   ) { }
 
-  port = this.httpService.getPort();
 
   getObservableSuppliers() {
     return this.observerEmployee.asObservable()

@@ -102,7 +102,8 @@ export class NovoProdutoComponent implements OnInit {
           this.modalCtrl.dismiss();
 
           const images = this.newProductForm.value.images
-          const id = response.insertedProductId
+          const id = response.insertedcod_produto
+          
           
           images.forEach((image: string) => {
             this.productService.uploadImages(id, image).subscribe({

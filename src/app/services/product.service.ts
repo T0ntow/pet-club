@@ -1,16 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { HttpService } from './httpSevice.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-
   private observerProduct = new Subject()
+  port = this.httpService.getPort();
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private httpService: HttpService
   ) { }
 
   getObservableProducts() {
@@ -22,7 +24,7 @@ export class ProductService {
   }
 
   newProduct(productData: any) {
-    return this.http.post('http://localhost:5000/novo-produto', productData)
+    return this.http.post(`${this.port}/novo-produto`, productData)
   }
 
   uploadImages(id: number, url: string) {
@@ -30,23 +32,22 @@ export class ProductService {
       id: id,
       url: url
     }
-    return this.http.post('http://localhost:5000/upload-images', productData)
+    return this.http.post(`${this.port}/upload-images`, productData)
   }
 
   getImagesFromProduct(id: number) {
-    return this.http.get(`http://localhost:5000/pegar-imagens/${id}`)
+    return this.http.get(`${this.port}/pegar-imagens/${id}`)
   }
 
   getProducts() {
-    return this.http.get('http://localhost:5000/pegar-produtos')
+    return this.http.get(`${this.port}/pegar-produtos`)
   }
 
   getProductById(id: string) {
-    return this.http.get(`http://localhost:5000/pegar-produto/${id}`)
+    return this.http.get(`${this.port}/pegar-produto/${id}`)
   }
 
-
   deleteProduct(id: number) {
-    return this.http.delete(`http://localhost:5000/produtos/${id}`)
+    return this.http.delete(`${this.port}/deletar-produto/${id}`)
   }
 }

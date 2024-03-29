@@ -64,7 +64,7 @@ export class ProdutosCrudPage implements OnInit {
   }
 
   getImages(produto: any) {
-    this.productService.getImagesFromProduct(produto.id).subscribe({
+    this.productService.getImagesFromProduct(produto.cod).subscribe({
       next: (response: any) => {
         console.log('Imagens recuperadas com sucesso:', response);
         produto.images = response;
@@ -84,7 +84,7 @@ export class ProdutosCrudPage implements OnInit {
     const storage = getStorage();
 
     //remover referencia das imagens
-    this.productService.getImagesFromProduct(produto.id).subscribe({
+    this.productService.getImagesFromProduct(produto.cod).subscribe({
       next: async (response: any) => {
         console.log('Imagens recuperadas com sucesso:', response);
 
@@ -108,7 +108,7 @@ export class ProdutosCrudPage implements OnInit {
       },
     });
 
-    this.productService.deleteProduct(produto.id).subscribe({
+    this.productService.deleteProduct(produto.cod).subscribe({
       next: (response: any) => {
         this.presentToast('Produto removido com sucesso', "success");
         this.productService.updateObservableProducts();
