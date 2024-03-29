@@ -72,7 +72,7 @@ export class SignupPage implements OnInit {
   async presentToast(message: string) {
     const toast = await this.toastController.create({
       message,
-      duration: 3000,
+      duration: 5000,
       position: 'bottom',
       color: 'success'
     });
