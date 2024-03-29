@@ -17,6 +17,7 @@ export class EditarFornecedorComponent implements OnInit {
   readonly maskitoCNPJ = maskitoCNPJ;
   readonly maskitoNumber = maskitoNumber;
   readonly maskPredicate: MaskitoElementPredicate = async (el) => (el as HTMLIonInputElement).getInputElement();
+
   maskitoRejectEvent() {
     console.log("maskitoReject");
   }
@@ -68,11 +69,14 @@ export class EditarFornecedorComponent implements OnInit {
           this.supplierService.updateObservableSuppliers();
           this.modalCtrl.dismiss(null, 'confirm');
           this.presentToast("Fornecedor atualizado com sucesso", "success")
-
         },
         error: (error) => {
           console.error('Erro ao atualizar o fornecedor:', error);
-          this.presentToast("Erro ao atualizar fornecedor", "danger")
+          if(error.error.error === "Já existe um fornecedor com este CNPJ") {
+            this.presentToast("Já existe um fornecedor cadastrado com este CNPJ", "danger")
+          } else {
+            this.presentToast("Erro ao atualizar fornecedor", "danger")
+          }
         }
       });
     } else {
