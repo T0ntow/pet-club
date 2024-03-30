@@ -1,16 +1,17 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ModalController, ToastController } from '@ionic/angular';
+import { LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { maskitoCNPJ, maskitoNumber } from '../../../mask'
 import { MaskitoElementPredicate } from '@maskito/core';
 import { ProductService } from 'src/app/services/product.service';
+import { deleteObject, getDownloadURL, getStorage, listAll, ref, uploadBytes } from 'firebase/storage';
 
 @Component({
   selector: 'app-editar-produto',
   templateUrl: './editar-produto.component.html',
   styleUrls: ['./editar-produto.component.scss'],
 })
-export class EditarProdutoComponent  implements OnInit {
+export class EditarProdutoComponent implements OnInit {
   @Input() produto: any;
   updateProductForm: FormGroup = new FormGroup({});
 
@@ -18,8 +19,9 @@ export class EditarProdutoComponent  implements OnInit {
     private modalCtrl: ModalController,
     private toastController: ToastController,
     private formBuilder: FormBuilder,
-    private productService: ProductService
-  ) {}
+    private productService: ProductService,
+    private loadingController: LoadingController
+  ) { }
 
   ngOnInit() {
     this.updateProductForm = this.formBuilder.group({
@@ -27,7 +29,7 @@ export class EditarProdutoComponent  implements OnInit {
       preco: [this.produto.preco, [Validators.required]],
       descricao: [this.produto.descricao, [Validators.required]],
       categoria: [this.produto.categoria, [Validators.required]],
-      images: [this.produto.images, [Validators.required]],
+      images: ['', []],
       cod: [this.produto.cod, [Validators.required]] // Adicionando o campo ID
     });
   }
@@ -41,26 +43,101 @@ export class EditarProdutoComponent  implements OnInit {
     this.modalCtrl.dismiss();
   }
 
-  salvarAlteracoes() {
+  async salvarAlteracoes() {
     const productData = this.updateProductForm.value;
     console.log("productData", productData);
-    
+
     if (this.updateProductForm.valid) {
+      const loading = await this.loadingController.create({
+        message: 'Enviando informações...',
+      });
+      await loading.present();
+      
       this.productService.updateProduct(productData).subscribe({
-        next: (response) => {
+        next: async (response) => {
+          if (productData.images.length > 0) {
+            console.log("maior q 0");
+            await this.listarEExcluirImagens(this.produto.cod)
+            await this.updateImagesFromStorage(productData.cod, productData.images);
+          }
+
           this.productService.updateObservableProducts();
           this.modalCtrl.dismiss(null, 'confirm');
           this.presentToast("Produto atualizado com sucesso", "success")
+          await loading.dismiss();
         },
         error: (error) => {
           console.error('Erro ao atualizar o produto:', error);
           this.presentToast("Erro ao atualizar produto", "danger")
+          loading.dismiss();
         }
       });
     } else {
       this.presentToast("Preencha o formulário corretamente", "danger")
     }
   }
+
+  async listarEExcluirImagens(id: any) {
+    const storage = getStorage();
+    const listRef = ref(storage, `imagens/${id}`);
+
+    try {
+      const res = await listAll(listRef);
+
+      // Iterar sobre cada item (imagem) e excluí-lo
+      await Promise.all(res.items.map(async (itemRef) => {
+        const imagePath = itemRef.fullPath;
+        await deleteObject(ref(storage, imagePath));
+
+        console.log(`Imagem ${imagePath} excluída com sucesso.`);
+      }));
+
+      this.productService.deleteImages(id).subscribe({
+        next: (response) => {
+          console.log(`Todas as imagens associadas ao ID ${id} foram excluídas.`);
+        },
+        error: (error) => {
+          console.error('Erro ao atualizar o fornecedor:', error);
+        }
+      }); 
+
+    } catch (error) {
+      console.error('Erro ao listar e excluir imagens:', error);
+    }
+  }
+  
+  async updateImagesFromStorage(productId: string, newImages: File[]) {
+    if (newImages.length === 0) {
+      console.log("sem imagens");
+      return;
+    }
+  
+    const storage = getStorage();
+    const downloadURLs = [];
+  
+    for (const image of newImages) {
+      const storageRef = ref(storage, `imagens/${productId}/${image.name}`);
+      await uploadBytes(storageRef, image);
+      const downloadURL = await getDownloadURL(storageRef);
+      downloadURLs.push(downloadURL);
+    }
+
+    this.updateImagesInMySQL(downloadURLs, productId);
+  }
+
+  updateImagesInMySQL(images: any, id: any) {
+    images.forEach((image: string) => {
+      this.productService.uploadImages(id, image).subscribe({
+        next: async (response: any) => {
+          console.log(response, "imagens enviadas");
+        },
+        error: async (error: any) => {
+          console.log("error", error);
+        }
+      });
+    });
+  }
+  
 
   async presentToast(text: string, color: string) {
     const toast = await this.toastController.create({

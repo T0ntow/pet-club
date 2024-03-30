@@ -54,4 +54,8 @@ export class ProductService {
   deleteProduct(id: number) {
     return this.http.delete(`${this.port}/deletar-produto/${id}`)
   }
+
+  deleteImages(id: number) {
+    return this.http.delete(`${this.port}/deletar-imagens/${id}`)
+  }
 }

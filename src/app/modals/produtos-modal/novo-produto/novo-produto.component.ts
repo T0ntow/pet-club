@@ -60,79 +60,66 @@ export class NovoProdutoComponent implements OnInit {
       });
 
       await loading.present();
-
-      try {
-        const imageUrls: string[] = [];
-
-        for (const selectedFile of imageFile) {
-          const imageUrl = await this.onImageSelect(selectedFile);
-          imageUrls.push(imageUrl);
-        }
-
-        const productData = this.newProductForm.value
-
-        // Adiciona as URLs das imagens ao objeto productData
-        if (!productData.images) {
-          productData.images = [];
-        }
-
-        console.log("imageUrls", imageUrls);
-        this.newProductForm.controls['images'].setValue(imageUrls);
-
-      } catch (error) {
-        console.error('Erro durante o envio:', error);
-        await loading.dismiss();
-
-        const toast = await this.toastController.create({
-          message: 'Erro durante o envio das informações. Por favor, tente novamente.',
-          duration: 3000,
-          color: 'danger',
-        });
-
-        toast.present();
-        return; // Retorna para evitar que o código abaixo seja executado em caso de erro.
-      } finally {
-        await loading.dismiss();
-      }
-
       const productData = this.newProductForm.value;
+
       this.productService.newProduct(productData).subscribe({
         next: async (response: any) => {
-          this.productService.updateObservableProducts();
-          this.modalCtrl.dismiss();
-
-          const images = this.newProductForm.value.images
           const id = response.insertedcod_produto
-          
-          
-          images.forEach((image: string) => {
-            this.productService.uploadImages(id, image).subscribe({
-              next: async (response: any) => {
-                console.log(response, "imagens enviadas");
-              },
-              error: async (error: any) => {
-                console.log("error", error);
-              }
-            });
-          });
 
-          await this.presentToast('Produto cadastrado com sucesso!', 'success');
+          try {
+            const imageUrls: string[] = [];
+
+            for (const selectedFile of imageFile) {
+              const imageUrl = await this.onImageSelect(id, selectedFile);
+              imageUrls.push(imageUrl);
+            }
+
+            const productData = this.newProductForm.value
+
+            // Adiciona as URLs das imagens ao objeto productData
+            if (!productData.images) {
+              productData.images = [];
+            }
+
+            imageUrls.forEach((image: string) => {
+              this.productService.uploadImages(id, image).subscribe({
+                next: async (response: any) => {
+                  console.log(response, "imagens enviadas");
+                },
+                error: async (error: any) => {
+                  console.log("error", error);
+                }
+              });
+            });
+
+            this.productService.updateObservableProducts();
+            this.modalCtrl.dismiss();
+            await loading.dismiss();
+            await this.presentToast('Produto cadastrado com sucesso!', 'success');
+
+          } catch (error) {
+            console.error('Erro durante o envio:', error);
+            this.modalCtrl.dismiss();
+            await loading.dismiss();
+            await this.presentToast("Erro durante o envio das informações. Por favor, tente novamente", "danger")
+          }
         },
         error: async (error: any) => {
           console.log("error", error);
 
+          this.modalCtrl.dismiss();
+          await loading.dismiss();
           await this.presentToast('Falha ao adicionar produto', 'danger');
         }
       });
-
     } else {
       this.modalCtrl.dismiss();
     }
   }
 
-  async onImageSelect(selectedFile: File): Promise<string> {
+  async onImageSelect(id: any, selectedFile: File): Promise<string> {
     const storage = getStorage();
-    const storageRef = ref(storage, `imagens/${selectedFile.name}`);
+    const storageRef = ref(storage, `imagens/${id}/${selectedFile.name}`);
 
     // Faz o upload da imagem
     await uploadBytes(storageRef, selectedFile);
