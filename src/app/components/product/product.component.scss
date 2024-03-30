@@ -19,10 +19,12 @@ ion-card {
         img {
             width: 160px;
             height: 160px;
+            object-fit: contain;
         }
     }
 
     ion-card-content {
+        width: 100%;
         .title {
             font-size: 1.1rem;
         }
