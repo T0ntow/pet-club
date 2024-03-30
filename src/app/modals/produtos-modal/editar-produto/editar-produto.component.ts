@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoadingController, ModalController, ToastController } from '@ionic/angular';
-import { maskitoCNPJ, maskitoNumber } from '../../../mask'
+import { maskitoPrice } from '../../../mask'
 import { MaskitoElementPredicate } from '@maskito/core';
 import { ProductService } from 'src/app/services/product.service';
 import { deleteObject, getDownloadURL, getStorage, listAll, ref, uploadBytes } from 'firebase/storage';
@@ -14,6 +14,9 @@ import { deleteObject, getDownloadURL, getStorage, listAll, ref, uploadBytes } f
 export class EditarProdutoComponent implements OnInit {
   @Input() produto: any;
   updateProductForm: FormGroup = new FormGroup({});
+
+  readonly maskitoPrice = maskitoPrice;
+  readonly maskPredicate: MaskitoElementPredicate = async (el) => (el as HTMLIonInputElement).getInputElement();
 
   constructor(
     private modalCtrl: ModalController,
@@ -43,9 +46,13 @@ export class EditarProdutoComponent implements OnInit {
     this.modalCtrl.dismiss();
   }
 
+  removeCurrencySymbol(price: string): string {
+    return price.replace(/^R\$/, '');
+  }
+  
   async salvarAlteracoes() {
     const productData = this.updateProductForm.value;
-    console.log("productData", productData);
+    productData.preco = this.removeCurrencySymbol(this.updateProductForm.get('preco')!.value);
 
     if (this.updateProductForm.valid) {
       const loading = await this.loadingController.create({

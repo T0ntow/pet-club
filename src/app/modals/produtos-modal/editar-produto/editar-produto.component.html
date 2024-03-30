@@ -22,7 +22,9 @@
     </ion-item>
 
     <ion-item>
-      <ion-input name="preco" type="number" label="Preço *" labelPlacement="floating" formControlName="preco"></ion-input>
+      <ion-input name="preco" type="text" label="Preço *" labelPlacement="floating" formControlName="preco"
+      [maskito]="maskitoPrice" 
+      [maskitoElement]="maskPredicate"></ion-input>
     </ion-item>
 
     <ion-item>

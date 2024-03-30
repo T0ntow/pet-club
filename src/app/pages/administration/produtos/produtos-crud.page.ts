@@ -10,7 +10,7 @@ interface Produto {
   nome: string,
   descricao: string,
   categoria: string,
-  preco: number,
+  preco: string,
   images: string[] // ou pode ser um array de objetos dependendo da estrutura das imagens
 }
 

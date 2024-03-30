@@ -10,6 +10,7 @@ import { ProdutosCrudPage } from './produtos-crud.page';
 import { NovoProdutoComponent } from 'src/app/modals/produtos-modal/novo-produto/novo-produto.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EditarProdutoComponent } from 'src/app/modals/produtos-modal/editar-produto/editar-produto.component';
+import {MaskitoModule} from '@maskito/angular'
 
 @NgModule({
   imports: [
@@ -17,7 +18,8 @@ import { EditarProdutoComponent } from 'src/app/modals/produtos-modal/editar-pro
     FormsModule,
     IonicModule,
     ProdutosCrudPageRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MaskitoModule
   ],
   declarations: [
     ProdutosCrudPage,

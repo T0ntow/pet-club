@@ -4,6 +4,8 @@ import { ModalController, LoadingController, ToastController } from '@ionic/angu
 import { Storage } from '@angular/fire/storage';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { ProductService } from 'src/app/services/product.service';
+import type { MaskitoElementPredicate, MaskitoOptions } from '@maskito/core';
+import { maskitoPrice } from '../../../mask';
 
 @Component({
   selector: 'app-novo-produto',
@@ -12,6 +14,8 @@ import { ProductService } from 'src/app/services/product.service';
 })
 export class NovoProdutoComponent implements OnInit {
   newProductForm: FormGroup;
+  readonly maskitoPrice = maskitoPrice;
+  readonly maskPredicate: MaskitoElementPredicate = async (el) => (el as HTMLIonInputElement).getInputElement();
 
   constructor(
     private modalCtrl: ModalController,
@@ -36,11 +40,16 @@ export class NovoProdutoComponent implements OnInit {
     this.modalCtrl.dismiss();
   }
 
+
   async onFileInputChange(event: any) {
     const selectedFiles = event.target.files;
     this.newProductForm.patchValue({ images: selectedFiles });
   }
 
+  removeCurrencySymbol(price: string): string {
+    return price.replace(/^R\$/, '');
+  }
+  
   async salvarAlteracoes() {
     const imageFile = this.newProductForm.value.images;
 
@@ -61,6 +70,7 @@ export class NovoProdutoComponent implements OnInit {
 
       await loading.present();
       const productData = this.newProductForm.value;
+      productData.preco = this.removeCurrencySymbol(this.newProductForm.get('preco')!.value);
 
       this.productService.newProduct(productData).subscribe({
         next: async (response: any) => {
