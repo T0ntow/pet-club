@@ -5,6 +5,7 @@ import { maskitoPrice } from '../../../mask'
 import { MaskitoElementPredicate } from '@maskito/core';
 import { ProductService } from 'src/app/services/product.service';
 import { deleteObject, getDownloadURL, getStorage, listAll, ref, uploadBytes } from 'firebase/storage';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-editar-produto',
@@ -49,7 +50,7 @@ export class EditarProdutoComponent implements OnInit {
   removeCurrencySymbol(price: string): string {
     return price.replace(/^R\$/, '');
   }
-  
+
   async salvarAlteracoes() {
     const productData = this.updateProductForm.value;
     productData.preco = this.removeCurrencySymbol(this.updateProductForm.get('preco')!.value);
@@ -59,11 +60,10 @@ export class EditarProdutoComponent implements OnInit {
         message: 'Enviando informações...',
       });
       await loading.present();
-      
+
       this.productService.updateProduct(productData).subscribe({
         next: async (response) => {
           if (productData.images.length > 0) {
-            console.log("maior q 0");
             await this.listarEExcluirImagens(this.produto.cod)
             await this.updateImagesFromStorage(productData.cod, productData.images);
           }
@@ -106,22 +106,22 @@ export class EditarProdutoComponent implements OnInit {
         error: (error) => {
           console.error('Erro ao atualizar o fornecedor:', error);
         }
-      }); 
+      });
 
     } catch (error) {
       console.error('Erro ao listar e excluir imagens:', error);
     }
   }
-  
+
   async updateImagesFromStorage(productId: string, newImages: File[]) {
     if (newImages.length === 0) {
       console.log("sem imagens");
       return;
     }
-  
+
     const storage = getStorage();
     const downloadURLs = [];
-  
+
     for (const image of newImages) {
       const storageRef = ref(storage, `imagens/${productId}/${image.name}`);
       await uploadBytes(storageRef, image);
@@ -132,19 +132,22 @@ export class EditarProdutoComponent implements OnInit {
     this.updateImagesInMySQL(downloadURLs, productId);
   }
 
-  updateImagesInMySQL(images: any, id: any) {
-    images.forEach((image: string) => {
-      this.productService.uploadImages(id, image).subscribe({
-        next: async (response: any) => {
+  async updateImagesInMySQL(images: string[], id: any) {
+    const uploadObservables = images.map((image: string) => {
+      return this.productService.uploadImages(id, image);
+    });
+
+    forkJoin(uploadObservables).subscribe({
+      next: (responses: any[]) => {
+        responses.forEach((response: any) => {
           console.log(response, "imagens enviadas");
-        },
-        error: async (error: any) => {
-          console.log("error", error);
-        }
-      });
+        });
+      },
+      error: (error: any) => {
+        console.log("Erro ao enviar imagens:", error);
+      }
     });
   }
-  
 
   async presentToast(text: string, color: string) {
     const toast = await this.toastController.create({

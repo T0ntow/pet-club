@@ -6,6 +6,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { ProductService } from 'src/app/services/product.service';
 import type { MaskitoElementPredicate, MaskitoOptions } from '@maskito/core';
 import { maskitoPrice } from '../../../mask';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-novo-produto',
@@ -49,7 +50,7 @@ export class NovoProdutoComponent implements OnInit {
   removeCurrencySymbol(price: string): string {
     return price.replace(/^R\$/, '');
   }
-  
+
   async salvarAlteracoes() {
     const imageFile = this.newProductForm.value.images;
 
@@ -84,28 +85,30 @@ export class NovoProdutoComponent implements OnInit {
               imageUrls.push(imageUrl);
             }
 
-            const productData = this.newProductForm.value
-
-            // Adiciona as URLs das imagens ao objeto productData
             if (!productData.images) {
               productData.images = [];
             }
 
-            imageUrls.forEach((image: string) => {
-              this.productService.uploadImages(id, image).subscribe({
-                next: async (response: any) => {
-                  console.log(response, "imagens enviadas");
-                },
-                error: async (error: any) => {
-                  console.log("error", error);
-                }
-              });
+            const uploadObservables = imageUrls.map((image: string) => {
+              return this.productService.uploadImages(id, image);
             });
 
-            this.productService.updateObservableProducts();
-            this.modalCtrl.dismiss();
-            await loading.dismiss();
-            await this.presentToast('Produto cadastrado com sucesso!', 'success');
+            forkJoin(uploadObservables).subscribe({
+              next: (responses: any[]) => {
+                responses.forEach((response: any) => {
+                  console.log(response, "imagens enviadas");
+                });
+              },
+              error: async (error: any) => {
+                console.log("Erro ao enviar imagem:", error);
+              },
+              complete: async () => {
+                this.productService.updateObservableProducts();
+                this.modalCtrl.dismiss();
+                await loading.dismiss();
+                await this.presentToast('Produto cadastrado com sucesso!', 'success');
+              }
+            });
 
           } catch (error) {
             console.error('Erro durante o envio:', error);
@@ -120,8 +123,9 @@ export class NovoProdutoComponent implements OnInit {
           this.modalCtrl.dismiss();
           await loading.dismiss();
           await this.presentToast('Falha ao adicionar produto', 'danger');
+
         }
-      });
+      })
     } else {
       this.modalCtrl.dismiss();
     }
