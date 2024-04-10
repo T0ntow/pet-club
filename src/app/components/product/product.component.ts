@@ -17,7 +17,6 @@ interface Produto {
   styleUrls: ['./product.component.scss'],
 })
 export class ProductComponent implements OnInit {
-
   produtos: Produto[] = [];
   isLoading = true
 
@@ -42,14 +41,6 @@ export class ProductComponent implements OnInit {
   }
 
   async getProducts() {
-    const loading = await this.loadingController.create({
-      message: 'Carregando produtos...',
-      spinner: 'crescent',
-      translucent: true,
-    });
-
-    await loading.present();
-
     this.productService.getProducts().subscribe({
       next: (response: any) => {
         this.produtos = response;
@@ -59,10 +50,8 @@ export class ProductComponent implements OnInit {
             this.getImages(produto)
           });
         }
-        loading.dismiss();
       },
       error: (error: any) => {
-        loading.dismiss();
       },
     });
   }
