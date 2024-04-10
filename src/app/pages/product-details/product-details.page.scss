@@ -33,6 +33,7 @@ ion-content {
 
                 img {
                     width: 100%;
+                    max-height: 75px;
                 }
             }
 
@@ -58,10 +59,9 @@ ion-content {
     .product-details {
         padding: 0 20px;
         font-family: "sniglet", sans-serif;
-        min-width: 50%;
 
         h1 {
-            font-size: 30px;
+            font-size: clamp(25px, 2vw, 30px);
         }
 
         > div {
@@ -143,6 +143,69 @@ ion-content {
                     span {
                         font-size: 15px;
                     }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    ion-content {
+        .product-details {
+            #buy {
+                flex-direction: column;
+                align-items: left;
+
+                > div {
+                    width: 100%;
+                    margin: 10px 0;
+                }
+
+                button {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}
+
+
+@media screen and (max-width: 1050px) {
+    ion-content {
+        main {
+            flex-direction: column;
+            .carousel {
+                ion-list {
+                    width: 120px;
+                }
+
+                .image-focus {
+                    width: 70vw;
+                    max-width: 600px;
+                    min-width: 250px;
+                }
+            }
+
+            .product-details {
+                #buy {
+                    flex-direction: row;
+                    button {
+                        width: 350px;
+                    }
+                }
+            }
+        }
+
+    }
+}
+
+@media screen and (max-width: 450px) {
+    ion-content {
+        main {
+            .carousel {
+                ion-list {
+                    width: 90px;
+                    margin: 0 10px;
                 }
             }
         }
