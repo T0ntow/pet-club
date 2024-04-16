@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { HttpService } from './httpSevice.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,9 +10,11 @@ import { Subject } from 'rxjs';
 export class ClientService {
 
   private observerClient = new Subject()
+  port = this.httpService.getPort();
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private httpService: HttpService
   ) { }
 
   getObservableClients() {
@@ -23,18 +26,18 @@ export class ClientService {
   }
 
   newClient(clientData: any) {
-    return this.http.post('http://localhost:5000/novo-cliente', clientData)
+    return this.http.post(`${this.port}/novo-cliente`, clientData)
   }
 
   getClients() {
-    return this.http.get('http://localhost:5000/pegar-clientes')
+    return this.http.get(`${this.port}/pegar-clientes`)
   }
 
   deleteClient(cpf: string) {
-    return this.http.delete(`http://localhost:5000/deletar-cliente/${cpf}`)
+    return this.http.delete(`${this.port}/deletar-cliente/${cpf}`)
   }
 
   updateClient(clientData: any, cpf: string) {
-    return this.http.put(`http://localhost:5000/atualizar-cliente/${cpf}`, clientData)
+    return this.http.put(`${this.port}/atualizar-cliente/${cpf}`,clientData )
   }
 }
