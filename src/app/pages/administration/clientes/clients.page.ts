@@ -2,6 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { LoadingController, ToastController, AlertController, ModalController } from '@ionic/angular';
 import { ClientService } from 'src/app/services/client.service';
 import { NovoClienteComponent } from 'src/app/modals/clientes-modal/novo-cliente/novo-cliente.component';
+import { EditarClienteComponent } from 'src/app/modals/clientes-modal/editar-cliente/editar-cliente.component';
+
+interface Cliente {
+  cpf: string; //pk
+  nome: string;
+  email: string;
+  endereco: string;
+  fone: string;
+}
 
 @Component({
   selector: 'app-clients',
@@ -10,7 +19,7 @@ import { NovoClienteComponent } from 'src/app/modals/clientes-modal/novo-cliente
 })
 export class ClientsPage implements OnInit {
   // Atualize o modelo do fornecedor
-  clientes: { nome: string, cnpj: string, email: string, telefone: string, produto: string, endereco: string, id: number }[] = [];
+  clientes: Cliente[] = [];
 
   constructor(
     private alertController: AlertController,
@@ -20,7 +29,6 @@ export class ClientsPage implements OnInit {
     private toastController: ToastController,
   ) { }
 
-  
   ngOnInit() {
     this.clientService.getObservableClients().subscribe(isUpdated => {
       this.getClients();
@@ -29,7 +37,20 @@ export class ClientsPage implements OnInit {
     this.getClients();
   }
 
-  // Atualize o método getEmployees para getClients
+  formatarCpf(cpf: string) {
+    cpf = cpf.replace(/\D/g, '');
+    
+    cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
+    cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
+    cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+    
+    return cpf;
+  }
+
+  formatarTelefone(telefone: string): string {
+    return telefone.replace(/^(\d{2})(\d{1})(\d{4})(\d{4})$/, "($1) $2 $3-$4");
+  }
+
   async getClients() {
     const loading = await this.loadingController.create({
       message: 'Carregando clientes...',
@@ -51,12 +72,8 @@ export class ClientsPage implements OnInit {
     });
   }
 
-  removerCliente(cliente: any) {
-    this.presentAlertRemove(cliente);
-  }
-
-  deleteClient(cliente: any) {
-    this.clientService.deleteClient(cliente.id).subscribe({
+  confirmClientDelete(cliente: Cliente) {
+    this.clientService.deleteClient(cliente.cpf).subscribe({
       next: async (response: any) => {
         console.log('Cliente removido com sucesso:', response);
         await this.presentToast('Cliente removido com sucesso', 'success');
@@ -68,17 +85,13 @@ export class ClientsPage implements OnInit {
     });
   }
 
-  async alterarCliente(fornecedor: any) {
-    // const modal = await this.modalCtrl.create({
-    //   component: EditarFornecedorComponent,
-    //   componentProps: { fornecedor: fornecedor },
-    // });
+  async atualizarCliente(cliente: Cliente) {
+    const modal = await this.modalCtrl.create({
+      component: EditarClienteComponent,
+      componentProps: { cliente: cliente },
+    });
 
-    // modal.onDidDismiss().then((data) => {
-    //   console.log('Dados do fornecedor atualizados:', data.data);
-    // });
-
-    // return await modal.present();
+    return await modal.present();
   }
 
   // Atualize o método adicionarFuncionario para adicionarCliente
@@ -87,14 +100,10 @@ export class ClientsPage implements OnInit {
       component: NovoClienteComponent,
     });
 
-    modal.onDidDismiss().then((data) => {
-      console.log('Dados do cliente adicionados:', data.data);
-    });
-
     return await modal.present();
   }
 
-  async presentAlertRemove(cliente: any) {
+  async deleteClient(cliente: Cliente) {
     const alert = await this.alertController.create({
       header: 'Atenção',
       message: 'Você tem certeza de que deseja excluir este cliente? Ele será removido permanentemente.',
@@ -107,7 +116,7 @@ export class ClientsPage implements OnInit {
           text: 'continuar',
           cssClass: 'alert-button-confirm',
           handler: () => { // Adiciona um handler para o botão 'continuar'
-            this.deleteClient(cliente);
+            this.confirmClientDelete(cliente);
           },
         },
       ],

@@ -27,28 +27,29 @@
         <ion-col>Nome</ion-col>
         <ion-col>E-mail</ion-col>
         <ion-col>Telefone</ion-col>
+        <ion-col>CPF</ion-col>
+
         <ion-col class="functions-col">Funções</ion-col>
       </ion-row>
 
       <ion-row *ngFor="let cliente of clientes">
         <ion-col>{{ cliente.nome }}</ion-col>
         <ion-col>{{ cliente.email }}</ion-col>
-        <ion-col>{{ cliente.telefone }}</ion-col>
+        <ion-col>{{ formatarTelefone(cliente.fone)}}</ion-col>
+        <ion-col>{{ formatarCpf(cliente.cpf) }}</ion-col>
 
         <ion-col class="ion-text-right" class="functions-col">
           <ion-buttons>
-              <ion-button class="remover" (click)="removerCliente(cliente)">
+              <ion-button class="remover" (click)="deleteClient(cliente)">
                   <ion-icon name="trash"></ion-icon>
                   <p>Remover</p>
               </ion-button>
-              <ion-button class="alterar" (click)="alterarCliente(cliente)">
+              <ion-button class="alterar" (click)="atualizarCliente(cliente)">
                   <ion-icon name="create"></ion-icon>
                   <p>Atualizar</p>
               </ion-button>
           </ion-buttons>
       </ion-col>
-      
-
       </ion-row>
     </ion-grid>
   </main>

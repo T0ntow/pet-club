@@ -8,7 +8,6 @@ import { HomePageRoutingModule } from './home-routing.module';
 import { ServicoComponent } from 'src/app/components/servico/servico.component';
 import { BannerComponent } from 'src/app/components/banner/banner.component';
 import { ProductComponent } from 'src/app/components/product/product.component';
-
 @NgModule({
   imports: [
     CommonModule,
@@ -20,7 +19,7 @@ import { ProductComponent } from 'src/app/components/product/product.component';
     HomePage,
     ServicoComponent,
     BannerComponent,
-    ProductComponent
+    ProductComponent,
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA

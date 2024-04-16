@@ -9,6 +9,8 @@ import { ClientsPageRoutingModule } from './clients-routing.module';
 import { ClientsPage } from './clients.page';
 import { NovoClienteComponent } from 'src/app/modals/clientes-modal/novo-cliente/novo-cliente.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MaskitoModule } from '@maskito/angular';
+import { EditarClienteComponent } from 'src/app/modals/clientes-modal/editar-cliente/editar-cliente.component';
 
 @NgModule({
   imports: [
@@ -16,10 +18,12 @@ import { ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     IonicModule,
     ClientsPageRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MaskitoModule
   ],
   declarations: [
     ClientsPage,
-    NovoClienteComponent]
+    NovoClienteComponent,
+    EditarClienteComponent]
 })
 export class ClientsPageModule {}

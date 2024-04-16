@@ -13,7 +13,6 @@ export class PetPage implements OnInit {
 
   pets: { nome: string, especie: string, raca: string; nascimento: Date; genero: string; cor: string; id: number }[] = []
 
-
   constructor(
     private alertController: AlertController,
     private modalCtrl: ModalController,

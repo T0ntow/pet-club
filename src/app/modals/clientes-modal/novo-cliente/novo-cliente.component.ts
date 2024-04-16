@@ -4,6 +4,8 @@ import { ModalController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
 import { FormBuilder } from '@angular/forms';
 import { ClientService } from 'src/app/services/client.service';
+import { maskitoNumber, maskitoCPF } from '../../../mask'
+import { MaskitoElementPredicate } from '@maskito/core';
 
 @Component({
   selector: 'app-novo-cliente',
@@ -11,7 +13,15 @@ import { ClientService } from 'src/app/services/client.service';
   styleUrls: ['./novo-cliente.component.scss'],
 })
 export class NovoClienteComponent  implements OnInit {
+  readonly maskitoNumber = maskitoNumber;
+  readonly maskitoCpf = maskitoCPF;
+
+  readonly maskPredicate: MaskitoElementPredicate = async (el) => (el as HTMLIonInputElement).getInputElement();
   newClientForm: FormGroup;
+  
+  maskitoRejectEvent() {
+    console.log("maskitoReject");
+  }
 
   constructor(
     private modalCtrl: ModalController,
@@ -21,9 +31,9 @@ export class NovoClienteComponent  implements OnInit {
   ) {
     this.newClientForm = this.formBuilder.group({
       nome: ['', [Validators.required]],
-      email: ['', [Validators.required]],
-      cpf: ['', [Validators.required]],
-      telefone: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      cpf: ['', [Validators.required, Validators.minLength(14)]],
+      fone: ['', [Validators.required, Validators.minLength(16)]],
       endereco: ['', [Validators.required]],
     })
   }
@@ -33,10 +43,17 @@ export class NovoClienteComponent  implements OnInit {
     this.modalCtrl.dismiss();
   }
 
+  removeNonDigits(data: string): string {
+    return data.replace(/[^\d]/g, '');
+  }
+
   async salvarAlteracoes() {
     const clientData = this.newClientForm.value;
 
     if(this.newClientForm.valid) {
+      clientData.cpf = this.removeNonDigits(this.newClientForm.get('cpf')!.value);
+      clientData.fone = this.removeNonDigits(this.newClientForm.get('fone')!.value);
+
       this.clientService.newClient(clientData).subscribe({
         next: async (response: any) => {
           this.clientService.updateObservableClients();

@@ -30,7 +30,11 @@ export class ClientService {
     return this.http.get('http://localhost:5000/pegar-clientes')
   }
 
-  deleteClient(id: number) {
-    return this.http.delete(`http://localhost:5000/clientes/${id}`)
+  deleteClient(cpf: string) {
+    return this.http.delete(`http://localhost:5000/deletar-cliente/${cpf}`)
+  }
+
+  updateClient(clientData: any, cpf: string) {
+    return this.http.put(`http://localhost:5000/atualizar-cliente/${cpf}`, clientData)
   }
 }

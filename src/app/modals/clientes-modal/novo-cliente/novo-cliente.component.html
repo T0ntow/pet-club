@@ -24,13 +24,19 @@
     <ion-item>
       <ion-input name="email" type="email" label="Email*" labelPlacement="floating" formControlName="email"></ion-input>
     </ion-item>
-
     <ion-item>
-      <ion-input name="telefone" type="tel" label="Telefone *" labelPlacement="floating" formControlName="telefone"></ion-input>
+      <ion-input name="telefone" type="tel" label="Telefone *" labelPlacement="floating" formControlName="fone"
+      [maskito]="maskitoNumber"
+      [maskitoElement]="maskPredicate"
+      (maskitoReject)="maskitoRejectEvent()"
+      ></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-input name="cpf" type="text" label="CPF *" labelPlacement="floating" formControlName="cpf"></ion-input>
+      <ion-input name="cpf" type="text" label="CPF *" labelPlacement="floating" formControlName="cpf"
+      [maskito]="maskitoCpf"
+      [maskitoElement]="maskPredicate"
+      (maskitoReject)="maskitoRejectEvent()"></ion-input>
     </ion-item>
  
     <ion-item>

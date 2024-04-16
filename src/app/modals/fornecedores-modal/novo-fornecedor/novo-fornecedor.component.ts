@@ -11,7 +11,6 @@ import { MaskitoElementPredicate } from '@maskito/core';
   selector: 'app-novo-fornecedor',
   templateUrl: './novo-fornecedor.component.html',
   styleUrls: ['./novo-fornecedor.component.scss'],
-
 })
 
 export class NovoFornecedorComponent implements OnInit {

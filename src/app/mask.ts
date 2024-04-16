@@ -10,6 +10,10 @@ export const maskitoNumber: MaskitoOptions = {
 };
 
 
+export const maskitoCPF: MaskitoOptions = {
+    mask: [/\d/,/\d/,/\d/,'.', /\d/,/\d/,/\d/,'.',/\d/,/\d/,/\d/,'-',/\d/,/\d/], 
+};
+maskitoNumber
 export const maskitoPrice =  maskitoNumberOptionsGenerator({
     decimalZeroPadding: true,
     precision: 2,
