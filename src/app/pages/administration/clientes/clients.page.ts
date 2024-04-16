@@ -18,8 +18,10 @@ interface Cliente {
   styleUrls: ['./clients.page.scss'],
 })
 export class ClientsPage implements OnInit {
-  // Atualize o modelo do fornecedor
   clientes: Cliente[] = [];
+  clientesFiltrados: Cliente[] = [];
+  searchTerm: string = '';
+  temCliente: boolean = true;
 
   constructor(
     private alertController: AlertController,
@@ -35,6 +37,15 @@ export class ClientsPage implements OnInit {
     });
 
     this.getClients();
+  }
+
+  searchClients() {
+    this.clientesFiltrados = this.clientes.filter(cliente =>
+      cliente.nome.toLowerCase().includes(this.searchTerm.toLowerCase()) || 
+      cliente.cpf.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+
+    this.temCliente = this.clientesFiltrados.length > 0;
   }
 
   formatarCpf(cpf: string) {
@@ -63,6 +74,8 @@ export class ClientsPage implements OnInit {
     this.clientService.getClients().subscribe({
       next: (response: any) => {
         this.clientes = response;
+        this.clientesFiltrados = this.clientes
+
         loading.dismiss();
       },
       error: (error: any) => {
