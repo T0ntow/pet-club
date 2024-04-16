@@ -11,8 +11,9 @@
   <main>
     <div>
       <div class="search-box">
-        <input type="text" class="custom-searchbar" placeholder="Pesquisar">
-        <button>
+        <input type="text" [(ngModel)]="searchTerm" placeholder="Pesquisar" class="custom-searchbar"
+          (change)="searchProducts()">
+        <button (click)="searchProducts()">
           <ion-icon name="search-outline"></ion-icon>
         </button>
       </div>
@@ -32,7 +33,15 @@
         <ion-col class="functions-col">Funções</ion-col>
       </ion-row>
 
-      <ion-row *ngFor="let produto of produtos">
+
+      @if (!temProduto) {
+        <ion-row>
+          <ion-col style="background-color: var(--ion-color-danger);">Nada Encontrado</ion-col>
+        </ion-row>
+        }
+
+      @for(produto of produtosFiltrados; track produto.cod) {
+      <ion-row>
 
         <ion-col style="display: flex; align-items: center; justify-content: flex-start;">
           <div *ngIf="!isLoading; else loading" style="margin: 0; padding: 0;">
@@ -61,9 +70,9 @@
             </ion-button>
           </ion-buttons>
         </ion-col>
-
-
       </ion-row>
+    }
+
     </ion-grid>
   </main>
 </ion-content>

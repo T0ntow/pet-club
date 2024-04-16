@@ -22,6 +22,9 @@ interface Produto {
 
 export class ProdutosCrudPage implements OnInit {
   produtos: Produto[] = [];
+  produtosFiltrados: Produto[] = [];
+  searchTerm = '';
+  temProduto: boolean = true;
 
   isLoading = true
 
@@ -41,6 +44,15 @@ export class ProdutosCrudPage implements OnInit {
     this.getProducts();
   }
 
+  searchProducts() {
+    this.produtosFiltrados = this.produtos.filter(produto =>
+      produto.nome.toLowerCase().includes(this.searchTerm.toLowerCase()) || 
+      produto.categoria.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+
+    this.temProduto = this.produtosFiltrados.length > 0;
+  }
+
   async getProducts() {
     const loading = await this.loadingController.create({
       message: 'Carregando produtos...',
@@ -53,6 +65,8 @@ export class ProdutosCrudPage implements OnInit {
     this.productService.getProducts().subscribe({
       next: (response: any) => {
         this.produtos = response;
+        this.produtosFiltrados = this.produtos;
+
 
         response.forEach((produto: any) => {
           this.getImages(produto)
