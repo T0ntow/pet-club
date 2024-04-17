@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { HttpService } from './httpSevice.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,9 +9,11 @@ import { Subject } from 'rxjs';
 export class PetService {
 
   private observerPet = new Subject()
+  port = this.httpService.getPort();
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private httpService: HttpService
   ) { }
 
   getObservablePets() {
@@ -21,15 +24,19 @@ export class PetService {
     this.observerPet.next(true)
   }
 
-  newPet(employeeData: any) {
-    return this.http.post('http://localhost:5000/novo-pet', employeeData)
+  newPet(petData: any) {
+    return this.http.post(`${this.port}/novo-pet`, petData)
   }
 
   getPets() {
-    return this.http.get('http://localhost:5000/pegar-pets')
+    return this.http.get(`${this.port}/pegar-pets`)
+  }
+
+  updatePets(petData: any, id: any) {
+    return this.http.put(`${this.port}/atualizar-pet/${id}`, petData)
   }
 
   deletePet(id: number) {
-    return this.http.delete(`http://localhost:5000/pet/${id}`)
+    return this.http.delete(`${this.port}/deletar-pet/${id}`)
   }
 }
