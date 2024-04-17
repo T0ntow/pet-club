@@ -1,7 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, LoadingController, ModalController, ToastController } from '@ionic/angular';
+import { EditarPetComponent } from 'src/app/modals/pet-modal/editar-pet/editar-pet.component';
 import { NovoPetComponent } from 'src/app/modals/pet-modal/novo-pet/novo-pet.component';
 import { PetService } from 'src/app/services/pet.service';
+
+interface Pet {
+  cpf: string;
+  nome: string;
+  especie: string;
+  raca: string;
+  nascimento: string;
+  genero: string;
+  cor: string;
+}
 
 @Component({
   selector: 'app-pet',
@@ -11,7 +22,7 @@ import { PetService } from 'src/app/services/pet.service';
 
 export class PetPage implements OnInit {
 
-  pets: { nome: string, especie: string, raca: string; nascimento: Date; genero: string; cor: string; id: number }[] = []
+  pets: { nome: string, especie: string, raca: string; nascimento: string; genero: string; cor: string; id: number, cpf:string }[] = []
 
   constructor(
     private alertController: AlertController,
@@ -96,8 +107,13 @@ export class PetPage implements OnInit {
     return await modal.present();
   }
 
-  alterarPet(pet: any) {
+  async atualizarPet(pet: Pet) {
+    const modal = await this.modalCtrl.create({
+      component: EditarPetComponent,
+      componentProps: {pet: pet},
+    });
 
+    return await modal.present();
   }
 
   async presentToast(text: string, color: string,) {
