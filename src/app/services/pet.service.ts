@@ -32,7 +32,7 @@ export class PetService {
     return this.http.get(`${this.port}/pegar-pets`)
   }
 
-  updatePets(petData: any, id: any) {
+  updatePet(petData: any, id: any) {
     return this.http.put(`${this.port}/atualizar-pet/${id}`, petData)
   }
 

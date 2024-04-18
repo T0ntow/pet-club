@@ -1,7 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController, ToastController } from '@ionic/angular';
-import { SupplierService } from 'src/app/services/supplier.service';
+import { PetService } from 'src/app/services/pet.service';
+import { ClientService } from 'src/app/services/client.service';
+import { NovoClienteComponent } from '../../clientes-modal/novo-cliente/novo-cliente.component';
 
 @Component({
   selector: 'app-editar-pet',
@@ -9,78 +11,119 @@ import { SupplierService } from 'src/app/services/supplier.service';
   styleUrls: ['./editar-pet.component.scss'],
 })
 export class EditarPetComponent implements OnInit {
-  @Input() fornecedor: any;
-  editPetForm: FormGroup = new FormGroup({});
+  @Input() pet: any;
+  updatePetForm: FormGroup = new FormGroup({});
+
+  tutores: {
+    nome: string;
+    email: string;
+    telefone: string;
+    cpf: string;
+    endereco: string;
+  }[] = [];
+  searchTerm: string = '';
+
+  filteredTutores: {
+    nome: string;
+    email: string;
+    telefone: string;
+    cpf: string;
+    endereco: string;
+  }[] = [];
+  selectedTutor: any;
 
   constructor(
     private modalCtrl: ModalController,
     private toastController: ToastController,
     private formBuilder: FormBuilder,
-    private supplierService: SupplierService
+    private petService: PetService,
+    private clienteService: ClientService
   ) {}
 
-  ngOnInit() { 
-    this.editPetForm = this.formBuilder.group({
-      nomeEmpresa: [this.fornecedor.nome, [Validators.required]],
-      email: [this.fornecedor.email, [Validators.required, Validators.email]],
-      cnpj: [this.formatarCnpj(this.fornecedor.cnpj), [Validators.required, Validators.minLength(18)]],
-      representante: [this.fornecedor.representante, [Validators.required]],
-      telefone: [this.formatarTelefone(this.fornecedor.fone), [Validators.required, Validators.minLength(16)]],
-      endereco: [this.fornecedor.endereco, [Validators.required]],
-    })
+  ngOnInit() {
+    this.getClients();
+    this.updatePetForm = this.formBuilder.group({
+      id: [this.pet.cod, [Validators.required]],
+      nome: [this.pet.nome, [Validators.required]],
+      especie: [this.pet.especie, [Validators.required]],
+      raca: [this.pet.raca, [Validators.required]],
+      cor: [this.pet.cor, [Validators.required]],
+      nascimento: [this.formatarData(this.pet.nascimento), [Validators.required]],
+      genero: [this.pet.genero, [Validators.required]],
+      tutor: [this.pet.cpf_cliente, [Validators.required]],
+    });
+    console.log('Pet', this.pet);
   }
 
-  formatarCnpj(cnpj: string): string {
-    return cnpj.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
+  formatarData(data: string): string {
+    const dateFormatTed = data.split("T");
+    return dateFormatTed[0];
   }
 
-  formatarTelefone(telefone: string): string {
-    return telefone.replace(/^(\d{2})(\d{1})(\d{4})(\d{4})$/, "($1) $2 $3-$4");
-  }
-
-  removeNonDigits(cnpj: string): string {
-    return cnpj.replace(/[^\d]/g, '');
-  }
-  
   fecharModal() {
     this.modalCtrl.dismiss();
   }
 
-  salvarAlteracoes() {
-    // const supplierData = this.updateSupplierForm.value;
-
-    // if (this.updateSupplierForm.valid) {
-    //   supplierData.cnpj = this.removeNonDigits(this.updateSupplierForm.get('cnpj')!.value);
-    //   supplierData.telefone = this.removeNonDigits(this.updateSupplierForm.get('telefone')!.value);
-    //   const oldCnpj = this.fornecedor.cnpj;
-  
-    //   this.supplierService.updateSupplier(supplierData, oldCnpj).subscribe({
-    //     next: (response) => {
-    //       this.supplierService.updateObservableSuppliers();
-    //       this.modalCtrl.dismiss(null, 'confirm');
-    //       this.presentToast("Fornecedor atualizado com sucesso", "success")
-    //     },
-    //     error: (error) => {
-    //       console.error('Erro ao atualizar o fornecedor:', error);
-    //       if(error.error.error === "Já existe um fornecedor com este CNPJ") {
-    //         this.presentToast("Já existe um fornecedor cadastrado com este CNPJ", "danger")
-    //       } else {
-    //         this.presentToast("Erro ao atualizar fornecedor", "danger")
-    //       }
-    //     }
-    //   });
-    // } else {
-    //   this.presentToast("Preencha o formulário corretamente", "danger")
-    // }
+  filterTutors() {
+    this.filteredTutores = this.tutores.filter((tutor) =>
+      tutor.nome
+        .toLowerCase()
+        .includes(this.updatePetForm.get('tutor')!.value.toLowerCase())
+    );
   }
 
-  // async presentToast(text: string, color: string) {
-    // const toast = await this.toastController.create({
-  //     message: text,
-  //     duration: 1800,
-  //     color: color
-  //   });
+  getClients() {
+    this.clienteService.getClients().subscribe({
+      next: async (response: any) => {
+        this.tutores = response;
+        this.filteredTutores = this.tutores;
+      },
+      error: async (error: any) => {
+        console.log('Falha ao recuperar clientes', error);
+      },
+    });
+  }
 
-  //   await toast.present();
-  // }
+  salvarAlteracoes() {
+    const petData = this.updatePetForm.value;
+
+    if (this.updatePetForm.valid) {
+      this.petService.updatePet(petData, petData.id).subscribe({
+        next: (response) => {
+          this.petService.updateObservablePets();
+          this.modalCtrl.dismiss(null, 'confirm');
+          this.presentToast('Pet atualizado com sucesso', 'success');
+        },
+        error: (error) => {
+          console.error('Erro ao atualizar o pet:', error);
+          this.presentToast('Erro ao atualizar pet', 'danger');
+        },
+      });
+    } else {
+      this.presentToast('Preencha o formulário corretamente', 'danger');
+    }
+  }
+
+  async presentToast(text: string, color: string) {
+    const toast = await this.toastController.create({
+      message: text,
+      duration: 1800,
+      color: color,
+    });
+
+    await toast.present();
+  }
+
+  async newClient() {
+    const modal = await this.modalCtrl.create({
+      component: NovoClienteComponent,
+    });
+
+    modal.onDidDismiss().then((data) => {
+      console.log('Clientes atualizados:', data.data);
+      this.getClients();
+    });
+
+    await modal.present();
+  }
 }
