@@ -118,12 +118,7 @@ export class EditarPetComponent implements OnInit {
     const modal = await this.modalCtrl.create({
       component: NovoClienteComponent,
     });
-
-    modal.onDidDismiss().then((data) => {
-      console.log('Clientes atualizados:', data.data);
-      this.getClients();
-    });
-
+    
     await modal.present();
   }
 }

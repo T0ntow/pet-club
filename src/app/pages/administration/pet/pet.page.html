@@ -11,17 +11,18 @@
   <main>
     <div>
       <div class="search-box">
-        <input type="text" class="custom-searchbar" placeholder="Pesquisar">
-        <button>
+        <input type="text" [(ngModel)]="searchTerm" placeholder="Pesquisar" class="custom-searchbar"
+          (change)="searchPet()">
+        <button (click)="searchPet()">
           <ion-icon name="search-outline"></ion-icon>
         </button>
       </div>
+
 
       <button id="add" (click)="adicionarPet()">
         <p>Cadastrar Pet</p>
       </button>
     </div>
-
     <ion-grid class="table-container">
       <ion-row id="row-header">
         <ion-col>Nome</ion-col>
@@ -31,27 +32,33 @@
         <ion-col class="functions-col">Funções</ion-col>
       </ion-row>
 
-      <ion-row *ngFor="let pet of pets">
-        <ion-col>{{ pet.nome }}</ion-col>
-        <ion-col>{{ pet.especie }}</ion-col>
-        <ion-col>{{ pet.raca }}</ion-col>
-        <ion-col>{{ pet.genero }}</ion-col>
+      @if (!temPet) {
+        <ion-row>
+          <ion-col style="background-color: var(--ion-color-danger);">Nada Encontrado</ion-col>
+        </ion-row>
+      }
 
-        <ion-col class="functions-col">
-          <ion-buttons>
+      @for(pet of petsFiltrados; track pet.cod) {
+        <ion-row>
+          <ion-col>{{ pet.nome }}</ion-col>
+          <ion-col>{{ pet.especie }}</ion-col>
+          <ion-col>{{ pet.raca }}</ion-col>
+          <ion-col>{{ pet.genero }}</ion-col>
+          
+          <ion-col class="functions-col">
+            <ion-buttons>
               <ion-button class="remover" (click)="removerPet(pet)">
-                  <ion-icon name="trash"></ion-icon>
-                  <p>Remover</p>
+                <ion-icon name="trash"></ion-icon>
+                <p>Remover</p>
               </ion-button>
               <ion-button class="alterar" (click)="atualizarPet(pet)">
-                  <ion-icon name="create"></ion-icon>
-                  <p>Atualizar</p>
+                <ion-icon name="create"></ion-icon>
+                <p>Atualizar</p>
               </ion-button>
-          </ion-buttons>
-      </ion-col>
-      
-
-      </ion-row>
+            </ion-buttons>
+          </ion-col>
+        </ion-row>
+      }
     </ion-grid>
   </main>
 </ion-content>

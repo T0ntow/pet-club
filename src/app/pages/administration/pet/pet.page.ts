@@ -6,6 +6,7 @@ import { PetService } from 'src/app/services/pet.service';
 
 interface Pet {
   cpf: string;
+  cod: string;
   nome: string;
   especie: string;
   raca: string;
@@ -21,8 +22,10 @@ interface Pet {
 })
 
 export class PetPage implements OnInit {
-
-  pets: { nome: string, especie: string, raca: string; nascimento: string; genero: string; cor: string; id: number, cpf:string }[] = []
+  pets: Pet[] = [];
+  petsFiltrados: Pet[] = [];
+  searchTerm: string = '';
+  temPet: boolean = true;
 
   constructor(
     private alertController: AlertController,
@@ -40,6 +43,16 @@ export class PetPage implements OnInit {
     this.getPets()
   }
 
+  searchPet() {
+    this.petsFiltrados = this.pets.filter(pet =>
+      pet.nome.toLowerCase().includes(this.searchTerm) || 
+      pet.especie.toLowerCase().includes(this.searchTerm)
+
+    );
+
+    this.temPet = this.petsFiltrados.length > 0;
+  }
+
   async getPets() {
     const loading = await this.loadingController.create({
       message: 'Carregando pets...',
@@ -52,6 +65,8 @@ export class PetPage implements OnInit {
     this.petService.getPets().subscribe({
       next: (response: any) => {
         this.pets = response;
+        this.petsFiltrados = this.pets;
+
         loading.dismiss();
       },
       error: (error: any) => {
@@ -61,12 +76,12 @@ export class PetPage implements OnInit {
     });
   }
 
-  removerPet(pet: any) {
+  removerPet(pet: Pet) {
     this.presentAlertRemove(pet);
   }
 
-  deletePet(pet: any) {
-    this.petService.deletePet(pet.id).subscribe({
+  deletePet(pet: Pet) {
+    this.petService.deletePet(pet.cod).subscribe({
       next: async (response: any) => {
         await this.presentToast('Pet removido com sucesso', "success")
         this.petService.updateObservablePets()

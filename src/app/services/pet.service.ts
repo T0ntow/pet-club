@@ -36,7 +36,7 @@ export class PetService {
     return this.http.put(`${this.port}/atualizar-pet/${id}`, petData)
   }
 
-  deletePet(id: number) {
+  deletePet(id: string) {
     return this.http.delete(`${this.port}/deletar-pet/${id}`)
   }
 }
