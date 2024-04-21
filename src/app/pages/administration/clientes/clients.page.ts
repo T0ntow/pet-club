@@ -75,6 +75,7 @@ export class ClientsPage implements OnInit {
       next: (response: any) => {
         this.clientes = response;
         this.clientesFiltrados = this.clientes
+        this.temCliente = this.clientesFiltrados.length > 0;
 
         loading.dismiss();
       },

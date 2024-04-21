@@ -100,11 +100,11 @@
     }
 
     .remover {
-        background-color: #ec5858;
+        background-color: #dd5e5e;
     }
 
     .alterar {
-        background-color: #53dfd7;
+        background-color: #5ab0d7;
     }
 }
 
@@ -130,7 +130,8 @@
             border-radius: 10px;
             height: 45px;
             align-items: center;
-            background-color: #cbcbcb;
+            background-color: #bebebe;
+            // border: 1px solid rgb(128, 128, 128);
             font-size: 14px;
 
             overflow: hidden;
@@ -139,7 +140,6 @@
         }
 
         .functions-col {
-            justify-content: center !important;
         }
     }
 }
@@ -220,15 +220,16 @@ main {
         @include list-item-styles;
         @include odd-list-item;
         flex-wrap: nowrap;
-        width: 100%;
         overflow: auto;
+        width: 100%;
+        background-color: #dedede;
 
         #row-header {
             margin: 20px 0;
             font-weight: bolder;
 
             ion-col {
-                background-color: #898989;
+                background-color: #8d8d8d;
             }
         }
     }

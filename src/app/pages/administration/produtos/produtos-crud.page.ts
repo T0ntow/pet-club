@@ -66,6 +66,7 @@ export class ProdutosCrudPage implements OnInit {
       next: (response: any) => {
         this.produtos = response;
         this.produtosFiltrados = this.produtos;
+        this.temProduto = this.produtosFiltrados.length > 0;
 
 
         response.forEach((produto: any) => {

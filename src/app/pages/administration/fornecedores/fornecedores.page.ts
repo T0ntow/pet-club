@@ -72,6 +72,7 @@ export class FornecedoresPage implements OnInit {
       next: (response: any) => {
         this.fornecedores = response;
         this.fornecedoresFiltrados = this.fornecedores
+        this.temFornecedor = this.fornecedoresFiltrados.length > 0;
 
         loading.dismiss();
       },

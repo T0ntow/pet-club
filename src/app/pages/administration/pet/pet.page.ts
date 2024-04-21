@@ -66,6 +66,7 @@ export class PetPage implements OnInit {
       next: (response: any) => {
         this.pets = response;
         this.petsFiltrados = this.pets;
+        this.temPet = this.petsFiltrados.length > 0;
 
         loading.dismiss();
       },
