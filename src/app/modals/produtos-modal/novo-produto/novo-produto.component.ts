@@ -29,7 +29,7 @@ export class NovoProdutoComponent implements OnInit {
     this.newProductForm = this.formBuilder.group({
       nome: ['', [Validators.required]],
       preco: ['', [Validators.required]],
-      descricao: ['', [Validators.required]],
+      descricao: ['', ],
       categoria: ['', [Validators.required]],
       images: [null, [Validators.required]],
     });

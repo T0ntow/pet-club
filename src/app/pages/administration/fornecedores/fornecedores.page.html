@@ -36,7 +36,7 @@
 
       @if (!temFornecedor) {
       <ion-row>
-        <ion-col style="background-color: var(--ion-color-danger);">Nada Encontrado</ion-col>
+        <ion-col style="background-color: var(--ion-color-danger); font-size: .8rem;">Nenhum fornecedor encontrado!</ion-col>
       </ion-row>
       }
 
@@ -50,11 +50,11 @@
 
         <ion-col class="ion-text-right" class="functions-col">
           <ion-buttons>
-            <ion-button class="remover" (click)="deleteSupplier(fornecedor)">
+            <ion-button class="remover" title="Remover fornecedor"  (click)="deleteSupplier(fornecedor)">
               <ion-icon name="trash"></ion-icon>
             </ion-button>
-            <ion-button class="alterar" (click)="atualizarFornecedor(fornecedor)">
-              <ion-icon name="create"></ion-icon>
+            <ion-button class="alterar" title="Editar fornecedor" (click)="atualizarFornecedor(fornecedor)">
+              <ion-icon name="create"></ion-icon> 
             </ion-button>
           </ion-buttons>
         </ion-col>

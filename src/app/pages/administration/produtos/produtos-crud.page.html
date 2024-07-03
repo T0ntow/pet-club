@@ -36,9 +36,9 @@
 
       @if (!temProduto) {
         <ion-row>
-          <ion-col style="background-color: var(--ion-color-danger);">Nada Encontrado</ion-col>
+          <ion-col style="background-color: var(--ion-color-danger); font-size: .8rem;">Nenhum produto encontrado!</ion-col>
         </ion-row>
-        }
+      }
 
       @for(produto of produtosFiltrados; track produto.cod) {
       <ion-row>
@@ -60,10 +60,10 @@
 
         <ion-col class="functions-col">
           <ion-buttons>
-            <ion-button class="remover" (click)="removerProduto(produto)">
+            <ion-button class="remover" title="Remover produto" (click)="removerProduto(produto)">
               <ion-icon name="trash"></ion-icon>
             </ion-button>
-            <ion-button class="alterar" (click)="alterarProduto(produto)">
+            <ion-button class="alterar" title="Remover produto" (click)="alterarProduto(produto)">
               <ion-icon name="create"></ion-icon>
             </ion-button>
           </ion-buttons>

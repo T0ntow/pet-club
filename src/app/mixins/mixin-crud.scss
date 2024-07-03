@@ -89,6 +89,10 @@
     ion-button {
         border-radius: 5px;
         width: 95px;
+
+        display: flex;
+        flex-direction: column;
+
         p {
             font-size: 10px;
         }

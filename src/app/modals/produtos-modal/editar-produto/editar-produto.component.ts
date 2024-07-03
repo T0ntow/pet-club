@@ -31,7 +31,7 @@ export class EditarProdutoComponent implements OnInit {
     this.updateProductForm = this.formBuilder.group({
       nome: [this.produto.nome, [Validators.required]],
       preco: [this.produto.preco, [Validators.required]],
-      descricao: [this.produto.descricao, [Validators.required]],
+      descricao: [this.produto.descricao],
       categoria: [this.produto.categoria, [Validators.required]],
       images: ['', []],
       cod: [this.produto.cod, [Validators.required]] // Adicionando o campo ID
