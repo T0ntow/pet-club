@@ -15,6 +15,7 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { provideFirebaseApp } from '@angular/fire/app';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { initializeApp } from 'firebase/app';
+import { PedidoPageModule } from './pages/administration/pedido/pedido.module';
 
 initializeApp(environment.firebase)
 
@@ -22,6 +23,8 @@ initializeApp(environment.firebase)
   declarations: [AppComponent],
   imports: [
     BrowserModule, 
+    PedidoPageModule,// Adicione o módulo do pedido aqui
+
     IonicModule.forRoot(), 
     AppRoutingModule, 
     HttpClientModule,

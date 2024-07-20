@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Novo Pedido</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="fecharModal()" id="cancel-button">
+        <ion-icon name="close"></ion-icon>
+        <p>Cancelar</p>
+      </ion-button>
+
+      <ion-button (click)="salvarAlteracoes()" id="save-button">
+        <ion-icon name="checkmark-outline"></ion-icon>
+        <p>Salvar</p>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="pedidoForm">
+    <ion-item>
+      <ion-select labelPlacement="floating" label="Fornecedor *" formControlName="cnpj_fornecedor">
+        <ion-select-option [value]="fornecedor.cnpj" *ngFor="let fornecedor of fornecedoresFiltrados"> {{fornecedor.nome}} </ion-select-option>
+      </ion-select>
+      <ion-input placeholder="filtrar fornecedor" formControlName="cnpj_fornecedor" (ionChange)="filtrarFornecedor()"></ion-input>
+      <ion-button color="light" (click)="novoFornecedor()"><ion-icon name="add-circle" color="dark"></ion-icon></ion-button>
+    </ion-item>
+
+    <ion-item>
+      <ion-input name="data_pedido" type="date" placeholder="Data do Pedido *"  label="Data do Pedido *" formControlName="data_pedido" labelPlacement="floating"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input name="previsao_entrega" type="date" placeholder="Previsão de Entrega *" label="Previsão de Entrega *" formControlName="previsao_entrega" labelPlacement="floating"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input name="metodo_entrega" type="text" label="Método de Entrega *" labelPlacement="floating" formControlName="metodo_entrega"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input name="observacoes" type="text" label="Observações" labelPlacement="floating" formControlName="observacoes"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input name="valor_total" type="number" step="0.01" label="Valor Total *" labelPlacement="floating" formControlName="valor_total"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input name="status_pedido" type="text" label="Status do Pedido *" labelPlacement="floating" formControlName="status_pedido"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-select labelPlacement="floating" label="Status do Pedido *" formControlName="status_pedido">
+        <ion-select-option value="Solicitado">Solicitado</ion-select-option>
+        <ion-select-option value="Pendente">Pendente</ion-select-option>
+        <ion-select-option value="Cancelado">Cancelado</ion-select-option>
+        <ion-select-option value="Concluído">Concluído</ion-select-option>
+      </ion-select>
+    </ion-item>
+    
+  </form>
+</ion-content>

@@ -1,0 +1,65 @@
+<ion-header class="header">
+  <ion-buttons slot="start" class="custom-menu-button">
+    <ion-menu-button class="custom-button" color="medium"></ion-menu-button>
+  </ion-buttons>
+  <h1>
+    Administração <ion-icon name="arrow-forward-outline"></ion-icon> Pedidos
+  </h1>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <main>
+    <div>
+      <div class="search-box">
+        <input type="text" [(ngModel)]="searchTerm" placeholder="Pesquisar" class="custom-searchbar" (change)="searchPedidos()">
+        <button (click)="searchPedidos()">
+          <ion-icon name="search-outline"></ion-icon>
+        </button>
+      </div>
+
+      <button id="add" (click)="adicionarPedido()">
+        <p>Cadastrar Pedido</p>
+      </button>
+    </div>
+
+    <ion-grid class="table-container">
+      <ion-row id="row-header">
+        <!-- <ion-col>CNPJ Fornecedor</ion-col> -->
+        <ion-col>Data do Pedido</ion-col>
+        <ion-col>Previsão de Entrega</ion-col>
+        <ion-col>Método de Entrega</ion-col>
+        <ion-col>Observações</ion-col>
+        <ion-col>Valor Total</ion-col>
+        <ion-col>Status do Pedido</ion-col>
+        <ion-col class="functions-col">Funções</ion-col>
+      </ion-row>
+
+      <ion-row *ngIf="!temPedido">
+        <ion-col style="background-color: var(--ion-color-danger);">Nenhum Pedido Encontrado</ion-col>
+      </ion-row>
+
+      <ion-row *ngFor="let pedido of pedidosFiltrados">
+        <!-- <ion-col>{{ pedido.cnpj_fornecedor }}</ion-col> -->
+        <ion-col>{{ pedido.data_pedido | date }}</ion-col>
+        <ion-col>{{ pedido.previsao_entrega | date }}</ion-col>
+        <ion-col>{{ pedido.metodo_entrega }}</ion-col>
+        <ion-col>{{ pedido.observacoes }}</ion-col>
+        <ion-col>{{ pedido.valor_total | currency }}</ion-col>
+        <ion-col>{{ pedido.status_pedido }}</ion-col>
+
+        <ion-col class="functions-col">
+          <ion-buttons>
+            <ion-button class="remover" (click)="removerPedido(pedido)">
+              <ion-icon name="trash"></ion-icon>
+              <p>Remover</p>
+            </ion-button>
+            <ion-button class="alterar" (click)="alterarPedido(pedido)">
+              <ion-icon name="create"></ion-icon>
+              <p>Atualizar</p>
+            </ion-button>
+          </ion-buttons>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </main>
+</ion-content>
