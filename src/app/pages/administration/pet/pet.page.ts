@@ -6,6 +6,7 @@ import { NovoPetComponent } from 'src/app/modals/pet-modal/novo-pet/novo-pet.com
 import { ClientService } from 'src/app/services/client.service';
 import { PetService } from 'src/app/services/pet.service';
 
+import { TutorDoPetComponent } from 'src/app/modals/tutor-do-pet/tutor-do-pet.component';
 
 interface Cliente {
   cpf: string; // pk
@@ -66,54 +67,6 @@ export class PetPage implements OnInit {
     this.temPet = this.petsFiltrados.length > 0;
   }
 
-  // async getPets() {
-  //   const loading = await this.loadingController.create({
-  //     message: 'Carregando pets...',
-  //     spinner: 'crescent',
-  //     translucent: true,
-  //   });
-
-  //   await loading.present();
-
-  //   this.petService.getPets().subscribe({
-  //     next: (response: any) => {
-  //       this.pets = response;
-  //       this.petsFiltrados = this.pets;
-
-  //       console.log(this.pets);
-        
-
-  //       loading.dismiss();
-  //     },
-  //     error: (error: any) => {
-  //       this.presentToast('Falha ao recuperar pets', "danger")
-  //       loading.dismiss();
-  //     },
-  //   });
-  // }
-
-  // async getClients() {
-  //   const loading = await this.loadingController.create({
-  //     message: 'Carregando clientes...',
-  //     spinner: 'crescent',
-  //     translucent: true,
-  //   });
-
-  //   await loading.present();
-
-  //   this.clientService.getClients().subscribe({
-  //     next: (response: any) => {
-  //       this.tutores = response;
-  //       console.log(this.tutores);
-  //       loading.dismiss();
-  //     },
-  //     error: (error: any) => {
-  //       this.presentToast("Falha ao recuperar clientes", "danger")
-  //       loading.dismiss();
-  //     },
-  //   });
-  // }
-
   async getPetsAndClients() {
     const loading = await this.loadingController.create({
       message: 'Carregando pets e clientes...',
@@ -160,7 +113,6 @@ export class PetPage implements OnInit {
     console.log(this.pets);
     
   }
-  
 
   removerPet(pet: Pet) {
     this.presentAlertRemove(pet);
@@ -212,6 +164,15 @@ export class PetPage implements OnInit {
     const modal = await this.modalCtrl.create({
       component: EditarPetComponent,
       componentProps: {pet: pet},
+    });
+
+    return await modal.present();
+  }
+
+  async abrirModalTutor(cliente: Cliente | undefined) {
+    const modal = await this.modalCtrl.create({
+      component: TutorDoPetComponent,
+      componentProps: {cliente: cliente},
     });
 
     return await modal.present();

@@ -1,1 +1,6 @@
 @import '/src/app/mixins/mixin-crud.scss';
+
+.tutor-pet:hover{ 
+    background: rgb(141, 141, 141) !important;
+    cursor: pointer;
+}

@@ -41,7 +41,6 @@ export class NovoProdutoComponent implements OnInit {
     this.modalCtrl.dismiss();
   }
 
-
   async onFileInputChange(event: any) {
     const selectedFiles = event.target.files;
     this.newProductForm.patchValue({ images: selectedFiles });

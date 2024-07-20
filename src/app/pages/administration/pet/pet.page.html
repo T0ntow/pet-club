@@ -18,7 +18,6 @@
         </button>
       </div>
 
-
       <button id="add" (click)="adicionarPet()">
         <p>Cadastrar Pet</p>
       </button>
@@ -45,7 +44,7 @@
           <ion-col>{{ pet.especie }}</ion-col>
           <ion-col>{{ pet.raca }}</ion-col>
           <ion-col>{{ pet.genero }}</ion-col>
-          <ion-col>{{ pet.tutor?.nome || 'Sem tutor' }}</ion-col> <!-- Adiciona o nome do tutor -->
+          <ion-col class="tutor-pet" (click)="abrirModalTutor(pet.tutor)">{{ pet.tutor?.nome || 'Sem tutor' }}</ion-col> <!-- Adiciona o nome do tutor -->
 
           <ion-col class="functions-col">
             <ion-buttons>

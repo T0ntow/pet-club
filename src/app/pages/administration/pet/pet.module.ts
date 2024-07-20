@@ -10,7 +10,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { EditarPetComponent } from 'src/app/modals/pet-modal/editar-pet/editar-pet.component';
 import { NovoPetComponent } from 'src/app/modals/pet-modal/novo-pet/novo-pet.component';
 import { PetPage } from './pet.page';
-
+import { TutorDoPetComponent } from 'src/app/modals/tutor-do-pet/tutor-do-pet.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -22,7 +22,8 @@ import { PetPage } from './pet.page';
   declarations: [
     PetPage,
     NovoPetComponent,
-  EditarPetComponent
+  EditarPetComponent,
+  TutorDoPetComponent
 ]
 })
 export class PetPageModule {}

@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Detalhes do Tutor</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()" id="cancel-button">
+        <ion-icon name="close"></ion-icon>
+        <p>Fechar</p>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label>
+        <h2>Nome</h2>
+        <p>{{ cliente?.nome || 'Não disponível' }}</p>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <h2>E-mail</h2>
+        <p>{{ cliente?.email || 'Não disponível' }}</p>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <h2>Telefone</h2>
+        <p>{{ cliente?.fone || 'Não disponível' }}</p>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <h2>CPF</h2>
+        <p>{{ cliente?.cpf || 'Não disponível' }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>
