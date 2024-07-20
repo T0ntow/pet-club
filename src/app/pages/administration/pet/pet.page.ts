@@ -1,11 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, LoadingController, ModalController, ToastController } from '@ionic/angular';
+import { lastValueFrom } from 'rxjs';
 import { EditarPetComponent } from 'src/app/modals/pet-modal/editar-pet/editar-pet.component';
 import { NovoPetComponent } from 'src/app/modals/pet-modal/novo-pet/novo-pet.component';
+import { ClientService } from 'src/app/services/client.service';
 import { PetService } from 'src/app/services/pet.service';
 
+
+interface Cliente {
+  cpf: string; // pk
+  nome: string;
+  email: string;
+  endereco: string;
+  fone: string;
+}
+
 interface Pet {
-  cpf: string;
+  cpf_cliente: string;
   cod: string;
   nome: string;
   especie: string;
@@ -13,6 +24,7 @@ interface Pet {
   nascimento: string;
   genero: string;
   cor: string;
+  tutor?: Cliente; // Adicionado para associar o tutor
 }
 
 @Component({
@@ -23,6 +35,7 @@ interface Pet {
 
 export class PetPage implements OnInit {
   pets: Pet[] = [];
+  tutores: Cliente[] = [];
   petsFiltrados: Pet[] = [];
   searchTerm: string = '';
   temPet: boolean = true;
@@ -32,50 +45,122 @@ export class PetPage implements OnInit {
     private modalCtrl: ModalController,
     private loadingController: LoadingController,
     private toastController: ToastController,
-    private petService: PetService
+    private petService: PetService,
+    private clientService: ClientService
   ) { }
 
   ngOnInit() {
     this.petService.getObservablePets().subscribe(isUpdated => {
-      this.getPets()
+      this.getPetsAndClients()
     })
-
-    this.getPets()
+    
+    this.getPetsAndClients()
   }
 
   searchPet() {
     this.petsFiltrados = this.pets.filter(pet =>
       pet.nome.toLowerCase().includes(this.searchTerm) || 
       pet.especie.toLowerCase().includes(this.searchTerm)
-
     );
 
     this.temPet = this.petsFiltrados.length > 0;
   }
 
-  async getPets() {
+  // async getPets() {
+  //   const loading = await this.loadingController.create({
+  //     message: 'Carregando pets...',
+  //     spinner: 'crescent',
+  //     translucent: true,
+  //   });
+
+  //   await loading.present();
+
+  //   this.petService.getPets().subscribe({
+  //     next: (response: any) => {
+  //       this.pets = response;
+  //       this.petsFiltrados = this.pets;
+
+  //       console.log(this.pets);
+        
+
+  //       loading.dismiss();
+  //     },
+  //     error: (error: any) => {
+  //       this.presentToast('Falha ao recuperar pets', "danger")
+  //       loading.dismiss();
+  //     },
+  //   });
+  // }
+
+  // async getClients() {
+  //   const loading = await this.loadingController.create({
+  //     message: 'Carregando clientes...',
+  //     spinner: 'crescent',
+  //     translucent: true,
+  //   });
+
+  //   await loading.present();
+
+  //   this.clientService.getClients().subscribe({
+  //     next: (response: any) => {
+  //       this.tutores = response;
+  //       console.log(this.tutores);
+  //       loading.dismiss();
+  //     },
+  //     error: (error: any) => {
+  //       this.presentToast("Falha ao recuperar clientes", "danger")
+  //       loading.dismiss();
+  //     },
+  //   });
+  // }
+
+  async getPetsAndClients() {
     const loading = await this.loadingController.create({
-      message: 'Carregando pets...',
+      message: 'Carregando pets e clientes...',
       spinner: 'crescent',
       translucent: true,
     });
-
+  
     await loading.present();
+  
+    try {
+      const [petsResponse, clientsResponse] = await Promise.all([
+        lastValueFrom(this.petService.getPets()) as Promise<Pet[]>,
+        lastValueFrom(this.clientService.getClients()) as Promise<Cliente[]>
+      ]);
+  
+      // Garante que os arrays pets e tutores não sejam undefined
+      this.pets = petsResponse || [];
+      this.tutores = clientsResponse || [];
 
-    this.petService.getPets().subscribe({
-      next: (response: any) => {
-        this.pets = response;
-        this.petsFiltrados = this.pets;
-        this.temPet = this.petsFiltrados.length > 0;
-
-        loading.dismiss();
-      },
-      error: (error: any) => {
-        this.presentToast('Falha ao recuperar pets', "danger")
-        loading.dismiss();
-      },
-    });
+      this.associatePetsWithTutors();
+    } catch (error) {
+      this.presentToast('Falha ao recuperar pets ou clientes', 'danger');
+    } finally {
+      loading.dismiss();
+    }
   }
+  
+  associatePetsWithTutors() {
+    const tutorMap = new Map<string, Cliente>();
+    // Cria um mapa dos tutores com o CPF como chave
+    this.tutores.forEach(tutor => {
+      tutorMap.set(tutor.cpf, tutor);
+    });
+  
+    // Associa cada pet ao seu respectivo tutor
+    this.pets.forEach(pet => {
+      if (tutorMap.has(pet.cpf_cliente)) {
+        pet.tutor = tutorMap.get(pet.cpf_cliente);
+      }
+    });
+  
+    // Atualiza a lista de pets filtrados se necessário
+    this.petsFiltrados = this.pets;
+    console.log(this.pets);
+    
+  }
+  
 
   removerPet(pet: Pet) {
     this.presentAlertRemove(pet);

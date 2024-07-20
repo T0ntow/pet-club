@@ -29,6 +29,7 @@
         <ion-col>Espécie</ion-col>
         <ion-col>Raça</ion-col>
         <ion-col>Gênero</ion-col>
+        <ion-col>Tutor</ion-col>
         <ion-col class="functions-col">Funções</ion-col>
       </ion-row>
 
@@ -44,7 +45,8 @@
           <ion-col>{{ pet.especie }}</ion-col>
           <ion-col>{{ pet.raca }}</ion-col>
           <ion-col>{{ pet.genero }}</ion-col>
-          
+          <ion-col>{{ pet.tutor?.nome || 'Sem tutor' }}</ion-col> <!-- Adiciona o nome do tutor -->
+
           <ion-col class="functions-col">
             <ion-buttons>
               <ion-button class="remover" (click)="removerPet(pet)">
