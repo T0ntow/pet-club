@@ -11,6 +11,7 @@ import { NovoClienteComponent } from 'src/app/modals/clientes-modal/novo-cliente
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaskitoModule } from '@maskito/angular';
 import { EditarClienteComponent } from 'src/app/modals/clientes-modal/editar-cliente/editar-cliente.component';
+import { PetDoTutorComponent } from 'src/app/modals/pet-do-tutor/pet-do-tutor.component';
 
 @NgModule({
   imports: [
@@ -24,6 +25,7 @@ import { EditarClienteComponent } from 'src/app/modals/clientes-modal/editar-cli
   declarations: [
     ClientsPage,
     NovoClienteComponent,
-    EditarClienteComponent]
+    EditarClienteComponent,
+    PetDoTutorComponent]
 })
 export class ClientsPageModule {}

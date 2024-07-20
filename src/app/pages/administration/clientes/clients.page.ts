@@ -3,6 +3,9 @@ import { LoadingController, ToastController, AlertController, ModalController } 
 import { ClientService } from 'src/app/services/client.service';
 import { NovoClienteComponent } from 'src/app/modals/clientes-modal/novo-cliente/novo-cliente.component';
 import { EditarClienteComponent } from 'src/app/modals/clientes-modal/editar-cliente/editar-cliente.component';
+import { lastValueFrom } from 'rxjs';
+import { PetService } from 'src/app/services/pet.service';
+import { PetDoTutorComponent } from 'src/app/modals/pet-do-tutor/pet-do-tutor.component';
 
 interface Cliente {
   cpf: string; //pk
@@ -12,6 +15,18 @@ interface Cliente {
   fone: string;
 }
 
+interface Pet {
+  cpf_cliente: string;
+  cod: string;
+  nome: string;
+  especie: string;
+  raca: string;
+  nascimento: string;
+  genero: string;
+  cor: string;
+  tutor?: Cliente; // Adicionado para associar o tutor
+}
+
 @Component({
   selector: 'app-clients',
   templateUrl: './clients.page.html',
@@ -19,6 +34,8 @@ interface Cliente {
 })
 export class ClientsPage implements OnInit {
   clientes: Cliente[] = [];
+  pets: Pet[] = [];
+
   clientesFiltrados: Cliente[] = [];
   searchTerm: string = '';
   temCliente: boolean = true;
@@ -29,19 +46,19 @@ export class ClientsPage implements OnInit {
     private clientService: ClientService, // Você precisa criar um serviço para fornecedores ou ajustar o existente
     private loadingController: LoadingController,
     private toastController: ToastController,
+    private petService: PetService,
   ) { }
 
   ngOnInit() {
     this.clientService.getObservableClients().subscribe(isUpdated => {
-      this.getClients();
+      this.getPetsAndClients();
     });
-
-    this.getClients();
+    this.getPetsAndClients();
   }
 
   searchClients() {
     this.clientesFiltrados = this.clientes.filter(cliente =>
-      cliente.nome.toLowerCase().includes(this.searchTerm.toLowerCase()) || 
+      cliente.nome.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
       cliente.cpf.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
 
@@ -50,11 +67,11 @@ export class ClientsPage implements OnInit {
 
   formatarCpf(cpf: string) {
     cpf = cpf.replace(/\D/g, '');
-    
+
     cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
     cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
     cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-    
+
     return cpf;
   }
 
@@ -62,29 +79,61 @@ export class ClientsPage implements OnInit {
     return telefone.replace(/^(\d{2})(\d{1})(\d{4})(\d{4})$/, "($1) $2 $3-$4");
   }
 
-  async getClients() {
+  async getPetsAndClients() {
     const loading = await this.loadingController.create({
-      message: 'Carregando clientes...',
+      message: 'Carregando pets e clientes...',
       spinner: 'crescent',
       translucent: true,
     });
 
     await loading.present();
 
-    this.clientService.getClients().subscribe({
-      next: (response: any) => {
-        this.clientes = response;
-        this.clientesFiltrados = this.clientes
-        this.temCliente = this.clientesFiltrados.length > 0;
+    try {
+      // Faz a chamada para os serviços e aguarda as respostas
+      const [petsResponse, clientsResponse] = await Promise.all([
+        lastValueFrom(this.petService.getPets()) as Promise<Pet[]>,
+        lastValueFrom(this.clientService.getClients()) as Promise<Cliente[]>
+      ]);
 
-        loading.dismiss();
-      },
-      error: (error: any) => {
-        this.presentToast("Falha ao recuperar clientes", "danger")
-        loading.dismiss();
-      },
+      // Garante que os arrays pets e clientes não sejam undefined
+      this.pets = petsResponse || [];
+      this.clientes = clientsResponse || [];
+
+      console.log(this.clientes);
+
+      // Associa os pets aos tutores
+      this.clientesFiltrados = this.clientes;
+
+      this.associatePetsWithTutors();
+    } catch (error) {
+      // Exibe uma mensagem de erro
+      this.presentToast('Falha ao recuperar pets ou clientes', 'danger');
+    } finally {
+      // Encerra o carregamento
+      loading.dismiss();
+    }
+  }
+  
+  getPetsByCliente(cpf: string): Pet[] {
+    return this.pets.filter(pet => pet.cpf_cliente === cpf);
+  }
+
+  associatePetsWithTutors() {
+    const tutorMap = new Map<string, Cliente>();
+
+    // Cria um mapa dos tutores com o CPF como chave
+    this.clientes.forEach(tutor => {
+      tutorMap.set(tutor.cpf, tutor);
+    });
+
+    // Associa cada pet ao seu respectivo tutor
+    this.pets.forEach(pet => {
+      if (tutorMap.has(pet.cpf_cliente)) {
+        pet.tutor = tutorMap.get(pet.cpf_cliente);
+      }
     });
   }
+
 
   confirmClientDelete(cliente: Cliente) {
     this.clientService.deleteClient(cliente.cpf).subscribe({
@@ -117,6 +166,15 @@ export class ClientsPage implements OnInit {
     return await modal.present();
   }
 
+  async abrirModalPet(pet: Pet | undefined) {
+    const modal = await this.modalCtrl.create({
+      component: PetDoTutorComponent,
+      componentProps: {pet: pet},
+    });
+
+    return await modal.present();
+  }
+
   async deleteClient(cliente: Cliente) {
     const alert = await this.alertController.create({
       header: 'Atenção',
@@ -139,6 +197,8 @@ export class ClientsPage implements OnInit {
     await alert.present();
   }
 
+  
+
   async presentToast(text: string, color: string,) {
     const toast = await this.toastController.create({
       message: text,
@@ -148,5 +208,5 @@ export class ClientsPage implements OnInit {
 
     await toast.present();
   }
-  
+
 }
