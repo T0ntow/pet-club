@@ -98,11 +98,8 @@ export class ClientsPage implements OnInit {
       // Garante que os arrays pets e clientes não sejam undefined
       this.pets = petsResponse || [];
       this.clientes = clientsResponse || [];
-
-      console.log(this.clientes);
-
-      // Associa os pets aos tutores
       this.clientesFiltrados = this.clientes;
+      this.temCliente = this.clientesFiltrados.length > 0;
 
       this.associatePetsWithTutors();
     } catch (error) {

@@ -85,6 +85,8 @@ export class PetPage implements OnInit {
       // Garante que os arrays pets e tutores não sejam undefined
       this.pets = petsResponse || [];
       this.tutores = clientsResponse || [];
+      this.petsFiltrados = this.pets;
+      this.temPet = this.petsFiltrados.length > 0;
 
       this.associatePetsWithTutors();
     } catch (error) {
