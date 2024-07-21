@@ -131,7 +131,6 @@ export class ClientsPage implements OnInit {
     });
   }
 
-
   confirmClientDelete(cliente: Cliente) {
     this.clientService.deleteClient(cliente.cpf).subscribe({
       next: async (response: any) => {

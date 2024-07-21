@@ -36,12 +36,12 @@ export class PedidoService {
   }
 
   // Deletar um pedido
-  deletePedido(cod: number) {
+  deletePedido(cod: string) {
     return this.http.delete(`${this.port}/deletar-pedido/${cod}`);
   }
 
   // Atualizar um pedido
-  updatePedido(pedidoData: any, cod: number) {
+  updatePedido(pedidoData: any, cod: string) {
     return this.http.put(`${this.port}/atualizar-pedido/${cod}`, pedidoData);
   }
 }

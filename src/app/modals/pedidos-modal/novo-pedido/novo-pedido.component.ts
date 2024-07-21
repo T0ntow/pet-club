@@ -6,6 +6,8 @@ import { ToastController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
 
 import { SupplierService } from 'src/app/services/supplier.service';
+import { MaskitoElementPredicate } from '@maskito/core';
+import { maskitoPrice } from '../../../mask';
 
 interface Fornecedor {
   cnpj: string;
@@ -22,20 +24,22 @@ interface Fornecedor {
   templateUrl: './novo-pedido.component.html',
   styleUrls: ['./novo-pedido.component.scss'],
 })
-export class NovoPedidoComponent  implements OnInit {
+export class NovoPedidoComponent implements OnInit {
   fornecedores: Fornecedor[] = [];
   fornecedoresFiltrados: Fornecedor[] = [];
   pedidoForm: FormGroup;
 
+  readonly maskitoPrice = maskitoPrice;
+  readonly maskPredicate: MaskitoElementPredicate = async (el) => (el as HTMLIonInputElement).getInputElement();
+
   constructor(
-    private fb: FormBuilder, 
+    private fb: FormBuilder,
     private pedidoService: PedidoService,
     private modalCtrl: ModalController,
     private toastCtrl: ToastController,
     private loadingController: LoadingController,
     private supplierService: SupplierService
-  ) 
-    {
+  ) {
     this.pedidoForm = this.fb.group({
       cnpj_fornecedor: ['', Validators.required],
       data_pedido: ['', Validators.required],
@@ -46,19 +50,32 @@ export class NovoPedidoComponent  implements OnInit {
       status_pedido: ['', Validators.required]
     });
   }
-  
+
   ngOnInit() {
     this.getSuppliers();
   }
 
+  removeCurrencySymbol(price: string): string {
+    // Remove espaços e símbolos de moeda, e converte a vírgula para ponto decimal
+    return price
+      .replace(/\s+/g, '')        // Remove todos os espaços
+      .replace(/^\s*R\$\s*/, '')  // Remove o símbolo 'R$' e espaços ao redor
+      .replace(',', '.');         // Substitui a vírgula por ponto
+  }
   fecharModal() {
-    // Lógica para fechar o modal
+    this.modalCtrl.dismiss();
   }
 
   async salvarAlteracoes() {
     const pedidoData = this.pedidoForm.value;
 
     if (this.pedidoForm.valid) {
+      const pedidoData = this.pedidoForm.value;
+      pedidoData.valor_total = this.removeCurrencySymbol(this.pedidoForm.get('valor_total')!.value);
+
+      console.log(pedidoData);
+      
+
       this.pedidoService.newPedido(pedidoData).subscribe({
         next: async (response: any) => {
           this.pedidoService.updateObservablePedidos();
@@ -81,7 +98,7 @@ export class NovoPedidoComponent  implements OnInit {
     this.supplierService.getSuppliers().subscribe({
       next: (response: any) => {
         this.fornecedores = response;
-        this.fornecedoresFiltrados = this.fornecedores; 
+        this.fornecedoresFiltrados = this.fornecedores;
       },
       error: (error: any) => {
         this.presentToast('Falha ao recuperar fornecedores', 'danger');

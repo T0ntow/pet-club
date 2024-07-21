@@ -113,7 +113,6 @@ export class PetPage implements OnInit {
     // Atualiza a lista de pets filtrados se necessário
     this.petsFiltrados = this.pets;
     console.log(this.pets);
-    
   }
 
   removerPet(pet: Pet) {

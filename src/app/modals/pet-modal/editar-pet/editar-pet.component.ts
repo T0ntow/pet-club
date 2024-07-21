@@ -52,7 +52,6 @@ export class EditarPetComponent implements OnInit {
       genero: [this.pet.genero, [Validators.required]],
       tutor: [this.pet.cpf_cliente, [Validators.required]],
     });
-    console.log('Pet', this.pet);
   }
 
   formatarData(data: string): string {

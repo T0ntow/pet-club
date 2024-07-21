@@ -29,7 +29,7 @@ export class NovoProdutoComponent implements OnInit {
     this.newProductForm = this.formBuilder.group({
       nome: ['', [Validators.required]],
       preco: ['', [Validators.required]],
-      descricao: ['', ],
+      descricao: ['',],
       categoria: ['', [Validators.required]],
       images: [null, [Validators.required]],
     });
@@ -47,9 +47,12 @@ export class NovoProdutoComponent implements OnInit {
   }
 
   removeCurrencySymbol(price: string): string {
-    return price.replace(/^R\$/, '');
+    // Remove espaços e símbolos de moeda, e converte a vírgula para ponto decimal
+    return price
+      .replace(/\s+/g, '')        // Remove todos os espaços
+      .replace(/^\s*R\$\s*/, '')  // Remove o símbolo 'R$' e espaços ao redor
+      .replace(',', '.');         // Substitui a vírgula por ponto
   }
-
   async salvarAlteracoes() {
     const imageFile = this.newProductForm.value.images;
 

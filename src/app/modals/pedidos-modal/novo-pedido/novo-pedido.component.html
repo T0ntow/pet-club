@@ -21,8 +21,6 @@
       <ion-select labelPlacement="floating" label="Fornecedor *" formControlName="cnpj_fornecedor">
         <ion-select-option [value]="fornecedor.cnpj" *ngFor="let fornecedor of fornecedoresFiltrados"> {{fornecedor.nome}} </ion-select-option>
       </ion-select>
-      <ion-input placeholder="filtrar fornecedor" formControlName="cnpj_fornecedor" (ionChange)="filtrarFornecedor()"></ion-input>
-      <ion-button color="light" (click)="novoFornecedor()"><ion-icon name="add-circle" color="dark"></ion-icon></ion-button>
     </ion-item>
 
     <ion-item>
@@ -42,7 +40,10 @@
     </ion-item>
 
     <ion-item>
-      <ion-input name="valor_total" type="number" step="0.01" label="Valor Total *" labelPlacement="floating" formControlName="valor_total"></ion-input>
+      <ion-input name="valor_total" type="text" label="Valor Total *" labelPlacement="floating" formControlName="valor_total"
+      [maskito]="maskitoPrice" 
+      [maskitoElement]="maskPredicate"
+      ></ion-input>
     </ion-item>
 
     <ion-item>

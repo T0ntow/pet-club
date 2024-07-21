@@ -44,7 +44,6 @@ export class PetDoTutorComponent  implements OnInit {
 
   dismiss() {
     this.modalController.dismiss();
-
   }
 
 }
