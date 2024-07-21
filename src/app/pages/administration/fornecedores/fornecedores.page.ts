@@ -3,7 +3,7 @@ import { NovoFornecedorComponent } from 'src/app/modals/fornecedores-modal/novo-
 import { LoadingController, ToastController, AlertController, ModalController } from '@ionic/angular';
 import { SupplierService } from 'src/app/services/supplier.service';
 import { EditarFornecedorComponent } from 'src/app/modals/fornecedores-modal/editar-fornecedor/editar-fornecedor.component';
-
+import { PedidoService } from 'src/app/services/pedido.service';
 interface Fornecedor {
   cnpj: string;
   email: string;
@@ -32,19 +32,20 @@ export class FornecedoresPage implements OnInit {
     private supplierService: SupplierService,
     private loadingController: LoadingController,
     private toastController: ToastController,
+    private pedidoService: PedidoService
   ) { }
 
   formatarCnpj(cnpj: string): string {
     return cnpj.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
   }
-  
+
   formatarTelefone(telefone: string): string {
     return telefone.replace(/^(\d{2})(\d{1})(\d{4})(\d{4})$/, "($1) $2 $3-$4");
   }
-  
+
   searchSupplier() {
     this.fornecedoresFiltrados = this.fornecedores.filter(fornecedor =>
-      fornecedor.representante.toLowerCase().includes(this.searchTerm) || 
+      fornecedor.representante.toLowerCase().includes(this.searchTerm) ||
       fornecedor.nome.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
 
@@ -86,7 +87,9 @@ export class FornecedoresPage implements OnInit {
   async deleteSupplier(fornecedor: Fornecedor) {
     const alert = await this.alertController.create({
       header: 'Atenção',
-      message: 'Você tem certeza de que deseja excluir este fornecedor? Ele será removido permanentemente.',
+      subHeader: 'Excluir este fornecedor removerá todos os pedidos associados permanentemente.',
+      message: 'Tem certeza de que deseja excluir este fornecedor? Esta ação é irreversível.',
+
       buttons: [
         {
           text: 'cancelar',
@@ -95,7 +98,7 @@ export class FornecedoresPage implements OnInit {
         {
           text: 'continuar',
           cssClass: 'alert-button-confirm',
-          handler: () => { 
+          handler: () => {
             this.confirmSupplierDelete(fornecedor);
           },
         },
@@ -107,11 +110,12 @@ export class FornecedoresPage implements OnInit {
 
   confirmSupplierDelete(fornecedor: Fornecedor) {
     console.log("fornecedor", fornecedor);
-    
+
     this.supplierService.deleteSupplier(fornecedor.cnpj).subscribe({
       next: async (response: any) => {
         await this.presentToast('Fornecedor removido com sucesso', 'success');
         this.supplierService.updateObservableSuppliers();
+        this.pedidoService.updateObservablePedidos();
       },
       error: (error: any) => {
         console.error('Falha ao remover fornecedor:', error);

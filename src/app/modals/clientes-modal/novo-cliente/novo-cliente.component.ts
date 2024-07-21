@@ -6,7 +6,7 @@ import { FormBuilder } from '@angular/forms';
 import { ClientService } from 'src/app/services/client.service';
 import { maskitoNumber, maskitoCPF } from '../../../mask'
 import { MaskitoElementPredicate } from '@maskito/core';
-
+import { PetService } from 'src/app/services/pet.service';
 @Component({
   selector: 'app-novo-cliente',
   templateUrl: './novo-cliente.component.html',
@@ -27,7 +27,8 @@ export class NovoClienteComponent  implements OnInit {
     private modalCtrl: ModalController,
     private toastController: ToastController,
     private clientService: ClientService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private petService: PetService
   ) {
     this.newClientForm = this.formBuilder.group({
       nome: ['', [Validators.required]],

@@ -4,6 +4,7 @@ import { ModalController, ToastController } from '@ionic/angular';
 import { SupplierService } from 'src/app/services/supplier.service';
 import { maskitoCNPJ, maskitoNumber } from '../../../mask'
 import { MaskitoElementPredicate } from '@maskito/core';
+import { PedidoService } from 'src/app/services/pedido.service';
 
 @Component({
   selector: 'app-editar-fornecedor',
@@ -26,7 +27,8 @@ export class EditarFornecedorComponent implements OnInit {
     private modalCtrl: ModalController,
     private toastController: ToastController,
     private formBuilder: FormBuilder,
-    private supplierService: SupplierService
+    private supplierService: SupplierService,
+    private pedidoService: PedidoService
   ) {}
 
   ngOnInit() { 
@@ -67,6 +69,7 @@ export class EditarFornecedorComponent implements OnInit {
       this.supplierService.updateSupplier(supplierData, oldCnpj).subscribe({
         next: (response) => {
           this.supplierService.updateObservableSuppliers();
+          this.pedidoService.updateObservablePedidos()
           this.modalCtrl.dismiss(null, 'confirm');
           this.presentToast("Fornecedor atualizado com sucesso", "success")
         },

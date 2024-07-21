@@ -58,6 +58,12 @@ export class PetPage implements OnInit {
     this.getPetsAndClients()
   }
 
+  loadPets(): void {
+    this.petService.getPets().subscribe((isUpdated) => {
+      this.getPetsAndClients()
+    });
+  }
+
   searchPet() {
     this.petsFiltrados = this.pets.filter(pet =>
       pet.nome.toLowerCase().includes(this.searchTerm) || 

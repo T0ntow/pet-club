@@ -81,8 +81,6 @@ export class PedidoPage implements OnInit {
       this.pedidosFiltrados = this.pedidos;
       this.temPedido = this.pedidosFiltrados.length > 0;
 
-      console.log("dasasasasasasasasasas");
-      
       this.associatePedidosWithFornecedores();
     } catch (error) {
       this.presentToast('Falha ao recuperar pets ou clientes', 'danger');

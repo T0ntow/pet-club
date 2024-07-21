@@ -137,6 +137,7 @@ export class ClientsPage implements OnInit {
         console.log('Cliente removido com sucesso:', response);
         await this.presentToast('Cliente removido com sucesso', 'success');
         this.clientService.updateObservableClients();
+        this.petService.updateObservablePets();
       },
       error: (error: any) => {
         console.error('Falha ao remover cliente:', error);
@@ -192,8 +193,6 @@ export class ClientsPage implements OnInit {
 
     await alert.present();
   }
-
-  
 
   async presentToast(text: string, color: string,) {
     const toast = await this.toastController.create({

@@ -4,6 +4,7 @@ import { ModalController, ToastController } from '@ionic/angular';
 import { maskitoCPF, maskitoNumber } from '../../../mask'
 import { MaskitoElementPredicate } from '@maskito/core';
 import { ClientService } from 'src/app/services/client.service';
+import { PetService } from 'src/app/services/pet.service';
 @Component({
   selector: 'app-editar-cliente',
   templateUrl: './editar-cliente.component.html',
@@ -26,7 +27,8 @@ export class EditarClienteComponent  implements OnInit {
     private modalCtrl: ModalController,
     private toastController: ToastController,
     private formBuilder: FormBuilder,
-    private clientService: ClientService
+    private clientService: ClientService,
+    private petService: PetService
   ) {}
 
   ngOnInit() { 
@@ -62,6 +64,7 @@ export class EditarClienteComponent  implements OnInit {
       this.clientService.updateClient(clientData, oldCpf).subscribe({
         next: (response) => {
           this.clientService.updateObservableClients();
+          this.petService.updateObservablePets();
           this.modalCtrl.dismiss(null, 'confirm');
           this.presentToast("cliente atualizado com sucesso", "success")
         },
