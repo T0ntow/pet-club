@@ -175,7 +175,8 @@ export class ClientsPage implements OnInit {
   async deleteClient(cliente: Cliente) {
     const alert = await this.alertController.create({
       header: 'Atenção',
-      message: 'Você tem certeza de que deseja excluir este cliente? Ele será removido permanentemente.',
+      subHeader: 'Excluir este cliente removerá todos os pets associados permanentemente.',
+      message: 'Tem certeza de que deseja excluir este cliente? Esta ação é irreversível.',
       buttons: [
         {
           text: 'cancelar',
