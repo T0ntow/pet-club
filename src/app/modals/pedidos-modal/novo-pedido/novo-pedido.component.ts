@@ -5,6 +5,7 @@ import { PedidoService } from 'src/app/services/pedido.service';
 import { ToastController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
 
+import { ProductService } from 'src/app/services/product.service';
 import { SupplierService } from 'src/app/services/supplier.service';
 import { MaskitoElementPredicate } from '@maskito/core';
 import { maskitoPrice } from '../../../mask';
@@ -19,6 +20,15 @@ interface Fornecedor {
   id: number;
 }
 
+interface Produto {
+  cod: number;
+  nome: string,
+  descricao: string,
+  categoria: string,
+  preco: string,
+  images: string[] // ou pode ser um array de objetos dependendo da estrutura das imagens
+}
+
 @Component({
   selector: 'app-novo-pedido',
   templateUrl: './novo-pedido.component.html',
@@ -26,7 +36,11 @@ interface Fornecedor {
 })
 export class NovoPedidoComponent implements OnInit {
   fornecedores: Fornecedor[] = [];
+  produtos: Produto[] = [];
+
   fornecedoresFiltrados: Fornecedor[] = [];
+  produtosFiltrados: Produto[] = []
+
   pedidoForm: FormGroup;
 
   readonly maskitoPrice = maskitoPrice;
@@ -38,7 +52,8 @@ export class NovoPedidoComponent implements OnInit {
     private modalCtrl: ModalController,
     private toastCtrl: ToastController,
     private loadingController: LoadingController,
-    private supplierService: SupplierService
+    private supplierService: SupplierService,
+    private productService: ProductService
   ) {
     this.pedidoForm = this.fb.group({
       cnpj_fornecedor: ['', Validators.required],
@@ -52,7 +67,7 @@ export class NovoPedidoComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getSuppliers();
+    this.getSuppliersAndProducts();
   }
 
   removeCurrencySymbol(price: string): string {
@@ -74,7 +89,6 @@ export class NovoPedidoComponent implements OnInit {
       pedidoData.valor_total = this.removeCurrencySymbol(this.pedidoForm.get('valor_total')!.value);
 
       console.log(pedidoData);
-      
 
       this.pedidoService.newPedido(pedidoData).subscribe({
         next: async (response: any) => {
@@ -94,25 +108,38 @@ export class NovoPedidoComponent implements OnInit {
     }
   }
 
-  async getSuppliers() {
-    this.supplierService.getSuppliers().subscribe({
-      next: (response: any) => {
-        this.fornecedores = response;
-        this.fornecedoresFiltrados = this.fornecedores;
-      },
-      error: (error: any) => {
-        this.presentToast('Falha ao recuperar fornecedores', 'danger');
-      },
-    });
-  }
+  async getSuppliersAndProducts() {
+    try {
+      const [fornecedoresResponse, produtosResponse] = await Promise.all([
+        this.supplierService.getSuppliers().toPromise(),
+        this.productService.getProducts().toPromise()
+      ]);
 
+      this.fornecedores = fornecedoresResponse as Fornecedor[];
+      this.produtos = produtosResponse as Produto[];
+
+      this.fornecedoresFiltrados = this.fornecedores;
+      this.produtosFiltrados = this.produtos;
+    } catch (error) {
+      this.presentToast('Falha ao recuperar fornecedores ou produtos', 'danger');
+    }
+  }
+  
   filtrarFornecedor() {
 
+  }
+
+  filterProducts() {
   }
 
   novoFornecedor() {
 
   }
+
+  novoProduto() {
+
+  }
+
 
   async presentToast(text: string, color: string) {
     const toast = await this.toastCtrl.create({
