@@ -18,46 +18,58 @@
 <ion-content class="ion-padding">
   <form [formGroup]="pedidoForm">
     <ion-item>
-      <ion-select labelPlacement="floating" label="Produto *" formControlName="produto">
-        <ion-select-option [value]="produto.cod" *ngFor="let produto of produtosFiltrados"> {{produto.nome}} </ion-select-option>
+      <ion-select labelPlacement="floating" label="Produto *" formControlName="produto_cod">
+        <ion-select-option [value]="produto.cod" *ngFor="let produto of produtosFiltrados"> {{produto.nome}}
+        </ion-select-option>
       </ion-select>
       <ion-input placeholder="filtrar produto" formControlName="produto" (ionChange)="filterProducts()"></ion-input>
-      <ion-button color="light" (click)="novoProduto()"><ion-icon name="add-circle" color="dark"></ion-icon></ion-button>
+      <ion-button color="light" (click)="novoProduto()"><ion-icon name="add-circle"
+          color="dark"></ion-icon></ion-button>
     </ion-item>
 
-    
+
+    <!-- Produtos Selecionados ou Mensagem de Nenhum Produto Selecionado -->
+    <ion-item *ngIf="produtosSelecionados.length > 0; else noProducts">
+      <ion-text> {{ produtosSelecionadosNomes }} </ion-text>
+    </ion-item>
+
+    <ng-template #noProducts>
+      <ion-item>
+        <ion-text> Nenhum produto selecionado </ion-text>
+      </ion-item>
+    </ng-template>
+
+
     <ion-item>
-      <ion-input name="quantidade_produto" type="number" placeholder="Quantidade do produto *"  label="Quantidade do produto *" formControlName="quantidade_produto" labelPlacement="floating"></ion-input>
+      <ion-input name="quantidade_produto" type="number" placeholder="Quantidade do produto *"
+        label="Quantidade do produto *" formControlName="quantidade_produto" labelPlacement="floating"></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-select labelPlacement="floating" label="Fornecedor *" formControlName="cnpj_fornecedor">
-        <ion-select-option [value]="fornecedor.cnpj" *ngFor="let fornecedor of fornecedoresFiltrados"> {{fornecedor.nome}} </ion-select-option>
+        <ion-select-option [value]="fornecedor.cnpj" *ngFor="let fornecedor of fornecedoresFiltrados">
+          {{fornecedor.nome}} </ion-select-option>
       </ion-select>
-
-      <ion-input placeholder="filtrar fornecedor" formControlName="fornecedor" (ionChange)="filtrarFornecedor()"></ion-input>
-      <ion-button color="light" (click)="novoFornecedor()"><ion-icon name="add-circle" color="dark"></ion-icon></ion-button>
     </ion-item>
 
     <ion-item>
-      <ion-input name="data_pedido" type="date" placeholder="Data do Pedido *"  label="Data do Pedido *" formControlName="data_pedido" labelPlacement="floating"></ion-input>
+      <ion-input name="data_pedido" type="date" placeholder="Data do Pedido *" label="Data do Pedido *"
+        formControlName="data_pedido" labelPlacement="floating"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-input name="previsao_entrega" type="date" placeholder="Previsão de Entrega *" label="Previsão de Entrega *" formControlName="previsao_entrega" labelPlacement="floating"></ion-input>
+      <ion-input name="previsao_entrega" type="date" placeholder="Previsão de Entrega *" label="Previsão de Entrega *"
+        formControlName="previsao_entrega" labelPlacement="floating"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-input name="metodo_entrega" type="text" label="Método de Entrega *" labelPlacement="floating" formControlName="metodo_entrega"></ion-input>
+      <ion-input name="metodo_entrega" type="text" label="Método de Entrega *" labelPlacement="floating"
+        formControlName="metodo_entrega"></ion-input>
     </ion-item>
 
- 
-
     <ion-item>
-      <ion-input name="valor_total" type="text" label="Valor Total *" labelPlacement="floating" formControlName="valor_total"
-      [maskito]="maskitoPrice" 
-      [maskitoElement]="maskPredicate"
-      ></ion-input>
+      <ion-input name="valor_total" type="text" label="Valor Total *" labelPlacement="floating"
+        formControlName="valor_total" [maskito]="maskitoPrice" [maskitoElement]="maskPredicate"></ion-input>
     </ion-item>
 
     <ion-item>
@@ -68,9 +80,10 @@
         <ion-select-option value="Concluído">Concluído</ion-select-option>
       </ion-select>
     </ion-item>
-    
+
     <ion-item>
-      <ion-input name="observacoes" type="text" label="Observações" labelPlacement="floating" formControlName="observacoes"></ion-input>
+      <ion-input name="observacoes" type="text" label="Observações" labelPlacement="floating"
+        formControlName="observacoes"></ion-input>
     </ion-item>
   </form>
 </ion-content>

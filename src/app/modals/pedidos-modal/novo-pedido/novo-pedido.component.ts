@@ -38,6 +38,8 @@ export class NovoPedidoComponent implements OnInit {
   fornecedores: Fornecedor[] = [];
   produtos: Produto[] = [];
 
+  produtosSelecionados: Produto[] = [];
+
   fornecedoresFiltrados: Fornecedor[] = [];
   produtosFiltrados: Produto[] = []
 
@@ -56,6 +58,7 @@ export class NovoPedidoComponent implements OnInit {
     private productService: ProductService
   ) {
     this.pedidoForm = this.fb.group({
+      produto_cod: ['', Validators.required],
       cnpj_fornecedor: ['', Validators.required],
       data_pedido: ['', Validators.required],
       previsao_entrega: ['', Validators.required],
@@ -137,9 +140,20 @@ export class NovoPedidoComponent implements OnInit {
   }
 
   novoProduto() {
+    const produtoSelecionado = this.pedidoForm.get('produto_cod')!.value;
+    
+    if (produtoSelecionado) {
+      const produto = this.produtos.find(p => p.cod === produtoSelecionado);
+      if (produto && !this.produtosSelecionados.includes(produto)) {
+        this.produtosSelecionados.push(produto);
+      }
+    }
 
   }
 
+  get produtosSelecionadosNomes(): string {
+    return this.produtosSelecionados.map(p => p.nome).join(', ');
+  }
 
   async presentToast(text: string, color: string) {
     const toast = await this.toastCtrl.create({
