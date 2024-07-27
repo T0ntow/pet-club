@@ -13,9 +13,7 @@ interface Produto {
   templateUrl: './novo-produto-pedido.component.html',
   styleUrls: ['./novo-produto-pedido.component.scss'],
 })
-
-export class NovoProdutoPedidoComponent  implements OnInit {
-
+export class NovoProdutoPedidoComponent implements OnInit {
   produtoForm: FormGroup;
   produtosFiltrados: Produto[] = [];
 
@@ -25,8 +23,8 @@ export class NovoProdutoPedidoComponent  implements OnInit {
     private productService: ProductService
   ) {
     this.produtoForm = this.fb.group({
-      produto_cod: ['', Validators.required],
-      quantidade_produto: [1, Validators.required]
+      produto_cod: [null, Validators.required], // Mudança para `null` e tipo `number`
+      quantidade_produto: [1, [Validators.required, Validators.min(1)]]
     });
   }
 
@@ -46,7 +44,8 @@ export class NovoProdutoPedidoComponent  implements OnInit {
   adicionarProduto() {
     if (this.produtoForm.valid) {
       const { produto_cod, quantidade_produto } = this.produtoForm.value;
-      this.modalCtrl.dismiss({ produto_cod, quantidade_produto });
+      // Verifique se `produto_cod` é um número antes de enviar
+      this.modalCtrl.dismiss({ produto_cod: +produto_cod, quantidade_produto });
     }
   }
 

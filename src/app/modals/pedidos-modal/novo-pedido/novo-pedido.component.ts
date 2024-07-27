@@ -151,6 +151,7 @@ export class NovoPedidoComponent implements OnInit {
             produtoExistente.quantidade += data.quantidade_produto;
           } else {
             this.produtosSelecionados.push({ ...produtoSelecionado, quantidade: data.quantidade_produto });
+            console.log("this.produtosSelecionados", this.produtosSelecionados);
           }
         }
       }

@@ -143,6 +143,9 @@ export class ProdutosCrudPage implements OnInit {
       },
       error: (error: any) => {
         console.error('Falha ao remover produto:', error);
+        if(error.error = "Não é possível excluir o produto, pois ele está associado a um pedido ou estoque."){
+          this.presentToast("Não é possível excluir o produto, pois ele está associado a um pedido ou estoque.", "danger")
+        }
       }
     });
   }

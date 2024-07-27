@@ -46,7 +46,7 @@ export class PedidoService {
   }
   
    // Novo método para obter produtos por pedido
-   getProductsByOrder(orderId: string): Observable<any> {
+  getProductsByOrder(orderId: string): Observable<any> {
     return this.http.get(`${this.port}/pedidos/${orderId}/produtos`);
   }
 }

@@ -3,7 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PedidoService } from 'src/app/services/pedido.service';
 import { SupplierService } from 'src/app/services/supplier.service';
 import { ToastController, ModalController } from '@ionic/angular';
-
+import { NovoProdutoPedidoComponent } from '../../novo-produto-pedido/novo-produto-pedido.component';
+import { ProductService } from 'src/app/services/product.service';
 interface Fornecedor {
   cnpj: string;
   email: string;
@@ -15,20 +16,25 @@ interface Fornecedor {
 }
 
 interface Produto {
+  cod: number;
   nome: string;
-  quantidade: number;
+  descricao: string;
+  categoria: string;
+  preco: string;
+  images: string[];
+  quantidade?: number;
 }
 
 interface Pedido {
-  cod: string;                    // Código do pedido (INT AI PK)
-  cnpj_fornecedor: string;        // CNPJ do fornecedor (CHAR(14))
-  data_pedido: string;            // Data do pedido (Date)
-  previsao_entrega: string;       // Previsão de entrega (DATE)
-  metodo_entrega: string;         // Método de entrega (VARCHAR(20))
-  observacoes: string;            // Observações (VARCHAR(255))
-  valor_total: number;            // Valor total (DECIMAL(8,2))
-  status_pedido: string;          // Status do pedido (VARCHAR(10))
-  produtos?: Produto[];           // Produtos selecionados
+  cod: string;
+  cnpj_fornecedor: string;
+  data_pedido: string;
+  previsao_entrega: string;
+  metodo_entrega: string;
+  observacoes: string;
+  valor_total: number;
+  status_pedido: string;
+  produtos?: Produto[];
 }
 
 @Component({
@@ -43,13 +49,15 @@ export class EditarPedidoComponent implements OnInit {
   fornecedores: Fornecedor[] = [];
   fornecedoresFiltrados: Fornecedor[] = [];
   produtosSelecionados: Produto[] = [];
+  produtos: Produto[] = [];
 
   constructor(
     private fb: FormBuilder,
     private pedidoService: PedidoService,
     private fornecedorService: SupplierService,
     private toastCtrl: ToastController,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private productService: ProductService
   ) {
     this.updatePedidoForm = this.fb.group({
       cnpj_fornecedor: ['', Validators.required],
@@ -63,13 +71,14 @@ export class EditarPedidoComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getFornecedores();
+    this.getSuppliersAndProducts();
     this.preencherFormulario();
+    console.log("Produtos carregados:", this.produtos);
   }
 
   preencherFormulario() {
     if (this.pedido) {
-      this.updatePedidoForm.setValue({
+      this.updatePedidoForm.patchValue({
         cnpj_fornecedor: this.pedido.cnpj_fornecedor,
         data_pedido: this.formatarData(this.pedido.data_pedido),
         previsao_entrega: this.formatarData(this.pedido.previsao_entrega),
@@ -83,23 +92,50 @@ export class EditarPedidoComponent implements OnInit {
   }
 
   formatarData(data: string): string {
-    const dateFormatTed = data.split("T");
+    const dateFormatTed = data.split('T');
     return dateFormatTed[0];
   }
 
-  getFornecedores() {
-    this.fornecedorService.getSuppliers().subscribe({
-      next: (response: any) => {
-        this.fornecedores = response;
-        this.fornecedoresFiltrados = this.fornecedores;
-      },
-      error: (error) => {
-        console.log('Falha ao recuperar fornecedores', error);
-        this.presentToast('Falha ao recuperar fornecedores', 'danger');
-      },
+  async novoProduto() {
+    const modal = await this.modalCtrl.create({
+      component: NovoProdutoPedidoComponent
     });
+
+    modal.onDidDismiss().then((result) => {
+      const { data } = result;
+      if (data) {
+        const produtoSelecionado = this.produtos.find(p => p.cod === data.produto_cod);
+        if (produtoSelecionado) {
+          const produtoExistente = this.produtosSelecionados.find(p => p.cod === produtoSelecionado.cod);
+          if (produtoExistente) {
+            produtoExistente.quantidade += data.quantidade_produto;
+          } else {
+            this.produtosSelecionados.push({ ...produtoSelecionado, quantidade: data.quantidade_produto });
+            console.log("this.produtosSelecionados", this.produtosSelecionados);
+          }
+        }
+      }
+    });
+
+    return await modal.present();
   }
 
+  
+  async getSuppliersAndProducts() {
+    try {
+      const [fornecedoresResponse, produtosResponse] = await Promise.all([
+        this.fornecedorService.getSuppliers().toPromise(),
+        this.productService.getProducts().toPromise()
+      ]);
+
+      this.fornecedores = fornecedoresResponse as Fornecedor[];
+      this.produtos = produtosResponse as Produto[];
+      this.fornecedoresFiltrados = this.fornecedores;
+      // this.produtosFiltrados = this.produtos;
+    } catch (error) {
+      this.presentToast('Falha ao recuperar fornecedores ou produtos', 'danger');
+    }
+  }
   filtrarFornecedor() {
     const searchValue = this.updatePedidoForm.get('cnpj_fornecedor')?.value.toLowerCase();
     this.fornecedoresFiltrados = this.fornecedores.filter((fornecedor) =>
@@ -107,12 +143,8 @@ export class EditarPedidoComponent implements OnInit {
     );
   }
 
-  adicionarProduto() {
-    // Lógica para adicionar um novo produto (abrir um modal ou similar)
-  }
-
   removerProduto(produto: Produto) {
-    this.produtosSelecionados = this.produtosSelecionados.filter(p => p !== produto);
+    this.produtosSelecionados = this.produtosSelecionados.filter(p => p.cod !== produto.cod);
   }
 
   salvarAlteracoes() {

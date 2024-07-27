@@ -8,6 +8,7 @@ import { lastValueFrom } from 'rxjs';
 import { SupplierService } from 'src/app/services/supplier.service';
 import { FornecedorDoPedidoComponent } from 'src/app/modals/fornecedor-do-pedido/fornecedor-do-pedido.component';
 import { ProdutoDoPedidoComponent } from 'src/app/modals/produto-do-pedido/produto-do-pedido.component';
+import { log } from 'console';
 interface Pedido {
   cod: string;
   cnpj_fornecedor: string;
@@ -120,7 +121,9 @@ export class PedidoPage implements OnInit {
       try {
         const produtos = await lastValueFrom(this.pedidoService.getProductsByOrder(pedido.cod)) as Produto[];
         pedido.produtos = produtos || [];
-        console.log(pedido.produtos);
+        console.log("produtos", pedido.produtos);
+        console.log("pedidos", this.pedidos);
+
         
       } catch (error) {
         console.error(`Erro ao recuperar produtos do pedido ${pedido.cod}:`, error);
@@ -129,14 +132,21 @@ export class PedidoPage implements OnInit {
   }
 
   searchPedidos() {
-    this.pedidosFiltrados = this.pedidos.filter(pedido =>
-      pedido.observacoes.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      pedido.metodo_entrega.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      pedido.status_pedido.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
-
+    this.pedidosFiltrados = this.pedidos.filter(pedido => {
+      const term = this.searchTerm.toLowerCase();
+      
+      const produtoEncontrado = pedido.produtos?.some(produto => produto.nome.toLowerCase().includes(term));
+      
+      return pedido.observacoes.toLowerCase().includes(term) ||
+        pedido.metodo_entrega.toLowerCase().includes(term) ||
+        pedido.status_pedido.toLowerCase().includes(term) ||
+        pedido.fornecedor?.nome.toLowerCase().includes(term) ||
+        produtoEncontrado;
+    });
+  
     this.temPedido = this.pedidosFiltrados.length > 0;
   }
+  
 
   async abrirModalFornecedor(fornecedor: Fornecedor | undefined) {
     console.log(fornecedor);
