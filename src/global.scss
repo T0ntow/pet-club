@@ -35,11 +35,11 @@ ion-alert.custom-alert {
 }
 
 button.alert-button.alert-button-confirm {
-    color: #01A291;
+    color: #01a291;
 }
 
 button.alert-button.alert-button-cancel {
-    color: #EC5858;
+    color: #ec5858;
 }
 
 .md button.alert-button.alert-button-confirm {
@@ -59,4 +59,25 @@ button.alert-button.alert-button-cancel {
 .ios button.alert-button.alert-button-confirm {
     border-bottom-right-radius: 13px;
     border-top-right-radius: 13px;
+}
+
+/* Works on Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(131, 131, 131) rgb(63, 63, 63);
+}
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+    width: 12px;
+}
+
+*::-webkit-scrollbar-track {
+    background: rgb(107, 107, 107);
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: rgb(100, 100, 100);
+    border-radius: 20px;
+    border: 3px solid rgb(116, 116, 116);
 }

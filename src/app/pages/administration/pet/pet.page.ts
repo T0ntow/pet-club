@@ -67,7 +67,8 @@ export class PetPage implements OnInit {
   searchPet() {
     this.petsFiltrados = this.pets.filter(pet =>
       pet.nome.toLowerCase().includes(this.searchTerm) || 
-      pet.especie.toLowerCase().includes(this.searchTerm)
+      pet.especie.toLowerCase().includes(this.searchTerm) || 
+      pet.tutor?.nome.toLowerCase().includes(this.searchTerm)
     );
 
     this.temPet = this.petsFiltrados.length > 0;
@@ -130,6 +131,7 @@ export class PetPage implements OnInit {
       next: async (response: any) => {
         await this.presentToast('Pet removido com sucesso', "success")
         this.petService.updateObservablePets()
+        this.clientService.updateObservableClients()
       },
       error: (error: any) => {
         console.error('Falha ao remover pet:', error);

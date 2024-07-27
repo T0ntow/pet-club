@@ -43,23 +43,25 @@ export class ClientsPage implements OnInit {
   constructor(
     private alertController: AlertController,
     private modalCtrl: ModalController,
-    private clientService: ClientService, // Você precisa criar um serviço para fornecedores ou ajustar o existente
+    private clientService: ClientService,
     private loadingController: LoadingController,
     private toastController: ToastController,
     private petService: PetService,
   ) { }
 
   ngOnInit() {
-    this.clientService.getObservableClients().subscribe(isUpdated => {
+    this.clientService.getObservableClients().subscribe(() => {
       this.getPetsAndClients();
     });
     this.getPetsAndClients();
   }
 
   searchClients() {
+    const term = this.searchTerm.toLowerCase();
     this.clientesFiltrados = this.clientes.filter(cliente =>
-      cliente.nome.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      cliente.cpf.toLowerCase().includes(this.searchTerm.toLowerCase())
+      cliente.nome.toLowerCase().includes(term) || 
+      cliente.cpf.toLowerCase().includes(term) || 
+      this.getPetsByCliente(cliente.cpf).some(pet => pet.nome.toLowerCase().includes(term))
     );
 
     this.temCliente = this.clientesFiltrados.length > 0;
@@ -67,11 +69,9 @@ export class ClientsPage implements OnInit {
 
   formatarCpf(cpf: string) {
     cpf = cpf.replace(/\D/g, '');
-
     cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
     cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
     cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-
     return cpf;
   }
 
@@ -141,8 +141,8 @@ export class ClientsPage implements OnInit {
       },
       error: (error: any) => {
         console.error('Falha ao remover cliente:', error);
-        if(error.erro= "Não é possível excluir o cliente, pois há pets associados") {
-          this.presentToast("Não é possível excluir o cliente, pois há pets associados", "danger")
+        if (error.error === "Não é possível excluir o cliente, pois há pets associados") {
+          this.presentToast("Não é possível excluir o cliente, pois há pets associados", "danger");
         }
       },
     });
@@ -169,7 +169,7 @@ export class ClientsPage implements OnInit {
   async abrirModalPet(pet: Pet | undefined) {
     const modal = await this.modalCtrl.create({
       component: PetDoTutorComponent,
-      componentProps: {pet: pet},
+      componentProps: { pet: pet },
     });
 
     return await modal.present();
@@ -181,11 +181,11 @@ export class ClientsPage implements OnInit {
       message: 'Tem certeza de que deseja excluir este cliente? Esta ação é irreversível.',
       buttons: [
         {
-          text: 'cancelar',
+          text: 'Cancelar',
           cssClass: 'alert-button-cancel',
         },
         {
-          text: 'continuar',
+          text: 'Continuar',
           cssClass: 'alert-button-confirm',
           handler: () => { // Adiciona um handler para o botão 'continuar'
             this.confirmClientDelete(cliente);
@@ -197,7 +197,7 @@ export class ClientsPage implements OnInit {
     await alert.present();
   }
 
-  async presentToast(text: string, color: string,) {
+  async presentToast(text: string, color: string) {
     const toast = await this.toastController.create({
       message: text,
       duration: 1800,
@@ -206,5 +206,4 @@ export class ClientsPage implements OnInit {
 
     await toast.present();
   }
-
 }

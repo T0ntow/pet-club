@@ -4,7 +4,6 @@ import { ModalController, ToastController } from '@ionic/angular';
 import { ClientService } from 'src/app/services/client.service';
 import { PetService } from 'src/app/services/pet.service';
 import { NovoClienteComponent } from '../../clientes-modal/novo-cliente/novo-cliente.component';
-
 @Component({
   selector: 'app-novo-pet',
   templateUrl: './novo-pet.component.html',

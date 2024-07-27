@@ -90,6 +90,7 @@ export class EditarPetComponent implements OnInit {
       this.petService.updatePet(petData, petData.id).subscribe({
         next: (response) => {
           this.petService.updateObservablePets();
+          this.clienteService.updateObservableClients();
           this.modalCtrl.dismiss(null, 'confirm');
           this.presentToast('Pet atualizado com sucesso', 'success');
         },

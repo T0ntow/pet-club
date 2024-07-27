@@ -27,6 +27,7 @@
         
         <ion-col>Nome do Fornecedor</ion-col>
         <ion-col>Nome(s) do(s) Produto(s)</ion-col>
+        <ion-col>Quantidade</ion-col>
         <ion-col>Data do Pedido</ion-col>
         <ion-col>Previsão de Entrega</ion-col>
         <ion-col>Método de Entrega</ion-col>
@@ -45,12 +46,17 @@
       <ion-row *ngFor="let pedido of pedidosFiltrados">
         <ion-col class="fornecedor-pedido" (click)="abrirModalFornecedor(pedido.fornecedor)">{{ pedido.fornecedor?.nome || 'Sem Fornecedor' }}</ion-col> <!-- Adiciona o nome do tutor -->
      
-        <ion-col class="col-produto" *ngIf="pedido.produtos">
-          <ion-label *ngFor="let produto of pedido.produtos" class="label-produto" (click)="abrirlModalProduto(produto)">
-            {{ produto.nome }}
+        <ion-col class="col-produto" *ngIf="pedido.produtos" >
+          <ion-label *ngFor="let produto of pedido.produtos" class="label-produto" (click)="abrirlModalProduto(produto)" style="font-size: .85rem;">
+            {{ produto.nome }} 
+            <!-- <br> -->
+            <span style="font-weight: bold; color: rgb(25, 56, 73);">
+                qtd: {{produto.quantidade}}
+            </span>
           </ion-label>
         </ion-col>
-        
+
+
         <ion-col>{{ pedido.data_pedido | date }}</ion-col>
         <ion-col>{{ pedido.previsao_entrega | date }}</ion-col>
         <ion-col>{{ pedido.metodo_entrega }}</ion-col>

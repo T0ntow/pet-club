@@ -49,7 +49,7 @@
 
         <ion-col class="col-pet">
           <!-- Lista os pets associados ao cliente -->
-          <ion-label *ngFor="let pet of getPetsByCliente(cliente.cpf)" (click)="abrirModalPet(pet)" class="label-pet">
+          <ion-label *ngFor="let pet of getPetsByCliente(cliente.cpf)" (click)="abrirModalPet(pet)" class="label-pet" style="font-size: .9rem;">
             {{ pet.nome }}
           </ion-label>
         </ion-col>

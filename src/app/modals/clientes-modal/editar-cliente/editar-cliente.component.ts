@@ -31,19 +31,29 @@ export class EditarClienteComponent  implements OnInit {
     private petService: PetService
   ) {}
 
-  ngOnInit() { 
+  ngOnInit() {
     this.updateClientForm = this.formBuilder.group({
       nome: [this.cliente.nome, [Validators.required]],
       email: [this.cliente.email, [Validators.required, Validators.email]],
-      cpf: [this.cliente.cpf, [Validators.required, Validators.minLength(14)]],
-      fone: [this.cliente.fone, [Validators.required, Validators.minLength(16)]],
+      cpf: [this.formatarCpf(this.cliente.cpf), [Validators.required, Validators.minLength(14)]],
+      fone: [this.formatarTelefone(this.cliente.fone), [Validators.required, Validators.minLength(16)]],
       endereco: [this.cliente.endereco, [Validators.required]],
-    })
+    });
+  }
+
+  formatarCpf(cpf: string): string {
+    cpf = cpf.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+    if (cpf.length <= 11) {
+      cpf = cpf.padStart(11, '0'); // Preenche com zeros à esquerda se necessário
+      return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+    }
+    return cpf; // Retorna o CPF não formatado se for inválido
   }
 
   formatarTelefone(telefone: string): string {
     return telefone.replace(/^(\d{2})(\d{1})(\d{4})(\d{4})$/, "($1) $2 $3-$4");
   }
+
 
   removeNonDigits(data: string): string {
     return data.replace(/[^\d]/g, '');
