@@ -87,7 +87,6 @@ export class FornecedoresPage implements OnInit {
   async deleteSupplier(fornecedor: Fornecedor) {
     const alert = await this.alertController.create({
       header: 'Atenção',
-      subHeader: 'Excluir este fornecedor removerá todos os pedidos associados permanentemente.',
       message: 'Tem certeza de que deseja excluir este fornecedor? Esta ação é irreversível.',
 
       buttons: [
@@ -119,6 +118,9 @@ export class FornecedoresPage implements OnInit {
       },
       error: (error: any) => {
         console.error('Falha ao remover fornecedor:', error);
+        if(error.error = "FORNECEDOR_ASSOCIADO_A_PEDIDOS") {
+          this.presentToast("Existem pedidos associados a este fornecedor", "danger")
+        }
       },
     });
   }

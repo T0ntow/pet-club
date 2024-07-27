@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Selecionar Produto</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="fechar()">Fechar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="produtoForm">
+    <ion-item>
+      <ion-select formControlName="produto_cod" placeholder="Escolha um Produto">
+        <ion-select-option *ngFor="let produto of produtosFiltrados" [value]="produto.cod">
+          {{ produto.nome }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-input formControlName="quantidade_produto" type="number" placeholder="Quantidade"></ion-input>
+    </ion-item>
+
+    <ion-button color="light" expand="full" (click)="adicionarProduto()">Adicionar Produto</ion-button>
+  </form>
+</ion-content>

@@ -46,7 +46,7 @@ export class ProdutosCrudPage implements OnInit {
 
   searchProducts() {
     this.produtosFiltrados = this.produtos.filter(produto =>
-      produto.nome.toLowerCase().includes(this.searchTerm.toLowerCase()) || 
+      produto.nome.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
       produto.categoria.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
 
@@ -101,39 +101,49 @@ export class ProdutosCrudPage implements OnInit {
   deleteProduct(produto: any) {
     const storage = getStorage();
 
-    //remover referencia das imagens
-    this.productService.getImagesFromProduct(produto.cod).subscribe({
-      next: async (response: any) => {
-        console.log('Imagens recuperadas com sucesso:', response);
+    // Função para remover referências das imagens
+    const removeImages = async (imageUrls: string[]) => {
+      const imageDeletionPromises = imageUrls.map((imageUrl: string) => {
+        const imageRef = ref(storage, imageUrl);
+        return deleteObject(imageRef);
+      });
 
-        // Remover as imagens do Firebase Storage
-        const imageDeletionPromises = response.map((imageUrl: string) => {
-          const imageRef = ref(storage, imageUrl);
-          return deleteObject(imageRef);
-        });
+      try {
+        // Aguardar a conclusão de todas as operações de exclusão
+        await Promise.all(imageDeletionPromises);
+        console.log('Imagens removidas do Firebase Storage com sucesso');
+      } catch (error) {
+        console.error('Falha ao remover imagens do Firebase Storage:', error);
+        throw error; // Repassar o erro para que a função principal possa tratá-lo
+      }
+    };
+
+    // Excluir o produto primeiro
+    this.productService.deleteProduct(produto.cod).subscribe({
+      next: async (deleteResponse: any) => {
+        console.log('Produto removido com sucesso');
+        this.presentToast('Produto removido com sucesso', 'success');
+        this.productService.updateObservableProducts();
 
         try {
-          // Aguardar a conclusão de todas as operações de exclusão
-          await Promise.all(imageDeletionPromises);
+          // Recuperar as imagens do produto
+          const imagesResponse = await this.productService.getImagesFromProduct(produto.cod).toPromise();
+          console.log('Imagens recuperadas com sucesso:', imagesResponse);
 
-          console.log('Imagens removidas do Firebase Storage com sucesso');
+          // Verificar se imagesResponse é um array de strings
+          if (Array.isArray(imagesResponse) && imagesResponse.every(img => typeof img === 'string')) {
+            // Remover as imagens do Firebase Storage
+            await removeImages(imagesResponse);
+          } else {
+            console.error('Formato inesperado para imagens:', imagesResponse);
+          }
         } catch (error) {
-          console.error('Falha ao remover imagens do Firebase Storage:', error);
+          console.error('Erro ao processar a exclusão das imagens:', error);
         }
       },
       error: (error: any) => {
-        console.error('Falha ao recuperar imagens:', error);
-      },
-    });
-
-    this.productService.deleteProduct(produto.cod).subscribe({
-      next: (response: any) => {
-        this.presentToast('Produto removido com sucesso', "success");
-        this.productService.updateObservableProducts();
-      },
-      error: (error: any) => {
         console.error('Falha ao remover produto:', error);
-      },
+      }
     });
   }
 

@@ -1,24 +1,24 @@
+// pedido.page.ts
 import { Component, OnInit } from '@angular/core';
 import { LoadingController, ToastController, AlertController, ModalController } from '@ionic/angular';
 import { NovoPedidoComponent } from 'src/app/modals/pedidos-modal/novo-pedido/novo-pedido.component';
-import { PetService } from 'src/app/services/pet.service';
 import { PedidoService } from 'src/app/services/pedido.service';
 import { EditarPedidoComponent } from 'src/app/modals/pedidos-modal/editar-pedido/editar-pedido.component';
 import { lastValueFrom } from 'rxjs';
 import { SupplierService } from 'src/app/services/supplier.service';
 import { FornecedorDoPedidoComponent } from 'src/app/modals/fornecedor-do-pedido/fornecedor-do-pedido.component';
-
-
+import { ProdutoDoPedidoComponent } from 'src/app/modals/produto-do-pedido/produto-do-pedido.component';
 interface Pedido {
-  cod: string;                    // Código do pedido (INT AI PK)
-  cnpj_fornecedor: string;        // CNPJ do fornecedor (CHAR(14))
-  data_pedido: Date;              // Data do pedido (DATE)
-  previsao_entrega: Date;         // Previsão de entrega (DATE)
-  metodo_entrega: string;         // Método de entrega (VARCHAR(20))
-  observacoes: string;            // Observações (VARCHAR(255))
-  valor_total: number;            // Valor total (DECIMAL(8,2))
-  status_pedido: string;          // Status do pedido (VARCHAR(10))
-  fornecedor?: Fornecedor;  // A propriedade opcional para associar o fornecedor
+  cod: string;
+  cnpj_fornecedor: string;
+  data_pedido: Date;
+  previsao_entrega: Date;
+  metodo_entrega: string;
+  observacoes: string;
+  valor_total: number;
+  status_pedido: string;
+  fornecedor?: Fornecedor;
+  produtos?: Produto[]; // Adiciona a lista de produtos
 }
 
 interface Fornecedor {
@@ -30,6 +30,14 @@ interface Fornecedor {
   fone: string;
   id: number;
 }
+
+interface Produto {
+  cod: string;
+  nome: string;
+  descricao: string;
+  preco: number;
+}
+
 @Component({
   selector: 'app-pedido',
   templateUrl: './pedido.page.html',
@@ -47,7 +55,6 @@ export class PedidoPage implements OnInit {
     private modalCtrl: ModalController,
     private loadingController: LoadingController,
     private toastController: ToastController,
-    private petService: PetService,
     private pedidoService: PedidoService,
     private fornecedoresService: SupplierService
   ) { }
@@ -58,6 +65,9 @@ export class PedidoPage implements OnInit {
     });
 
     this.getPedidosAndFornecedores();
+
+    console.log(this.pedidos);
+    
   }
 
   async getPedidosAndFornecedores() {
@@ -75,15 +85,15 @@ export class PedidoPage implements OnInit {
         lastValueFrom(this.fornecedoresService.getSuppliers()) as Promise<Fornecedor[]>
       ]);
 
-      // Garante que os arrays pets e tutores não sejam undefined
       this.pedidos = pedidosResponse || [];
       this.fornecedores = fornecedoresResponse || [];
       this.pedidosFiltrados = this.pedidos;
       this.temPedido = this.pedidosFiltrados.length > 0;
 
       this.associatePedidosWithFornecedores();
+      await this.associateProductsWithPedidos(); // Associa produtos aos pedidos
     } catch (error) {
-      this.presentToast('Falha ao recuperar pets ou clientes', 'danger');
+      this.presentToast('Falha ao recuperar pedidos ou fornecedores', 'danger');
     } finally {
       loading.dismiss();
     }
@@ -91,57 +101,31 @@ export class PedidoPage implements OnInit {
 
   associatePedidosWithFornecedores() {
     const fornecedorMap = new Map<string, Fornecedor>();
-    // Cria um mapa dos fornecedores com o CNPJ como chave
     this.fornecedores.forEach(fornecedor => {
       fornecedorMap.set(fornecedor.cnpj, fornecedor);
     });
 
-    // Associa cada pedido ao seu respectivo fornecedor
     this.pedidos.forEach(pedido => {
       if (fornecedorMap.has(pedido.cnpj_fornecedor)) {
         pedido.fornecedor = fornecedorMap.get(pedido.cnpj_fornecedor);
       }
     });
 
-    // Atualiza a lista de pedidos filtrados se necessário
     this.pedidosFiltrados = this.pedidos;
     console.log(this.pedidosFiltrados);
   }
 
-
-  async getPedidos() {
-    console.log("chegou ca");
-
-    const loading = await this.loadingController.create({
-      message: 'Carregando fornecedores...',
-      spinner: 'crescent',
-      translucent: true,
-    });
-
-    await loading.present();
-
-    this.pedidoService.getPedidos().subscribe({
-      next: (response: any) => {
-        this.pedidos = response;
-        this.pedidosFiltrados = this.pedidos
-        this.temPedido = this.pedidosFiltrados.length > 0;
-
-        loading.dismiss();
-      },
-      error: (error: any) => {
-        this.presentToast('Falha ao recuperar fornecedores', 'danger');
-        loading.dismiss();
-      },
-    });
-  }
-  
-  async abrirModalFornecedor(fornecedor: Fornecedor | undefined) {
-    const modal = await this.modalCtrl.create({
-      component: FornecedorDoPedidoComponent,
-      componentProps: {fornecedor: fornecedor},
-    });
-    
-    return await modal.present();
+  async associateProductsWithPedidos() {
+    for (const pedido of this.pedidos) {
+      try {
+        const produtos = await lastValueFrom(this.pedidoService.getProductsByOrder(pedido.cod)) as Produto[];
+        pedido.produtos = produtos || [];
+        console.log(pedido.produtos);
+        
+      } catch (error) {
+        console.error(`Erro ao recuperar produtos do pedido ${pedido.cod}:`, error);
+      }
+    }
   }
 
   searchPedidos() {
@@ -153,6 +137,29 @@ export class PedidoPage implements OnInit {
 
     this.temPedido = this.pedidosFiltrados.length > 0;
   }
+
+  async abrirModalFornecedor(fornecedor: Fornecedor | undefined) {
+    console.log(fornecedor);
+    
+    const modal = await this.modalCtrl.create({
+      component: FornecedorDoPedidoComponent,
+      componentProps: { fornecedor: fornecedor },
+    });
+
+    return await modal.present();
+  }
+
+  async abrirlModalProduto(produto: Produto | undefined) {
+    console.log(produto);
+    
+    const modal = await this.modalCtrl.create({
+      component: ProdutoDoPedidoComponent,
+      componentProps: { produto: produto },
+    });
+
+    return await modal.present();
+  }
+
 
   async adicionarPedido() {
     const modal = await this.modalCtrl.create({
@@ -174,7 +181,7 @@ export class PedidoPage implements OnInit {
         {
           text: 'continuar',
           cssClass: 'alert-button-confirm',
-          handler: () => { // Adiciona um handler para o botão 'continuar'
+          handler: () => { 
             this.confirmPedidoDelete(pedido);
           },
         },
@@ -207,7 +214,7 @@ export class PedidoPage implements OnInit {
     return await modal.present();
   }
 
-  async presentToast(text: string, color: string,) {
+  async presentToast(text: string, color: string) {
     const toast = await this.toastController.create({
       message: text,
       duration: 1800,
@@ -216,5 +223,4 @@ export class PedidoPage implements OnInit {
 
     await toast.present();
   }
-
 }

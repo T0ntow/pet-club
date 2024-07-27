@@ -17,37 +17,86 @@
 
 <ion-content class="ion-padding">
   <form [formGroup]="updatePedidoForm">
+    <ion-grid *ngIf="produtosSelecionados.length > 0; else noProducts">
+      <ion-row>
+        <ion-col size="4">
+          <ion-label><strong>Nome do Produto</strong></ion-label>
+        </ion-col>
+        <ion-col size="4">
+          <ion-label><strong>Quantidade</strong></ion-label>
+        </ion-col>
+        <ion-col size="4">
+          <ion-label><strong>Ações</strong></ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngFor="let produto of produtosSelecionados" class="row-produto">
+        <ion-col size="4">
+          <ion-label>
+            <span class="produto-nome">
+              {{ produto.nome }}
+            </span>
+          </ion-label>
+        </ion-col>
+        <ion-col size="4">
+          <ion-label>
+            {{ produto.quantidade }}
+          </ion-label>
+        </ion-col>
+        <ion-col size="2">
+          <ion-button class="botao-remover-produto" (click)="removerProduto(produto)" color="danger" fill="outline">
+            Remover
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <!-- Produtos Selecionados -->
+    <div id="box-produto">
+      <ion-button id="button-adc-produto" color="light" fill="outline">Adicionar Produto
+        <ion-icon id="icon-adc-produto" name="add-circle"></ion-icon>
+      </ion-button>
+    </div>
+
+    <ng-template #noProducts>
+      <p class="produtos-lista">
+        <ion-label id="nenhum-produto">Nenhum produto selecionado</ion-label>
+      </p>
+    </ng-template>
+
+    <!-- Seletor de Fornecedor -->
     <ion-item>
       <ion-select labelPlacement="floating" label="Fornecedor *" formControlName="cnpj_fornecedor">
-        <ion-select-option [value]="fornecedor.cnpj" *ngFor="let fornecedor of fornecedoresFiltrados"> {{fornecedor.nome}} </ion-select-option>
+        <ion-select-option [value]="fornecedor.cnpj" *ngFor="let fornecedor of fornecedoresFiltrados">
+          {{fornecedor.nome}}
+        </ion-select-option>
       </ion-select>
     </ion-item>
 
+    <!-- Data do Pedido -->
     <ion-item>
       <ion-input name="data_pedido" type="date" label="Data do Pedido *" labelPlacement="floating"
         formControlName="data_pedido"></ion-input>
     </ion-item>
 
+    <!-- Previsão de Entrega -->
     <ion-item>
       <ion-input name="previsao_entrega" type="date" label="Previsão de Entrega *" labelPlacement="floating"
         formControlName="previsao_entrega"></ion-input>
     </ion-item>
 
+    <!-- Método de Entrega -->
     <ion-item>
       <ion-input name="metodo_entrega" type="text" label="Método de Entrega *" labelPlacement="floating"
         formControlName="metodo_entrega"></ion-input>
     </ion-item>
 
+    <!-- Valor Total -->
     <ion-item>
-      <ion-input name="observacoes" type="text" label="Observações" labelPlacement="floating"
-        formControlName="observacoes"></ion-input>
-    </ion-item>
-
-    <ion-item>
-      <ion-input name="valor_total" type="number" label="Valor Total *" labelPlacement="floating"
+      <ion-input name="valor_total" type="text" label="Valor Total *" labelPlacement="floating"
         formControlName="valor_total"></ion-input>
     </ion-item>
 
+    <!-- Status do Pedido -->
     <ion-item>
       <ion-select labelPlacement="floating" label="Status do Pedido *" formControlName="status_pedido">
         <ion-select-option value="Solicitado">Solicitado</ion-select-option>
@@ -57,17 +106,14 @@
       </ion-select>
     </ion-item>
 
-    <!-- <ion-item>
-      <ion-select labelPlacement="floating" label="Fornecedor *" formControlName="cnpj_fornecedor">
-        <ion-select-option [value]="fornecedor.cnpj" *ngFor="let fornecedor of fornecedoresFiltrados">
-          {{fornecedor.nome}}
-        </ion-select-option>
-      </ion-select>
-      <ion-input placeholder="Filtrar fornecedor" (ionChange)="filtrarFornecedor()"></ion-input>
-      <ion-button color="light" (click)="newFornecedor()">
-        <ion-icon name="add-circle" color="dark"></ion-icon>
-      </ion-button>
-    </ion-item> -->
+    <!-- Observações -->
+    <ion-item>
+      <ion-input name="observacoes" type="text" label="Observações" labelPlacement="floating"
+        formControlName="observacoes"></ion-input>
+    </ion-item>
+
+
+
 
   </form>
 </ion-content>

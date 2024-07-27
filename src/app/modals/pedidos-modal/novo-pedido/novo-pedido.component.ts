@@ -4,11 +4,11 @@ import { ModalController } from '@ionic/angular';
 import { PedidoService } from 'src/app/services/pedido.service';
 import { ToastController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
-
 import { ProductService } from 'src/app/services/product.service';
 import { SupplierService } from 'src/app/services/supplier.service';
 import { MaskitoElementPredicate } from '@maskito/core';
 import { maskitoPrice } from '../../../mask';
+import { NovoProdutoPedidoComponent } from '../../novo-produto-pedido/novo-produto-pedido.component';
 
 interface Fornecedor {
   cnpj: string;
@@ -22,11 +22,12 @@ interface Fornecedor {
 
 interface Produto {
   cod: number;
-  nome: string,
-  descricao: string,
-  categoria: string,
-  preco: string,
-  images: string[] // ou pode ser um array de objetos dependendo da estrutura das imagens
+  nome: string;
+  descricao: string;
+  categoria: string;
+  preco: string;
+  images: string[];
+  quantidade?: number;
 }
 
 @Component({
@@ -37,14 +38,10 @@ interface Produto {
 export class NovoPedidoComponent implements OnInit {
   fornecedores: Fornecedor[] = [];
   produtos: Produto[] = [];
-
   produtosSelecionados: Produto[] = [];
-
   fornecedoresFiltrados: Fornecedor[] = [];
-  produtosFiltrados: Produto[] = []
-
+  produtosFiltrados: Produto[] = [];
   pedidoForm: FormGroup;
-
   readonly maskitoPrice = maskitoPrice;
   readonly maskPredicate: MaskitoElementPredicate = async (el) => (el as HTMLIonInputElement).getInputElement();
 
@@ -58,7 +55,6 @@ export class NovoPedidoComponent implements OnInit {
     private productService: ProductService
   ) {
     this.pedidoForm = this.fb.group({
-      produto_cod: ['', Validators.required],
       cnpj_fornecedor: ['', Validators.required],
       data_pedido: ['', Validators.required],
       previsao_entrega: ['', Validators.required],
@@ -74,40 +70,46 @@ export class NovoPedidoComponent implements OnInit {
   }
 
   removeCurrencySymbol(price: string): string {
-    // Remove espaços e símbolos de moeda, e converte a vírgula para ponto decimal
     return price
-      .replace(/\s+/g, '')        // Remove todos os espaços
-      .replace(/^\s*R\$\s*/, '')  // Remove o símbolo 'R$' e espaços ao redor
-      .replace(',', '.');         // Substitui a vírgula por ponto
+      .replace(/\s+/g, '')
+      .replace(/^\s*R\$\s*/, '')
+      .replace(',', '.');
   }
+
   fecharModal() {
     this.modalCtrl.dismiss();
   }
 
   async salvarAlteracoes() {
     const pedidoData = this.pedidoForm.value;
+    console.log(pedidoData);
+    
+
+    // Adiciona os produtos selecionados aos dados do pedido
+    pedidoData.produtos = this.produtosSelecionados.map(p => ({
+      cod: p.cod,
+      nome: p.nome,
+      quantidade: p.quantidade
+    }));
 
     if (this.pedidoForm.valid) {
-      const pedidoData = this.pedidoForm.value;
       pedidoData.valor_total = this.removeCurrencySymbol(this.pedidoForm.get('valor_total')!.value);
-
-      console.log(pedidoData);
 
       this.pedidoService.newPedido(pedidoData).subscribe({
         next: async (response: any) => {
           this.pedidoService.updateObservablePedidos();
           this.modalCtrl.dismiss();
-          await this.presentToast("Fornecedor cadastrado com sucesso", "success")
+          await this.presentToast("Pedido cadastrado com sucesso", "success");
         },
         error: async (error: any) => {
-          if (error.message = 'Já existe um fornecedor com este CNPJ') {
-            return await this.presentToast("Existe um fornecedor cadastrado com esses dados", "danger")
+          if (error.message === 'Já existe um pedido com esses dados') {
+            return await this.presentToast("Falha ao adicionar pedido", "danger");
           }
-          await this.presentToast("Falha ao adicionar fornecedor", "danger")
+          await this.presentToast("Falha ao adicionar pedido", "danger");
         }
-      })
+      });
     } else {
-      await this.presentToast("Preencha o formulário corretamente", "danger")
+      await this.presentToast("Preencha o formulário corretamente", "danger");
     }
   }
 
@@ -120,39 +122,49 @@ export class NovoPedidoComponent implements OnInit {
 
       this.fornecedores = fornecedoresResponse as Fornecedor[];
       this.produtos = produtosResponse as Produto[];
-
       this.fornecedoresFiltrados = this.fornecedores;
       this.produtosFiltrados = this.produtos;
     } catch (error) {
       this.presentToast('Falha ao recuperar fornecedores ou produtos', 'danger');
     }
   }
-  
-  filtrarFornecedor() {
 
-  }
-
-  filterProducts() {
-  }
-
-  novoFornecedor() {
-
-  }
-
-  novoProduto() {
-    const produtoSelecionado = this.pedidoForm.get('produto_cod')!.value;
-    
-    if (produtoSelecionado) {
-      const produto = this.produtos.find(p => p.cod === produtoSelecionado);
-      if (produto && !this.produtosSelecionados.includes(produto)) {
-        this.produtosSelecionados.push(produto);
-      }
+  removerProduto(produto: Produto) {
+    const index = this.produtosSelecionados.findIndex(p => p.cod === produto.cod);
+    if (index !== -1) {
+      this.produtosSelecionados.splice(index, 1);
     }
-
   }
 
-  get produtosSelecionadosNomes(): string {
-    return this.produtosSelecionados.map(p => p.nome).join(', ');
+  async novoProduto() {
+    const modal = await this.modalCtrl.create({
+      component: NovoProdutoPedidoComponent
+    });
+
+    modal.onDidDismiss().then((result) => {
+      const { data } = result;
+      if (data) {
+        const produtoSelecionado = this.produtos.find(p => p.cod === data.produto_cod);
+        if (produtoSelecionado) {
+          const produtoExistente = this.produtosSelecionados.find(p => p.cod === produtoSelecionado.cod);
+          if (produtoExistente) {
+            produtoExistente.quantidade += data.quantidade_produto;
+          } else {
+            this.produtosSelecionados.push({ ...produtoSelecionado, quantidade: data.quantidade_produto });
+          }
+        }
+      }
+    });
+
+    return await modal.present();
+  }
+
+  atualizarQuantidade(produto: Produto) {
+    // Atualiza a quantidade do produto na lista de produtos selecionados
+    const produtoExistente = this.produtosSelecionados.find(p => p.cod === produto.cod);
+    if (produtoExistente) {
+      produtoExistente.quantidade = produto.quantidade;
+    }
   }
 
   async presentToast(text: string, color: string) {

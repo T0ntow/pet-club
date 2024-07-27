@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { HttpService } from './httpSevice.service';
 
 @Injectable({
@@ -43,5 +43,10 @@ export class PedidoService {
   // Atualizar um pedido
   updatePedido(pedidoData: any, cod: string) {
     return this.http.put(`${this.port}/atualizar-pedido/${cod}`, pedidoData);
+  }
+  
+   // Novo método para obter produtos por pedido
+   getProductsByOrder(orderId: string): Observable<any> {
+    return this.http.get(`${this.port}/pedidos/${orderId}/produtos`);
   }
 }

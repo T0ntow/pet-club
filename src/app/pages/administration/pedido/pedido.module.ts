@@ -11,6 +11,8 @@ import { NovoPedidoComponent } from 'src/app/modals/pedidos-modal/novo-pedido/no
 import { EditarPedidoComponent } from 'src/app/modals/pedidos-modal/editar-pedido/editar-pedido.component';
 import {MaskitoModule} from '@maskito/angular'
 import { FornecedorDoPedidoComponent } from 'src/app/modals/fornecedor-do-pedido/fornecedor-do-pedido.component';
+import { NovoProdutoPedidoComponent } from 'src/app/modals/novo-produto-pedido/novo-produto-pedido.component';
+import { ProdutoDoPedidoComponent } from 'src/app/modals/produto-do-pedido/produto-do-pedido.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -24,7 +26,9 @@ import { FornecedorDoPedidoComponent } from 'src/app/modals/fornecedor-do-pedido
     PedidoPage,
     NovoPedidoComponent,
     EditarPedidoComponent,
-    FornecedorDoPedidoComponent
+    FornecedorDoPedidoComponent,
+    NovoProdutoPedidoComponent,
+    ProdutoDoPedidoComponent
   ]
 })
 export class PedidoPageModule {}

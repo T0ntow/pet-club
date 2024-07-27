@@ -141,6 +141,9 @@ export class ClientsPage implements OnInit {
       },
       error: (error: any) => {
         console.error('Falha ao remover cliente:', error);
+        if(error.erro= "Não é possível excluir o cliente, pois há pets associados") {
+          this.presentToast("Não é possível excluir o cliente, pois há pets associados", "danger")
+        }
       },
     });
   }
@@ -175,7 +178,6 @@ export class ClientsPage implements OnInit {
   async deleteClient(cliente: Cliente) {
     const alert = await this.alertController.create({
       header: 'Atenção',
-      subHeader: 'Excluir este cliente removerá todos os pets associados permanentemente.',
       message: 'Tem certeza de que deseja excluir este cliente? Esta ação é irreversível.',
       buttons: [
         {
