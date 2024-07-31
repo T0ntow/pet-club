@@ -141,7 +141,7 @@ export class ClientsPage implements OnInit {
       },
       error: (error: any) => {
         console.error('Falha ao remover cliente:', error);
-        if (error.error === "Não é possível excluir o cliente, pois há pets associados") {
+        if (error.error = "Não é possível excluir o cliente, pois há pets associados") {
           this.presentToast("Não é possível excluir o cliente, pois há pets associados", "danger");
         }
       },

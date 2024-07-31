@@ -43,12 +43,11 @@
       }
 
       <ion-row *ngFor="let pedido of pedidosFiltrados">
-        <ion-col class="fornecedor-pedido" (click)="abrirModalFornecedor(pedido.fornecedor)">{{ pedido.fornecedor?.nome || 'Sem Fornecedor' }}</ion-col> <!-- Adiciona o nome do tutor -->
+        <ion-col class="fornecedor-pedido" (click)="abrirModalFornecedor(pedido.fornecedor)">{{ pedido.fornecedor?.nome || 'Sem Fornecedor' }}</ion-col> 
      
         <ion-col class="col-produto" *ngIf="pedido.produtos" >
           <ion-label *ngFor="let produto of pedido.produtos" class="label-produto" (click)="abrirlModalProduto(produto)" style="font-size: .85rem;">
             {{ produto.nome }} 
-            <!-- <br> -->
             <span style="font-weight: bold; color: rgb(25, 56, 73);">
                 qtd: {{produto.quantidade}}
             </span>
